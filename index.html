@@ -85,6 +85,179 @@ a:hover { text-decoration: underline; }
 .action-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 .loading { padding: 40px; text-align: center; color: #999; }
 [v-cloak] { display: none !important; }
+/* ===== 客户画像模块（嵌入） ===== */
+.card { background: #fff; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
+.card-title { font-size: 15px; font-weight: 600; color: #262626; margin-bottom: 16px; }
+.kpi-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; }
+.kpi-left { flex: 1; }
+.kpi-label { font-size: 13px; color: #8c8c8c; margin-bottom: 8px; }
+.kpi-value { font-size: 28px; font-weight: 700; color: #262626; line-height: 1; }
+.kpi-sub { font-size: 12px; color: #52c41a; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+.kpi-sub.red { color: #ff4d4f; }
+.kpi-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.kpi-icon.blue { background: #e6f4ff; }
+.kpi-icon.orange { background: #fff7e6; }
+.kpi-icon.red { background: #fff1f0; }
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.chart-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
+.chart-title { font-size: 15px; font-weight: 600; color: #262626; margin-bottom: 16px; }
+.donut-chart { display: flex; align-items: center; justify-content: center; gap: 32px; }
+.donut-svg { width: 180px; height: 180px; }
+.donut-labels { display: flex; flex-direction: column; gap: 10px; }
+.donut-label { font-size: 13px; color: #595959; display: flex; align-items: center; gap: 8px; }
+.donut-label strong { color: #262626; font-weight: 600; }
+.customer-list-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
+.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.list-title { font-size: 15px; font-weight: 600; color: #262626; }
+.list-filters { display: flex; gap: 8px; }
+.list-filters select { padding: 6px 10px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 13px; color: #595959; background: #fff; }
+.customer-list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
+.customer-list-item:hover { background: #fafafa; }
+.customer-list-item:last-child { border-bottom: none; }
+.customer-info { display: flex; flex-direction: column; gap: 4px; }
+.customer-name { font-size: 14px; font-weight: 500; color: #1677ff; }
+.customer-meta { font-size: 12px; color: #8c8c8c; }
+.customer-right { text-align: right; }
+.customer-visit { font-size: 12px; color: #8c8c8c; }
+.portrait-banner { background: linear-gradient(135deg, #1677ff 0%, #0958d9 100%); border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; }
+.portrait-banner-row1 { display: flex; justify-content: space-between; align-items: flex-start; }
+.portrait-banner-left { display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+.portrait-banner-company { display: flex; flex-direction: column; gap: 4px; }
+.portrait-banner-name { font-size: 22px; font-weight: 700; color: #fff; }
+.portrait-banner-credit { font-size: 12px; color: rgba(255,255,255,0.75); }
+.portrait-banner-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.portrait-banner-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.15); font-size: 12px; color: #fff; }
+.portrait-body { display: grid; grid-template-columns: 76% 24%; gap: 16px; align-items: start; }
+.portrait-left { display: grid; gap: 16px; }
+.portrait-side { display: flex; flex-direction: column; height: 100%; }
+.qa-section { margin-bottom: 16px; }
+.qa-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
+.qa-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.qa-num { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #1677ff, #0958d9); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.qa-question { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+.qa-verdict { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+.qa-verdict.good { background: #f6ffed; color: #52c41a; }
+.qa-verdict.mid { background: #fff7e6; color: #fa8c16; }
+.qa-verdict.bad { background: #fff1f0; color: #ff4d4f; }
+.qa-verdict.info { background: #e6f4ff; color: #1677ff; }
+.qa-summary { font-size: 13px; color: #595959; line-height: 1.8; padding: 12px 14px; background: #fafbfc; border-radius: 6px; border-left: 3px solid #1677ff; margin-bottom: 16px; }
+.qa-summary b { color: #262626; }
+.qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.qa-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
+.qa-metric { background: #fafbfc; border-radius: 8px; padding: 14px 16px; border: 1px solid #f0f0f0; }
+.qa-metric-label { font-size: 12px; color: #8c8c8c; margin-bottom: 6px; }
+.qa-metric-value { font-size: 20px; font-weight: 700; color: #262626; line-height: 1.2; }
+.qa-metric-value .unit { font-size: 12px; font-weight: 400; color: #8c8c8c; margin-left: 2px; }
+.qa-metric-sub { font-size: 11px; margin-top: 4px; }
+.qa-metric-sub.up { color: #52c41a; }
+.qa-metric-sub.down { color: #ff4d4f; }
+.qa-metric-sub.flat { color: #8c8c8c; }
+.qa-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #f0f0f0; font-size: 13px; }
+.qa-row:last-child { border-bottom: none; }
+.qa-row .label { color: #8c8c8c; }
+.qa-row .value { color: #262626; font-weight: 500; }
+.qa-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.qa-sub-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 10px; }
+.qa-energy-bar { display: flex; height: 32px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.qa-energy-seg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 600; min-width: 0; }
+.qa-energy-legend { display: flex; flex-wrap: wrap; gap: 14px; }
+.qa-energy-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #595959; }
+.qa-energy-item .swatch { width: 10px; height: 10px; border-radius: 2px; }
+.qa-energy-item b { color: #262626; }
+.qa-risk-banner { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 13px; }
+.qa-risk-banner.low { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+.qa-risk-banner.mid { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
+.qa-risk-banner.high { background: #fff1f0; color: #ff4d4f; border: 1px solid #ffa39e; }
+.qa-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+.qa-card.qa-compact { padding: 16px 18px; display: flex; flex-direction: column; }
+.qa-card.qa-compact .qa-header { margin-bottom: 10px; }
+.qa-card.qa-compact .qa-question { font-size: 14px; }
+.qa-card.qa-compact .qa-num { width: 24px; height: 24px; font-size: 13px; border-radius: 6px; }
+.qa-card.qa-compact .qa-verdict { display: inline-flex; align-self: flex-start; }
+.qc-metric { background: #fafbfc; border-radius: 8px; padding: 10px 14px; border: 1px solid #f0f0f0; margin-bottom: 10px; }
+.qc-label { font-size: 11px; color: #8c8c8c; margin-bottom: 3px; }
+.qc-value { font-size: 17px; font-weight: 700; color: #262626; line-height: 1.2; }
+.qc-value .unit { font-size: 11px; font-weight: 400; color: #8c8c8c; margin-left: 2px; }
+.qc-sub { font-size: 11px; margin-top: 2px; }
+.qc-sub.up { color: #52c41a; }
+.qa-risk-banner.compact { padding: 9px 12px; margin-bottom: 10px; }
+.qa-row.compact { padding: 6px 0; font-size: 12px; }
+.qc-energy-text { font-size: 12px; color: #595959; line-height: 1.7; padding: 9px 12px; background: #fafbfc; border-radius: 6px; border-left: 3px solid #1677ff; }
+.qc-energy-text b { color: #262626; }
+.period-tabs { display: inline-flex; gap: 4px; background: #f0f2f5; border-radius: 6px; padding: 3px; margin-bottom: 14px; }
+.period-tab { padding: 5px 16px; font-size: 12px; color: #595959; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.period-tab:hover { color: #1677ff; }
+.period-tab.active { background: #fff; color: #1677ff; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.resolve-summary { display: flex; align-items: center; gap: 18px; margin-bottom: 12px; }
+.resolve-counts { display: flex; flex-direction: column; gap: 6px; }
+.resolve-count-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #595959; }
+.resolve-count-row b { color: #262626; font-size: 15px; }
+.rc-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.resolve-list { display: flex; flex-direction: column; gap: 8px; max-height: 210px; overflow-y: auto; }
+.resolve-item { display: flex; gap: 10px; padding: 10px 12px; background: #fafbfc; border: 1px solid #f0f0f0; border-radius: 8px; align-items: flex-start; }
+.resolve-tag { flex-shrink: 0; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-top: 1px; }
+.resolve-body { flex: 1; min-width: 0; }
+.resolve-title { font-size: 13px; font-weight: 600; color: #262626; display: flex; justify-content: space-between; gap: 8px; }
+.resolve-date { font-size: 11px; font-weight: 400; color: #8c8c8c; flex-shrink: 0; }
+.resolve-desc { font-size: 12px; color: #595959; line-height: 1.6; margin-top: 2px; }
+.visit-block { padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+.visit-block.last { background: #e6f4ff; border-left: 3px solid #1677ff; }
+.visit-block.next { background: #f6ffed; border-left: 3px solid #52c41a; }
+.visit-block-label { font-size: 12px; color: #8c8c8c; margin-bottom: 6px; }
+.visit-block-date { font-size: 16px; font-weight: 700; color: #262626; margin-bottom: 4px; }
+.visit-block-desc { font-size: 12px; color: #595959; line-height: 1.5; }
+.word-cloud { position: relative; height: 220px; width: 100%; }
+.word-cloud-item { position: absolute; white-space: nowrap; padding: 4px 10px; border-radius: 12px; color: #fff; font-weight: 500; transform: translate(-50%, -50%); transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.12); cursor: default; }
+.word-cloud-item:hover { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.18); z-index: 100; }
+.timeline-side { position: relative; padding-left: 24px; }
+.timeline-side::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: #e6f4ff; }
+.timeline-side-item { position: relative; padding: 12px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: background 0.2s; }
+.timeline-side-item:hover { background: #f6f8fa; }
+.timeline-side-item.active { background: #e6f4ff; }
+.timeline-side-item.inactive { opacity: 0.6; }
+.timeline-side-dot { position: absolute; left: -20px; top: 16px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; }
+.timeline-side-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 4px; }
+.timeline-side-meta { font-size: 12px; color: #8c8c8c; margin-bottom: 4px; }
+.timeline-side-link { font-size: 12px; color: #1677ff; text-decoration: underline; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.wc-modal-content { background: #fff; border-radius: 12px; width: 480px; max-width: 90vw; max-height: 80vh; z-index: 1001; box-shadow: 0 8px 32px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
+.modal-title { font-size: 16px; font-weight: 600; color: #262626; display: flex; align-items: center; gap: 8px; }
+.modal-close { background: none; border: none; font-size: 22px; color: #8c8c8c; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.modal-close:hover { background: #f0f0f0; color: #262626; }
+.modal-body { flex: 1; overflow-y: auto; padding: 20px; }
+.modal-tip { font-size: 12px; color: #8c8c8c; background: #f5f5f5; padding: 12px; border-radius: 6px; margin-bottom: 16px; }
+.modal-questions { display: flex; flex-direction: column; gap: 12px; }
+.modal-question { display: flex; gap: 12px; padding: 12px; background: #f9f9f9; border-radius: 8px; }
+.modal-qnum { width: 24px; height: 24px; background: #1890ff; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.modal-qtext { font-size: 13px; color: #262626; line-height: 1.6; }
+.modal-footer { font-size: 12px; color: #8c8c8c; padding: 12px; background: #fff7e6; border-radius: 6px; margin-top: 16px; }
+.category-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; color: #fff; }
+.portrait-trend-chart-label { font-size: 12px; color: #1677ff; font-weight: 600; margin-bottom: 8px; }
+.portrait-trend-tooltip { position: fixed; background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1200; min-width: 160px; }
+.tooltip-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; }
+.tooltip-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+.tooltip-label { color: #8c8c8c; }
+.tooltip-value { color: #262626; font-weight: 500; }
+.chart-legend { display: flex; justify-content: center; gap: 24px; margin-top: 8px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #595959; }
+.legend-dot { width: 12px; height: 3px; border-radius: 2px; }
+.drawer-overlay { position: fixed; inset: 0; background: rgba(240, 244, 248, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); z-index: 1000; }
+.drawer { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 560px; max-width: calc(100vw - 48px); max-height: calc(100vh - 96px); background: #fff; border-radius: 12px; box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06); display: flex; flex-direction: column; z-index: 1001; overflow: hidden; animation: drawer-pop 0.22s cubic-bezier(0.34, 1.4, 0.64, 1); }
+@keyframes drawer-pop { from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+.drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; background: #fafbfc; }
+.drawer-title { font-size: 15px; font-weight: 600; color: #262626; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
+.drawer-section { margin-bottom: 18px; }
+.drawer-section-title { font-size: 13px; font-weight: 600; color: #1677ff; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #1677ff; }
+.drawer-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed #f0f0f0; font-size: 13px; }
+.drawer-row:last-child { border-bottom: none; }
+.drawer-row .label { color: #8c8c8c; flex-shrink: 0; margin-right: 16px; }
+.drawer-row .value { color: #262626; font-weight: 500; text-align: right; word-break: break-all; }
+.drawer-close { background: none; border: none; font-size: 24px; color: #8c8c8c; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.drawer-close:hover { background: #f0f0f0; color: #262626; }
+@media (max-width: 1200px) { .portrait-body { grid-template-columns: 1fr; } .qa-trio { grid-template-columns: 1fr; } .kpi-cards { grid-template-columns: 1fr 1fr; } .charts-row { grid-template-columns: 1fr; } .qa-grid { grid-template-columns: 1fr 1fr; } .qa-split { grid-template-columns: 1fr; } }
 </style>
 
 </head>
@@ -424,6 +597,239 @@ a:hover { text-decoration: underline; }
         </div>
       </div>
 
+      <!-- ==================== 客户画像（嵌入） ==================== -->
+      <div v-if="topNav==='portrait'">
+        <!-- 画像详情页 -->
+        <div v-if="showDetail">
+          <button class="btn btn-secondary" style="margin-bottom:16px;" @click="goBackFromPortrait">← 返回</button>
+          <div class="portrait-banner">
+            <div class="portrait-banner-row1">
+              <div class="portrait-banner-left">
+                <div class="portrait-banner-company">
+                  <div class="portrait-banner-name">{{ detailCustomer.customer_name }}</div>
+                  <div class="portrait-banner-credit">统一社会信用代码：{{ detailCustomer.credit_code || '91330100MA27L0XXXX' }}</div>
+                </div>
+                <div class="portrait-banner-badges">
+                  <span class="portrait-banner-badge"><span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;"></span>{{ detailCustomer.final_grade || '未分级' }}客户</span>
+                  <span class="portrait-banner-badge">{{ detailCustomer.main_industry }} | {{ detailCustomer.enterprise_scale || '大型企业' }}</span>
+                  <span class="portrait-banner-badge">联系人：{{ detailCustomer.contact || '张经理' }}</span>
+                  <span class="portrait-banner-badge">联系电话：{{ detailCustomer.phone || '138xxxx1234' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="portrait-body">
+            <div class="portrait-left">
+              <!-- Q1 -->
+              <div class="qa-section"><div class="qa-card">
+                <div class="qa-header"><span class="qa-num">1</span><span class="qa-question">这个客户能不能挣钱？</span><span class="qa-verdict" :class="profitInfo.cls">{{ profitInfo.verdict }}</span></div>
+                <div class="qa-grid">
+                  <div class="qa-metric"><div class="qa-metric-label">年毛利贡献</div><div class="qa-metric-value">{{ profitInfo.annualProfit }}<span class="unit">万元</span></div><div class="qa-metric-sub up">↑ {{ profitInfo.profitYoy }} 同比</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">单方价差</div><div class="qa-metric-value">{{ (detailCustomer.price_spread || 0).toFixed(2) }}<span class="unit">元/m³</span></div><div class="qa-metric-sub" :class="profitInfo.spreadSubCls">{{ profitInfo.spreadSub }}</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">收入贡献率</div><div class="qa-metric-value">{{ profitInfo.revenueRate }}<span class="unit">%</span></div><div class="qa-metric-sub flat">占公司总收入比重</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">利润排名</div><div class="qa-metric-value">前{{ profitInfo.profitRank }}<span class="unit">%</span></div><div class="qa-metric-sub flat">同类客户中</div></div>
+                </div>
+                <div class="qa-summary" v-html="profitInfo.summary"></div>
+                <div class="qa-split">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div class="qa-sub-title" style="margin-bottom:0;">📈 毛利贡献（万元）</div>
+                      <div class="period-tabs" style="margin-bottom:0;"><span class="period-tab" :class="{active: spreadPeriod === 'month'}" @click="spreadPeriod = 'month'">月</span><span class="period-tab" :class="{active: spreadPeriod === 'year'}" @click="spreadPeriod = 'year'">年</span></div></div>
+                    <svg width="100%" height="150" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
+                      <defs><linearGradient id="spreadArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fa8c16" stop-opacity="0.25"/><stop offset="100%" stop-color="#fa8c16" stop-opacity="0.03"/></linearGradient></defs>
+                      <line x1="40" y1="95" x2="380" y2="95" stroke="#f0f0f0" stroke-width="1"/><line x1="40" y1="55" x2="380" y2="55" stroke="#f0f0f0" stroke-width="1"/><line x1="40" y1="15" x2="380" y2="15" stroke="#f0f0f0" stroke-width="1"/>
+                      <text x="35" y="99" text-anchor="end" fill="#999" font-size="9">0</text><text x="35" y="59" text-anchor="end" fill="#999" font-size="9">{{ Math.round(spreadMaxVal / 2) }}</text><text x="35" y="19" text-anchor="end" fill="#999" font-size="9">{{ Math.round(spreadMaxVal) }}</text>
+                      <polygon :points="'60,95 ' + spreadSeries.map((d,i)=>(60+i*spreadStep)+','+spreadY(d.value)).join(' ') + ' ' + (60+(spreadSeries.length-1)*spreadStep) + ',95'" fill="url(#spreadArea)"/>
+                      <polyline :points="spreadSeries.map((d,i)=>(60+i*spreadStep)+','+spreadY(d.value)).join(' ')" fill="none" stroke="#fa8c16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle v-for="(d, i) in spreadSeries" :key="'spread-'+i" :cx="60 + i * spreadStep" :cy="spreadY(d.value)" r="4" fill="#fa8c16" stroke="#fff" stroke-width="2" style="cursor:pointer;" @mouseenter="showPriceTooltip($event, 'spread', i)" @mouseleave="hidePriceTooltip"/>
+                      <text v-for="(d, i) in spreadSeries" :key="'spread-t'+i" :x="60 + i * spreadStep" y="112" text-anchor="middle" fill="#8c8c8c" font-size="9">{{ d.label }}</text>
+                    </svg>
+                  </div>
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div class="qa-sub-title" style="margin-bottom:0;">💰 销售均价 vs 购气成本（元/m³）</div>
+                      <div class="period-tabs" style="margin-bottom:0;"><span class="period-tab" :class="{active: pricePeriod === 'month'}" @click="pricePeriod = 'month'">月</span><span class="period-tab" :class="{active: pricePeriod === 'year'}" @click="pricePeriod = 'year'">年</span></div></div>
+                    <svg width="100%" height="150" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
+                      <line x1="40" y1="95" x2="380" y2="95" stroke="#f0f0f0" stroke-width="1"/><line x1="40" y1="65" x2="380" y2="65" stroke="#f0f0f0" stroke-width="1"/><line x1="40" y1="35" x2="380" y2="35" stroke="#f0f0f0" stroke-width="1"/>
+                      <text x="35" y="99" text-anchor="end" fill="#999" font-size="9">0</text><text x="35" y="69" text-anchor="end" fill="#999" font-size="9">2</text><text x="35" y="39" text-anchor="end" fill="#999" font-size="9">4</text>
+                      <polyline :points="priceSeries.map((d,i)=>(60+i*priceStep)+','+(95-d.sale*15)).join(' ')" fill="none" stroke="#1677ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <polyline :points="priceSeries.map((d,i)=>(60+i*priceStep)+','+(95-d.cost*15)).join(' ')" fill="none" stroke="#52c41a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5,3"/>
+                      <circle v-for="(d, i) in priceSeries" :key="'sale-'+i" :cx="60 + i * priceStep" :cy="95 - d.sale * 15" r="3.5" fill="#1677ff" stroke="#fff" stroke-width="1.5"/>
+                      <circle v-for="(d, i) in priceSeries" :key="'cost-'+i" :cx="60 + i * priceStep" :cy="95 - d.cost * 15" r="3" fill="#52c41a" stroke="#fff" stroke-width="1.5"/>
+                      <circle v-for="(d, i) in priceSeries" :key="'hot-'+i" :cx="60 + i * priceStep" cy="60" r="16" fill="transparent" style="cursor:pointer;" @mouseenter="showPriceTooltip($event, 'price', i)" @mouseleave="hidePriceTooltip"/>
+                      <text v-for="(d, i) in priceSeries" :key="'price-t'+i" :x="60 + i * priceStep" y="112" text-anchor="middle" fill="#8c8c8c" font-size="9">{{ d.label }}</text>
+                    </svg>
+                    <div class="chart-legend"><span class="legend-item"><span class="legend-dot" style="background:#1677ff;"></span>销售均价</span><span class="legend-item"><span class="legend-dot" style="background:#52c41a;"></span>购气成本</span></div>
+                  </div>
+                </div>
+                <div v-if="priceTooltip.show" class="portrait-trend-tooltip" :style="{left: priceTooltip.x + 'px', top: priceTooltip.y + 'px'}">
+                  <div class="tooltip-title">{{ priceTooltip.title }}</div>
+                  <div v-for="(row, i) in priceTooltip.rows" :key="i" class="tooltip-row"><span class="tooltip-label">{{ row.label }}</span><span class="tooltip-value" :style="row.color ? {color: row.color} : {}">{{ row.value }}</span></div>
+                </div>
+              </div></div>
+              <!-- Q2 -->
+              <div class="qa-section"><div class="qa-card">
+                <div class="qa-header"><span class="qa-num">2</span><span class="qa-question">客户状态如何？</span><span class="qa-verdict" :class="statusInfo.cls">{{ statusInfo.verdict }}</span></div>
+                <div class="qa-grid">
+                  <div class="qa-metric"><div class="qa-metric-label">合作年限</div><div class="qa-metric-value">{{ detailCustomer.cooperation_years || 0 }}<span class="unit">年</span></div><div class="qa-metric-sub flat">当前阶段：{{ statusInfo.stage }}</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">月均用气量</div><div class="qa-metric-value">{{ ((detailCustomer.annual_gas_usage || 0) / 12).toFixed(0) }}<span class="unit">万m³</span></div><div class="qa-metric-sub" :class="statusInfo.usageSubCls">{{ statusInfo.usageSub }}</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">用气波动系数 CV</div><div class="qa-metric-value">{{ statusInfo.cv }}</div><div class="qa-metric-sub flat">{{ statusInfo.cvLabel }}</div></div>
+                  <div class="qa-metric"><div class="qa-metric-label">距上次拜访</div><div class="qa-metric-value">{{ statusInfo.lastVisitDays }}<span class="unit">天</span></div><div class="qa-metric-sub" :class="statusInfo.visitSubCls">{{ statusInfo.visitSub }}</div></div>
+                </div>
+                <div class="qa-summary" v-html="statusInfo.summary"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><div class="qa-sub-title" style="margin-bottom:0;">📈 用气量趋势（万m³）</div>
+                  <div class="period-tabs" style="margin-bottom:0;"><span class="period-tab" :class="{active: gasPeriod === 'month'}" @click="gasPeriod = 'month'">月</span><span class="period-tab" :class="{active: gasPeriod === 'year'}" @click="gasPeriod = 'year'">年</span></div></div>
+                <div style="position:relative;">
+                  <svg width="100%" height="230" viewBox="0 0 760 200" preserveAspectRatio="xMidYMid meet">
+                    <line v-for="(t, i) in gasYTicks" :key="'gy'+i" x1="55" :y1="t.y" x2="735" :y2="t.y" stroke="#f0f0f0" stroke-width="1"/>
+                    <text v-for="(t, i) in gasYTicks" :key="'gyt'+i" x="48" :y="t.y + 3" text-anchor="end" fill="#999" font-size="10">{{ t.label }}</text>
+                    <g v-for="(d, i) in gasSeries" :key="'g'+i">
+                      <rect :x="gasBarX(i) - gasBarW - 2" :y="gasY(d.prev)" :width="gasBarW" :height="170 - gasY(d.prev)" rx="3" fill="#e8e8e8"/>
+                      <rect :x="gasBarX(i) + 2" :y="gasY(d.value)" :width="gasBarW" :height="170 - gasY(d.value)" rx="3" fill="#1890ff"/>
+                      <text :x="gasBarX(i)" y="192" text-anchor="middle" fill="#8c8c8c" font-size="11">{{ d.label }}</text>
+                      <rect :x="gasBarX(i) - gasGroupW / 2" y="20" :width="gasGroupW" height="172" fill="transparent" style="cursor:pointer;" @mouseenter="showGasTooltip($event, i)" @mouseleave="hideGasTooltip"/>
+                    </g>
+                    <polyline :points="gasSeries.map((d,i)=>gasBarX(i)+','+(gasY(d.value)-6)).join(' ')" fill="none" stroke="#f5222d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle v-for="(d, i) in gasSeries" :key="'gc'+i" :cx="gasBarX(i)" :cy="gasY(d.value) - 6" r="5" fill="#fff" stroke="#f5222d" stroke-width="2.5"/>
+                  </svg>
+                  <div class="chart-legend" style="margin-top:4px;"><span class="legend-item"><span class="legend-dot" style="background:#e8e8e8;width:10px;height:10px;border-radius:2px;"></span>上年用气量</span><span class="legend-item"><span class="legend-dot" style="background:#1890ff;width:10px;height:10px;border-radius:2px;"></span>本期用气量</span><span class="legend-item"><span class="legend-dot" style="background:#f5222d;"></span>趋势线</span></div>
+                  <div v-if="gasTooltip.show" class="portrait-trend-tooltip" :style="{left: gasTooltip.x + 'px', top: gasTooltip.y + 'px'}">
+                    <div class="tooltip-title">{{ gasTooltip.title }}</div>
+                    <div v-for="(row, i) in gasTooltip.rows" :key="i" class="tooltip-row"><span class="tooltip-label">{{ row.label }}</span><span class="tooltip-value" :style="row.color ? {color: row.color} : {}">{{ row.value }}</span></div>
+                  </div>
+                </div>
+                <div style="margin-top:16px;"><div class="qa-split">
+                  <div>
+                    <div class="qa-sub-title">🗣️ 客户最近在关心什么（点击词条查看原话）</div>
+                    <div class="word-cloud"><span v-for="(word, idx) in wordCloudData" :key="idx" class="word-cloud-item" :style="getCloudTagStyle(idx)" :title="'点击查看客户提出的「' + word.text + '」类问题'" style="cursor:pointer;" @click="openWordCloud(word)">{{ word.text }}</span></div>
+                  </div>
+                  <div>
+                    <div class="qa-sub-title">✅ 业务人员解决情况</div>
+                    <div class="resolve-summary">
+                      <div><svg viewBox="0 0 100 100" width="86" height="86"><circle cx="50" cy="50" r="40" fill="none" stroke="#f0f0f0" stroke-width="10"/><circle cx="50" cy="50" r="40" fill="none" :stroke="resolveInfo.rate >= 70 ? '#52c41a' : resolveInfo.rate >= 40 ? '#faad14' : '#ff4d4f'" stroke-width="10" stroke-linecap="round" :stroke-dasharray="resolveInfo.rate * 2.513 + ' 251.3'" transform="rotate(-90 50 50)"/><text x="50" y="47" text-anchor="middle" font-size="20" font-weight="700" fill="#262626">{{ resolveInfo.rate }}%</text><text x="50" y="64" text-anchor="middle" font-size="10" fill="#8c8c8c">解决率</text></svg></div>
+                      <div class="resolve-counts">
+                        <div class="resolve-count-row"><span class="rc-dot" style="background:#52c41a;"></span>已解决 <b>{{ resolveInfo.resolved }}</b> 项</div>
+                        <div class="resolve-count-row"><span class="rc-dot" style="background:#faad14;"></span>跟进中 <b>{{ resolveInfo.inProgress }}</b> 项</div>
+                        <div class="resolve-count-row"><span class="rc-dot" style="background:#ff4d4f;"></span>未响应 <b>{{ resolveInfo.pending }}</b> 项</div>
+                      </div>
+                    </div>
+                    <div class="resolve-list"><div v-for="(r, i) in resolveInfo.items" :key="i" class="resolve-item"><span class="resolve-tag" :style="{background: r.tagBg, color: r.tagColor}">{{ r.status }}</span><div class="resolve-body"><div class="resolve-title">{{ r.category }}<span class="resolve-date">{{ r.date }}</span></div><div class="resolve-desc">{{ r.desc }}</div></div></div></div>
+                  </div>
+                </div></div>
+              </div></div>
+              <!-- Q3/Q4/Q5 -->
+              <div class="qa-trio">
+                <div class="qa-card qa-compact">
+                  <div class="qa-header"><span class="qa-num">3</span><span class="qa-question">有没有增长空间？</span></div>
+                  <span class="qa-verdict" :class="growthInfo.cls" style="margin-bottom:14px;">{{ growthInfo.verdict }}</span>
+                  <div class="qc-metric"><div class="qc-label">预计年增气量</div><div class="qc-value">+{{ growthInfo.potentialGas }}<span class="unit">万m³</span></div><div class="qc-sub up">主要来自扩产计划</div></div>
+                  <div class="qc-metric"><div class="qc-label">预计年增毛利</div><div class="qc-value">+{{ growthInfo.potentialProfit }}<span class="unit">万元</span></div><div class="qc-sub up">按当前价差测算</div></div>
+                  <div class="qc-metric" style="margin-bottom:0;"><div class="qc-label">用气量同比</div><div class="qc-value">{{ growthInfo.usageYoy }}</div><div class="qc-sub up">近一年趋势</div></div>
+                </div>
+                <div class="qa-card qa-compact">
+                  <div class="qa-header"><span class="qa-num">4</span><span class="qa-question">会不会被替代？</span></div>
+                  <span class="qa-verdict" :class="riskInfo.cls" style="margin-bottom:14px;">{{ riskInfo.verdict }}</span>
+                  <div class="qa-risk-banner compact" :class="riskInfo.level"><span style="font-size:15px;">{{ riskInfo.icon }}</span><div><div style="font-weight:600;font-size:12px;" v-html="riskInfo.bannerTitle"></div><div style="opacity:0.85;font-size:11px;margin-top:2px;" v-html="riskInfo.bannerText"></div></div></div>
+                  <div class="qa-row compact"><span class="label">替代能源类型</span><span class="value">{{ riskInfo.altEnergy }}</span></div>
+                  <div class="qa-row compact"><span class="label">替代设备</span><span class="value" :style="{color: riskInfo.hasDevice ? '#ff4d4f' : '#52c41a'}">{{ riskInfo.deviceText }}</span></div>
+                  <div class="qa-row compact"><span class="label">燃气成本占比</span><span class="value">{{ riskInfo.gasCostRatio }}</span></div>
+                  <div class="qa-row compact"><span class="label">价格承受能力</span><span class="value" style="max-width:58%;">{{ riskInfo.priceTolerance }}</span></div>
+                </div>
+                <div class="qa-card qa-compact">
+                  <div class="qa-header"><span class="qa-num">5</span><span class="qa-question">客户用其他能源的比例是多少？</span></div>
+                  <span class="qa-verdict info" style="margin-bottom:14px;">燃气占 {{ energyInfo.gasPct }}%</span>
+                  <div class="qc-energy-text" v-html="energyInfo.summary"></div>
+                  <div class="qa-sub-title" style="margin-top:14px;">⚡ 能源结构占比</div>
+                  <div class="qa-energy-bar" style="height:26px;"><div v-for="(seg, i) in energyInfo.segments" :key="i" class="qa-energy-seg" :style="{width: seg.pct + '%', background: seg.color}">{{ seg.pct >= 8 ? seg.pct + '%' : '' }}</div></div>
+                  <div class="qa-energy-legend" style="margin-top:10px;"><div v-for="(seg, i) in energyInfo.segments" :key="i" class="qa-energy-item"><span class="swatch" :style="{background: seg.color}"></span><span>{{ seg.name }} <b>{{ seg.pct }}%</b></span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="portrait-side"><div class="card" style="height:100%;">
+              <div class="card-title">🔄 客户生命周期时间轴</div>
+              <div class="timeline-side">
+                <div v-for="(item, idx) in lifecycleItems" :key="idx" class="timeline-side-item" :class="{active: item.status==='active', inactive: item.status==='pending'}" @click="openLifecycleDrawer(item)">
+                  <div class="timeline-side-dot" :style="{background: item.color, boxShadow: '0 0 0 2px ' + item.color}"></div>
+                  <div class="timeline-side-title">{{ item.title }}</div>
+                  <div class="timeline-side-meta">{{ item.date }}</div>
+                  <div class="timeline-side-link">点击查看详情</div>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 生命周期详情抽屉 -->
+      <div v-if="showLifecycleDrawer" class="drawer-overlay" @click.self="closeLifecycleDrawer"></div>
+      <div v-if="showLifecycleDrawer" class="drawer">
+        <div class="drawer-header"><div class="drawer-title">{{ lifecycleDrawerItem.title }} · {{ lifecycleDrawerItem.status === 'done' ? '已完成' : lifecycleDrawerItem.status === 'active' ? '进行中' : '未完成' }}</div><button class="drawer-close" @click="closeLifecycleDrawer">&times;</button></div>
+        <div class="drawer-body">
+          <div class="drawer-section">
+            <div class="drawer-row"><span class="label">节点时间</span><span class="value">{{ lifecycleDrawerData.date || '—' }}</span></div>
+            <div class="drawer-row"><span class="label">负责人</span><span class="value">{{ lifecycleDrawerData.person || '—' }}</span></div>
+          </div>
+          <div v-if="lifecycleDrawerItem.status === 'pending'" class="drawer-section" style="text-align:center;padding:20px;color:#8c8c8c;">该节点尚未完成</div>
+          <div v-else>
+            <div v-if="lifecycleDrawerItem.title === '客户开发'" class="drawer-section"><div class="drawer-section-title">开发信息</div>
+              <div class="drawer-row"><span class="label">首次接洽日期</span><span class="value">{{ lifecycleDrawerData.firstContact || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">客户经理</span><span class="value">{{ lifecycleDrawerData.manager || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">开发周期</span><span class="value">{{ lifecycleDrawerData.period || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">备注</span><span class="value">{{ lifecycleDrawerData.remark || '—' }}</span></div></div>
+            <div v-if="lifecycleDrawerItem.title === '签订合同'" class="drawer-section"><div class="drawer-section-title">合同信息</div>
+              <div class="drawer-row"><span class="label">合同编号</span><span class="value">{{ lifecycleDrawerData.contractNo || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">合同名称</span><span class="value">{{ lifecycleDrawerData.contractName || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">签订日期</span><span class="value">{{ lifecycleDrawerData.signDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">合同期限</span><span class="value">{{ lifecycleDrawerData.period || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">合同气量</span><span class="value">{{ lifecycleDrawerData.gasVolume || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">合同价格</span><span class="value">{{ lifecycleDrawerData.price || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">价格机制</span><span class="value">{{ lifecycleDrawerData.priceMode || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">结算方式</span><span class="value">{{ lifecycleDrawerData.settleMode || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">付款周期</span><span class="value">{{ lifecycleDrawerData.payCycle || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">经办人</span><span class="value">{{ lifecycleDrawerData.operator || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">合同状态</span><span class="value">{{ lifecycleDrawerData.status || '—' }}</span></div></div>
+            <div v-if="lifecycleDrawerItem.title === '工程报装'" class="drawer-section"><div class="drawer-section-title">报装信息</div>
+              <div class="drawer-row"><span class="label">报装编号</span><span class="value">{{ lifecycleDrawerData.applyNo || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">报装日期</span><span class="value">{{ lifecycleDrawerData.applyDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">开工日期</span><span class="value">{{ lifecycleDrawerData.startDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">完工日期</span><span class="value">{{ lifecycleDrawerData.endDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">验收日期</span><span class="value">{{ lifecycleDrawerData.checkDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">验收结论</span><span class="value">{{ lifecycleDrawerData.checkResult || '—' }}</span></div>
+              <div class="drawer-section-title">计量表信息</div>
+              <div class="drawer-row"><span class="label">表具编号</span><span class="value">{{ lifecycleDrawerData.meterNo || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">表具型号</span><span class="value">{{ lifecycleDrawerData.meterModel || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">量程规格</span><span class="value">{{ lifecycleDrawerData.meterRange || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">生产厂家</span><span class="value">{{ lifecycleDrawerData.meterFactory || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">安装位置</span><span class="value">{{ lifecycleDrawerData.meterPosition || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">安装日期</span><span class="value">{{ lifecycleDrawerData.meterInstallDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">检定日期</span><span class="value">{{ lifecycleDrawerData.meterCheckDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">检定有效期</span><span class="value">{{ lifecycleDrawerData.meterValidDate || '—' }}</span></div></div>
+            <div v-if="lifecycleDrawerItem.title === '正式通气'" class="drawer-section"><div class="drawer-section-title">通气信息</div>
+              <div class="drawer-row"><span class="label">通气日期</span><span class="value">{{ lifecycleDrawerData.gasDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">通气验收人</span><span class="value">{{ lifecycleDrawerData.checker || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">点火/置换记录编号</span><span class="value">{{ lifecycleDrawerData.recordNo || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">初始表底数</span><span class="value">{{ lifecycleDrawerData.initialReading || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">通气结论</span><span class="value">{{ lifecycleDrawerData.result || '—' }}</span></div></div>
+            <div v-if="lifecycleDrawerItem.title === '运营提升'" class="drawer-section"><div class="drawer-section-title">运营信息</div>
+              <div class="drawer-row"><span class="label">运营起算日期</span><span class="value">{{ lifecycleDrawerData.startDate || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">已运营月数</span><span class="value">{{ lifecycleDrawerData.months || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">累计用气量</span><span class="value">{{ lifecycleDrawerData.totalGas || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">阶段开始日期</span><span class="value">{{ lifecycleDrawerData.stageStart || '—' }}</span></div>
+              <div class="drawer-row"><span class="label">阶段负责人</span><span class="value">{{ lifecycleDrawerData.stageOwner || '—' }}</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 词云弹窗 -->
+      <div v-if="showWordCloudModal" class="modal-overlay" @click.self="showWordCloudModal = false">
+        <div class="wc-modal-content">
+          <div class="modal-header"><div class="modal-title"><span>{{ wordCloudDrawer.icon }}</span><span>{{ wordCloudDrawer.title }}</span><span class="category-badge" :style="{background: wordCloudDrawer.color}">客户提出的问题</span></div><button class="modal-close" @click="showWordCloudModal = false">&times;</button></div>
+          <div class="modal-body">
+            <div class="modal-tip">以下为客户在历次拜访与日常沟通中提出的「{{ wordCloudDrawer.title }}」类问题，共 {{ (wordCloudDrawer.questions || []).length }} 条，请逐条跟进落实：</div>
+            <div class="modal-questions"><div v-for="(q, idx) in wordCloudDrawer.questions" :key="idx" class="modal-question"><div class="modal-qnum">{{ idx + 1 }}</div><div class="modal-qtext">{{ q }}</div></div></div>
+            <div class="modal-footer">💡 提示：以上问题来自客户拜访与诉求记录，请结合客户等级和服务优先级逐条跟进，并在下次拜访时向客户反馈处理进展。</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -431,8 +837,41 @@ a:hover { text-decoration: underline; }
 <script>
 const { createApp, ref, computed, onMounted, watch } = Vue;
 
-// 客户画像系统页面地址（点"画像"时跳转到这里，并带上 ?id=客户ID）
-const PORTRAIT_PAGE_URL = 'C:/Users/wyt0627/昆仑小智/2026-08-05-13-47-30/index.html';
+// ========== 客户画像常量 ==========
+const WORD_CLOUD_DATA = [
+  { id: 'price', text: '价格诉求', color: '#f5222d', weight: 5 },
+  { id: 'supply', text: '供气保障', color: '#1890ff', weight: 4.5 },
+  { id: 'quality', text: '气质改善', color: '#13c2c2', weight: 4 },
+  { id: 'optimize', text: '用能优化', color: '#52c41a', weight: 3.5 },
+  { id: 'process', text: '流程便利', color: '#722ed1', weight: 3.2 },
+  { id: 'safety', text: '安全支持', color: '#fa8c16', weight: 3 },
+  { id: 'expand', text: '扩产协同', color: '#faad14', weight: 2.6 },
+  { id: 'other', text: '其他诉求', color: '#8c8c8c', weight: 2 }
+];
+const VISIT_QUESTIONS = {
+  price: { title: '价格诉求', icon: '💰', color: '#f5222d', questions: ['现在气价还能不能再降一点？', '如果我们签三年长协，价格能锁在什么水平？', '量增价减的阶梯具体怎么算？'] },
+  supply: { title: '供气保障诉求', icon: '⛽', color: '#1890ff', questions: ['去年冬天限气那次，以后再遇气源紧张能不能提前通知？', '生产线一停损失就是几十万，断供预警时间能不能写进合同？'] },
+  quality: { title: '气质改善诉求', icon: '💨', color: '#13c2c2', questions: ['最近炉子温度不太好烧，是不是气的热值有波动？', '热值能不能稳定住？低了我们的成品率直接受影响。'] },
+  optimize: { title: '用能优化诉求', icon: '⚡', color: '#52c41a', questions: ['每月气费占比不低，你们能不能帮忙做个用能诊断？', '窑炉余热有没有回收方案？'] },
+  process: { title: '流程便利化诉求', icon: '📋', color: '#722ed1', questions: ['每次缴费都要跑营业厅，能不能开通线上缴费？', '发票能不能月结后三天内开出来？'] },
+  safety: { title: '安全/技术支持诉求', icon: '🔧', color: '#fa8c16', questions: ['烧嘴用了六年了，能不能安排一次免费的安全检查？', '管道阀门有点锈，更换是你们负责还是我们负责？'] },
+  expand: { title: '扩产/新项目协同诉求', icon: '🏭', color: '#faad14', questions: ['我们Q3要上新产线，每月多用80万方，气源能不能保障？', '新厂房的管道能不能请你们提前来勘测设计？'] },
+  other: { title: '其他诉求', icon: '📌', color: '#8c8c8c', questions: ['煤改气的补贴政策现在还有没有？', '能不能定期给我们发一下气价走势和政策解读？'] }
+};
+const LIFECYCLE_ITEMS = [
+  { date: '2022-03', title: '客户开发', status: 'done', color: '#1677ff' },
+  { date: '2022-05', title: '签订合同', status: 'done', color: '#1677ff' },
+  { date: '2022-06', title: '工程报装', status: 'done', color: '#1677ff' },
+  { date: '2022-07', title: '正式通气', status: 'done', color: '#1677ff' },
+  { date: '2024-07', title: '运营提升', status: 'active', color: '#52c41a' }
+];
+const LIFECYCLE_DETAILS = {
+  '客户开发': { date: '2022-03-15', person: '张经理', channel: '政府片区招标', firstContact: '2022-03-01', manager: '张经理', projectDate: '2022-03-10', period: '15天', remark: '通过政府片区招标获得客户' },
+  '签订合同': { date: '2022-05-20', person: '王经理', contractNo: 'HT-2022-00478', contractName: '2022年天然气供气合同', signDate: '2022-05-20', period: '2022.05-2027.04', gasVolume: '5500万m³/年', price: '3.25元/m³', priceMode: '挂钩', settleMode: '月度结算', payCycle: '月结30天', operator: '王经理', status: '生效中' },
+  '工程报装': { date: '2022-06-15', person: '李主管', applyNo: 'BZ-2022-00478', applyDate: '2022-06-01', capacity: '5000Nm³/h', designer: '济南燃气设计院', builder: '山东燃气工程公司', startDate: '2022-06-05', endDate: '2022-06-25', checkDate: '2022-06-28', checkResult: '合格', meterNo: 'GAS-2022-0478', meterModel: 'JKL-G16', meterRange: 'DN100', meterFactory: '浙江金卡智能', meterPosition: '厂区调压柜', meterInstallDate: '2022-06-15', meterCheckDate: '2022-06-20', meterValidDate: '2024-06-19' },
+  '正式通气': { date: '2022-07-01', person: '王经理', gasDate: '2022-07-01', checker: '李主管', recordNo: 'TQ-2022-00478', initialReading: '0.00', result: '通气合格' },
+  '运营提升': { date: '2024-07', person: '张经理', startDate: '2022-07-01', months: '24个月', totalGas: '456万m³', stageName: '稳量提质', stageStart: '2024-01-01', stageGoal: '维持用气规模，提升价差贡献', stageOwner: '张经理' }
+};
 
 // ========== 初始数据 ==========
 const MOCK_CUSTOMERS = [
@@ -771,10 +1210,255 @@ createApp({
     };
 
     // ===== 画像：跳转到独立的客户画像系统页面 =====
-    const openPortraitDetail = (row, from = 'portrait') => {
-      if (!row || !row.customer_id) return;
-      window.location.href = PORTRAIT_PAGE_URL + '?id=' + encodeURIComponent(row.customer_id);
+    // ===== 客户画像（嵌入，内部跳转，不离开本页） =====
+    const showDetail = ref(false);
+    const portraitFrom = ref('grading'); // 记录从哪个页面进来，返回时跳回
+    const gasPeriod = ref('month');
+    const gasMonthly = ref([]);
+    const gasYearly = ref([]);
+    const gasTooltip = ref({ show: false, x: 0, y: 0, title: '', rows: [] });
+    const pricePeriod = ref('month');
+    const spreadPeriod = ref('month');
+    const priceMonthly = ref([]);
+    const priceYearly = ref([]);
+    const priceTooltip = ref({ show: false, x: 0, y: 0, title: '', rows: [] });
+    const wordCloudData = ref(WORD_CLOUD_DATA);
+    const lifecycleItems = ref(LIFECYCLE_ITEMS);
+    const profitInfo = ref({});
+    const statusInfo = ref({});
+    const growthInfo = ref({});
+    const riskInfo = ref({});
+    const energyInfo = ref({});
+    const resolveInfo = ref({ rate: 0, resolved: 0, inProgress: 0, pending: 0, items: [] });
+    const showWordCloudModal = ref(false);
+    const wordCloudDrawer = ref({});
+    const showLifecycleDrawer = ref(false);
+    const lifecycleDrawerItem = ref({});
+    const lifecycleDrawerData = ref({});
+
+    // 打开客户画像详情（直接用分级数据 mockStore.customers，字段缺的走默认值）
+    const openPortraitDetail = (row, from = 'grading') => {
+      const c = mockStore.customers.find(x => x.customer_id === row.customer_id) || row;
+      portraitFrom.value = from;
+      detailCustomer.value = c;
+      buildPortrait(c);
+      showDetail.value = true;
+      topNav.value = 'portrait';
+      window.scrollTo(0, 0);
     };
+
+    // 返回：回到进入时的页面（分级结果 / 等级查询）
+    const goBackFromPortrait = () => {
+      showDetail.value = false;
+      topNav.value = 'grading';
+      if (portraitFrom.value === 'search') subNav.value = 'search';
+      else subNav.value = 'results';
+    };
+
+    // 按市场人员 5 个核心问题组织画像信息
+    const buildPortrait = (row) => {
+      const seed = (row.customer_id || 'X').split('').reduce((a, ch) => a + ch.charCodeAt(0), 0);
+      const rand = (offset) => ((Math.sin(seed * 12.9898 + offset * 78.233) + 1) / 2);
+      const annual = row.annual_gas_usage || 0;
+      const spread = row.price_spread || 0;
+      const monthly = annual / 12;
+      const annualProfit = Math.round(annual * spread);
+      const revenueRate = (annual * spread / 50000 * 100);
+      const yoyPct = Math.round(5 + rand(1) * 15);
+      const usageYoy = '+' + yoyPct + '%';
+      // Q1 能不能挣钱
+      const profitLevel = annualProfit >= 3000 ? 'high' : annualProfit >= 1200 ? 'mid' : 'low';
+      const hasDebt = row.debt_status === '有';
+      profitInfo.value = {
+        verdict: profitLevel === 'high' ? '优质利润客户' : profitLevel === 'mid' ? '稳定贡献客户' : '薄利客户，需控本增效',
+        cls: profitLevel === 'high' ? 'good' : profitLevel === 'mid' ? 'info' : 'mid',
+        annualProfit: annualProfit.toLocaleString(),
+        profitYoy: '+' + Math.round(rand(2) * 10 + 3) + '%',
+        spreadSub: spread >= 0.85 ? '高于平均价差 0.78 元' : spread >= 0.65 ? '接近平均价差 0.78 元' : '低于平均价差 0.78 元',
+        spreadSubCls: spread >= 0.65 ? 'up' : 'down',
+        revenueRate: revenueRate.toFixed(1),
+        profitRank: profitLevel === 'high' ? Math.round(rand(3) * 8 + 3) : profitLevel === 'mid' ? Math.round(rand(3) * 20 + 15) : Math.round(rand(3) * 25 + 55),
+        summary: profitLevel === 'high'
+          ? `该客户年毛利贡献 <b>${annualProfit.toLocaleString()} 万元</b>，单方价差 <b>${spread.toFixed(2)} 元/m³</b>${spread >= 0.85 ? '，高于公司平均水平' : ''}，是<b>核心利润来源</b>。合同为「${row.price_mode || '挂钩门站价浮动'}」，${hasDebt ? '<b style="color:#ff4d4f">存在历史欠款，需优先管控回款风险</b>' : '回款正常'}。`
+          : profitLevel === 'mid'
+          ? `该客户年毛利贡献 <b>${annualProfit.toLocaleString()} 万元</b>，处于公司中游水平，属于<b>稳定现金流型客户</b>。${hasDebt ? '<b style="color:#ff4d4f">注意：存在历史欠款记录</b>，建议压缩账期。' : '回款正常，风险可控。'}`
+          : `该客户年毛利贡献仅 <b>${annualProfit.toLocaleString()} 万元</b>，单方价差 <b>${spread.toFixed(2)} 元/m³</b> 偏低，属于<b>薄利型客户</b>。${hasDebt ? '<b style="color:#ff4d4f">且存在历史欠款</b>，投入产出比需要重点评估。' : ''}应控制服务成本，优先通过价格机制改善利润。`
+      };
+      // Q2 客户状态
+      const cv = (0.08 + rand(4) * 0.25).toFixed(2);
+      const cvNum = parseFloat(cv);
+      const lastVisitDays = Math.round(rand(5) * 25 + 5);
+      const stageName = (row.cooperation_years || 0) >= 6 ? '成熟运营期' : (row.cooperation_years || 0) >= 3 ? '稳定合作期' : '合作爬坡期';
+      const isDeclining = yoyPct < 8;
+      statusInfo.value = {
+        verdict: isDeclining ? '用气趋平，需关注' : '状态健康，用气稳中有升',
+        cls: isDeclining ? 'mid' : 'good',
+        stage: stageName, cv: cv,
+        cvLabel: cvNum < 0.12 ? '波动小，生产排程稳定' : cvNum < 0.22 ? '波动正常，季节性特征' : '波动大，需了解原因',
+        usageSub: '同比 ' + usageYoy, usageSubCls: isDeclining ? 'flat' : 'up',
+        lastVisitDays: lastVisitDays,
+        visitSub: lastVisitDays <= 15 ? '跟进节奏正常' : '建议尽快安排上门',
+        visitSubCls: lastVisitDays <= 15 ? 'up' : 'down',
+        summary: isDeclining
+          ? `该客户合作 <b>${row.cooperation_years} 年</b>（${stageName}），用气量同比 <b>${usageYoy}</b> 增速放缓，CV=${cv}。当前<b>关系稳定但缺乏增量话题</b>，建议借扩产/节能改造等议题激活合作，避免客户进入"沉默期"。`
+          : `该客户合作 <b>${row.cooperation_years} 年</b>（${stageName}），用气量同比 <b>${usageYoy}</b>，生产负荷饱满。用气波动系数 CV=${cv}，${cvNum < 0.22 ? '用气节奏稳定，属于可预期的优质负荷' : '波动偏大，建议了解其生产排程'}。距上次拜访 <b>${lastVisitDays} 天</b>，${lastVisitDays <= 15 ? '跟进节奏正常' : '<b style="color:#fa8c16">已超过常规跟进周期，建议尽快上门</b>'}。`
+      };
+      const base = monthly;
+      const gasMonthLabels = ['2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08'];
+      const gMonth = [];
+      for (let i = 0; i < 12; i++) {
+        const season = 1 + Math.sin((i + 3) / 12 * Math.PI * 2) * 0.12;
+        const growth = 1 + (yoyPct / 100) * (i / 12);
+        const cur = Math.round(base * season * growth);
+        const prev = Math.round(cur / (1 + (yoyPct / 100) * (0.85 + rand(60 + i) * 0.3)));
+        gMonth.push({ label: gasMonthLabels[i], value: cur, prev: prev });
+      }
+      const gasYearLabels = ['2023年', '2024年', '2025年'];
+      const gYear = [];
+      for (let i = 0; i < 3; i++) {
+        const yearGas = Math.round(annual * (1 + (yoyPct / 100) * (i - 2)));
+        const prevYearGas = i === 0 ? Math.round(yearGas / (1 + yoyPct / 100 * 0.9)) : gYear[i - 1].value;
+        gYear.push({ label: gasYearLabels[i], value: yearGas, prev: prevYearGas });
+      }
+      const withGasRates = (arr) => arr.map((d, i) => { const prevItem = i > 0 ? arr[i - 1] : null; return { ...d, yoy: d.prev ? (d.value - d.prev) / d.prev * 100 : null, qoq: prevItem ? (d.value - prevItem.value) / prevItem.value * 100 : null }; });
+      gasMonthly.value = withGasRates(gMonth);
+      gasYearly.value = withGasRates(gYear);
+      // 业务人员解决情况
+      const gradeBoost = row.final_grade === '一级' ? 0.25 : row.final_grade === '二级' ? 0.05 : -0.1;
+      const resolveRate = Math.round(Math.min(95, Math.max(15, 55 + gradeBoost * 100 + rand(70) * 25)));
+      const resolved = Math.max(1, Math.round(8 * resolveRate / 100));
+      const inProgress = Math.round((8 - resolved) * 0.6);
+      const pending = 8 - resolved - inProgress;
+      const resolvePool = [
+        { category: '价格诉求', status: '已解决', desc: '已为客户申请阶梯气价优惠，月均气费下降约 3%。', date: '2025-06-20', tagBg: '#f6ffed', tagColor: '#52c41a' },
+        { category: '供气保障', status: '已解决', desc: '已将客户纳入优先保供名单，断供预警提前至 72 小时。', date: '2025-06-28', tagBg: '#f6ffed', tagColor: '#52c41a' },
+        { category: '气质改善', status: '跟进中', desc: '已协调上游加强脱水处理，待客户反馈烧嘴堵塞是否改善。', date: '2025-07-08', tagBg: '#fff7e6', tagColor: '#fa8c16' },
+        { category: '用能优化', status: '跟进中', desc: '用能诊断报告已出具，余热回收方案正在测算投资回收期。', date: '2025-07-10', tagBg: '#fff7e6', tagColor: '#fa8c16' },
+        { category: '流程便利', status: '已解决', desc: '线上缴费与电子发票已开通，月结后 3 个工作日内开票。', date: '2025-06-15', tagBg: '#f6ffed', tagColor: '#52c41a' },
+        { category: '安全支持', status: '已解决', desc: '已完成烧嘴安全检查与报警器校准，出具安检报告。', date: '2025-07-02', tagBg: '#f6ffed', tagColor: '#52c41a' },
+        { category: '扩产协同', status: '未响应', desc: '客户提出扩产用气扩容需求，尚未提交管网扩容方案。', date: '2025-07-12', tagBg: '#fff1f0', tagColor: '#ff4d4f' },
+        { category: '其他诉求', status: pending > 1 ? '未响应' : '已解决', desc: pending > 1 ? '综合能源合作模式尚未回复客户。' : '已配置固定客户经理，日常问题一对一响应。', date: '2025-07-14', tagBg: pending > 1 ? '#fff1f0' : '#f6ffed', tagColor: pending > 1 ? '#ff4d4f' : '#52c41a' }
+      ];
+      resolveInfo.value = { rate: resolveRate, resolved, inProgress, pending, items: resolvePool };
+      // Q3 增长空间
+      const hasExpansion = row.expansion_plan === '有';
+      const potentialGas = hasExpansion ? Math.round(annual * (0.08 + rand(6) * 0.15)) : Math.round(annual * 0.02);
+      const potentialProfit = Math.round(potentialGas * spread);
+      const growthLevel = hasExpansion && yoyPct >= 10 ? 'high' : hasExpansion || yoyPct >= 10 ? 'mid' : 'low';
+      growthInfo.value = {
+        verdict: growthLevel === 'high' ? '高增长潜力，重点投入' : growthLevel === 'mid' ? '有增量机会，可争取' : '增长空间有限，以存量维护为主',
+        cls: growthLevel === 'high' ? 'good' : growthLevel === 'mid' ? 'info' : 'mid',
+        potentialGas: potentialGas.toLocaleString(), potentialProfit: potentialProfit.toLocaleString(), usageYoy: usageYoy
+      };
+      // Q4 替代风险
+      const hasAlt = row.has_alternative_energy;
+      const altType = row.alternative_energy_types || '';
+      const gasCostHigh = (row.gas_cost_ratio || '').includes('高');
+      let riskLevel = 'low';
+      if (hasAlt && gasCostHigh) riskLevel = 'high';
+      else if (hasAlt || gasCostHigh) riskLevel = 'mid';
+      const riskMap = {
+        low: { icon: '🟢', title: '替代风险：低', text: `该客户无替代能源、无替代设备，当前用气负荷由天然气全额承担。` },
+        mid: { icon: '🟡', title: '替代风险：中', text: hasAlt ? `该客户配有${altType}替代路线，当前未大规模切换。` : `该客户燃气成本占比较高，对气价波动敏感。` },
+        high: { icon: '🔴', title: '替代风险：高', text: `该客户配有${altType}替代设备且燃气成本占比高，存在负荷转移可能。` }
+      };
+      riskInfo.value = {
+        verdict: riskLevel === 'low' ? '低风险' : riskLevel === 'mid' ? '中风险' : '高风险',
+        cls: riskLevel === 'low' ? 'good' : riskLevel === 'mid' ? 'mid' : 'bad',
+        level: riskLevel, icon: riskMap[riskLevel].icon, bannerTitle: riskMap[riskLevel].title, bannerText: riskMap[riskLevel].text,
+        altEnergy: hasAlt ? altType : '无明显替代能源',
+        hasDevice: hasAlt,
+        deviceText: hasAlt ? `已有${altType}设备` : '暂无替代设备',
+        gasCostRatio: row.gas_cost_ratio || '—',
+        priceTolerance: (row.gas_cost_ratio || '').includes('高') ? '气价上涨 5% 以内可接受，涨幅更高将考虑切换替代能源' : (row.gas_cost_ratio || '').includes('低') ? '气价上涨 15% 以内均可接受，对气价不敏感' : '气价上涨 10% 以内可接受，超出后需重新议价'
+      };
+      // Q5 其他能源比例
+      let segments = [];
+      if (hasAlt) { const altPct = Math.round(10 + rand(7) * 25); segments = [{ name: '天然气', pct: 100 - altPct, color: '#1677ff' }, { name: altType || '其他能源', pct: altPct, color: '#fa8c16' }]; }
+      else { segments = [{ name: '天然气', pct: 92, color: '#1677ff' }, { name: '电力（辅助）', pct: 8, color: '#d9d9d9' }]; }
+      const gasPct = segments[0].pct;
+      const altSeg = segments[1];
+      energyInfo.value = {
+        gasPct, segments,
+        summary: hasAlt
+          ? `该客户能源结构中：天然气占 <b>${gasPct}%</b>，${altSeg.name}占 <b>${altSeg.pct}%</b>（年用气量 <b>${annual.toLocaleString()}</b> 万m³）。`
+          : `该客户能源结构中：天然气占 <b>${gasPct}%</b>，电力（辅助）占 <b>${segments[1].pct}%</b>（年用气量 <b>${annual.toLocaleString()}</b> 万m³）。`
+      };
+      // 销售价格 / 价差数据
+      const curSale = 3.0 + rand(8) * 0.3;
+      const curSpread = spread;
+      const mkMonth = [];
+      const monthLabels = ['2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08'];
+      for (let i = 0; i < 12; i++) {
+        const wave = Math.sin(i * 0.9 + seed) * 0.12;
+        const sale = +(curSale - (11 - i) * 0.02 + wave).toFixed(2);
+        const sp = Math.max(0.3, +(curSpread - (11 - i) * 0.015 + wave * 0.8).toFixed(2));
+        const cost = +(sale - sp).toFixed(2);
+        mkMonth.push({ label: monthLabels[i], sale, cost, spread: sp });
+      }
+      const mkYear = [];
+      const yearLabels = ['2023年', '2024年', '2025年'];
+      for (let i = 0; i < 3; i++) {
+        const sale = +(curSale - (2 - i) * 0.18 + rand(20 + i) * 0.1).toFixed(2);
+        const sp = Math.max(0.3, +(curSpread - (2 - i) * 0.09 + rand(30 + i) * 0.08).toFixed(2));
+        const cost = +(sale - sp).toFixed(2);
+        mkYear.push({ label: yearLabels[i], sale, cost, spread: sp });
+      }
+      const withRates = (arr, yoyOffset) => arr.map((d, i) => {
+        const prev = i > 0 ? arr[i - 1] : null;
+        const yoyBase = yoyOffset === 12 ? (d.sale * (1 - 0.05 - rand(40 + i) * 0.06)) : (arr[0] ? arr[0].sale : d.sale);
+        const yoySpreadBase = yoyOffset === 12 ? (d.spread * (1 - 0.03 - rand(50 + i) * 0.05)) : (arr[0] ? arr[0].spread : d.spread);
+        return { ...d, saleQoq: prev ? ((d.sale - prev.sale) / prev.sale * 100) : null, saleYoy: ((d.sale - yoyBase) / yoyBase * 100), spreadQoq: prev ? ((d.spread - prev.spread) / prev.spread * 100) : null, spreadYoy: ((d.spread - yoySpreadBase) / yoySpreadBase * 100) };
+      });
+      priceMonthly.value = withRates(mkMonth, 12);
+      priceYearly.value = withRates(mkYear, 1);
+    };
+
+    const priceSeries = computed(() => pricePeriod.value === 'month' ? priceMonthly.value : priceYearly.value);
+    const priceStep = computed(() => 280 / Math.max(priceSeries.value.length - 1, 1));
+    const spreadSourceSeries = computed(() => spreadPeriod.value === 'month' ? priceMonthly.value : priceYearly.value);
+    const spreadSeries = computed(() => spreadSourceSeries.value.map((d, i) => {
+      const gasArr = spreadPeriod.value === 'month' ? gasMonthly.value : gasYearly.value;
+      const gasVal = gasArr[i] ? gasArr[i].value : 0;
+      const profit = Math.round(d.spread * gasVal);
+      const prevProfit = i > 0 ? Math.round(spreadSourceSeries.value[i - 1].spread * (gasArr[i - 1] ? gasArr[i - 1].value : 0)) : null;
+      const yoyProfit = d.spread > 0 && gasArr[i] && gasArr[i].prev ? Math.round(d.spread * gasArr[i].prev) : null;
+      return { label: d.label, value: profit, qoq: prevProfit ? (profit - prevProfit) / prevProfit * 100 : null, yoy: yoyProfit ? (profit - yoyProfit) / yoyProfit * 100 : null };
+    }));
+    const spreadMaxVal = computed(() => { let m = 0; spreadSeries.value.forEach(d => { m = Math.max(m, d.value); }); return m > 0 ? m * 1.2 : 100; });
+    const spreadY = (v) => 95 - (v / spreadMaxVal.value) * 80;
+    const spreadStep = computed(() => 280 / Math.max(spreadSeries.value.length - 1, 1));
+    const fmtRate = (v) => v === null || v === undefined ? '—' : (v >= 0 ? '+' : '') + v.toFixed(1) + '%';
+    const rateColor = (v) => v === null || v === undefined ? '#8c8c8c' : v >= 0 ? '#52c41a' : '#ff4d4f';
+    const gasSeries = computed(() => gasPeriod.value === 'month' ? gasMonthly.value : gasYearly.value);
+    const gasMaxVal = computed(() => { let m = 0; gasSeries.value.forEach(d => { m = Math.max(m, d.value, d.prev || 0); }); return m > 0 ? m * 1.15 : 100; });
+    const gasYTicks = computed(() => { const max = gasMaxVal.value; const ticks = []; for (let i = 0; i <= 4; i++) { const v = max * i / 4; ticks.push({ y: 170 - (v / max) * 140, label: Math.round(v) }); } return ticks; });
+    const gasGroupW = computed(() => 640 / Math.max(gasSeries.value.length, 1));
+    const gasBarW = computed(() => Math.min(gasGroupW.value * 0.26, 26));
+    const gasBarX = (i) => 70 + gasGroupW.value * i + gasGroupW.value / 2;
+    const gasY = (v) => 170 - (v / gasMaxVal.value) * 140;
+    const showGasTooltip = (evt, i) => { const d = gasSeries.value[i]; if (!d) return; gasTooltip.value = { show: true, x: Math.min(evt.clientX + 12, window.innerWidth - 200), y: evt.clientY - 10, title: d.label + ' 用气量', rows: [{ label: '当期用气量', value: d.value.toLocaleString() + ' 万m³', color: '#1890ff' }, { label: '同比', value: fmtRate(d.yoy), color: rateColor(d.yoy) }, { label: '环比', value: fmtRate(d.qoq), color: rateColor(d.qoq) }] }; };
+    const hideGasTooltip = () => { gasTooltip.value.show = false; };
+    const showPriceTooltip = (evt, type, i) => {
+      const arr = type === 'spread' ? spreadSeries.value : priceSeries.value;
+      const d = arr[i]; if (!d) return;
+      let rows = [];
+      if (type === 'spread') { const isYear = spreadPeriod.value === 'year'; rows = [{ label: '当期毛利', value: d.value.toLocaleString() + ' 万元', color: '#fa8c16' }, { label: isYear ? '同比' : '环比', value: fmtRate(isYear ? d.yoy : d.qoq), color: rateColor(isYear ? d.yoy : d.qoq) }, ...(isYear ? [] : [{ label: '同比', value: fmtRate(d.yoy), color: rateColor(d.yoy) }])]; }
+      else { const isYear = pricePeriod.value === 'year'; rows = [{ label: '销售均价', value: d.sale.toFixed(2) + ' 元/m³', color: '#1677ff' }, { label: '购气成本', value: d.cost.toFixed(2) + ' 元/m³', color: '#52c41a' }, { label: '价差', value: d.spread.toFixed(2) + ' 元/m³', color: '#fa8c16' }, { label: '均价同比', value: fmtRate(d.saleYoy), color: rateColor(d.saleYoy) }, ...(isYear ? [] : [{ label: '均价环比', value: fmtRate(d.saleQoq), color: rateColor(d.saleQoq) }])]; }
+      priceTooltip.value = { show: true, x: Math.min(evt.clientX + 12, window.innerWidth - 190), y: evt.clientY - 10, title: d.label + (type === 'spread' ? ' 毛利贡献' : ' 价格'), rows };
+    };
+    const hidePriceTooltip = () => { priceTooltip.value.show = false; };
+    const getCloudTagStyle = (idx) => {
+      const word = wordCloudData.value[idx]; if (!word) return {};
+      const sizes = [14, 16, 18, 20, 22];
+      const size = sizes[Math.min(Math.round(word.weight), sizes.length - 1)];
+      const positions = [{ left: '20%', top: '30%' }, { left: '60%', top: '20%' }, { left: '75%', top: '45%' }, { left: '35%', top: '55%' }, { left: '80%', top: '70%' }, { left: '25%', top: '75%' }, { left: '55%', top: '75%' }, { left: '50%', top: '45%' }];
+      const pos = positions[idx % positions.length];
+      return { ...pos, fontSize: size + 'px', background: word.color };
+    };
+    const openWordCloud = (word) => { wordCloudDrawer.value = VISIT_QUESTIONS[word.id] || VISIT_QUESTIONS['other']; showWordCloudModal.value = true; };
+    const openLifecycleDrawer = (item) => { lifecycleDrawerItem.value = item; lifecycleDrawerData.value = LIFECYCLE_DETAILS[item.title] || {}; showLifecycleDrawer.value = true; };
+    const closeLifecycleDrawer = () => { showLifecycleDrawer.value = false; };
 
 
     onMounted(() => { loadConfigs(); loadResults(); });
@@ -789,7 +1473,13 @@ createApp({
       getDimTotalColor, dimTotalClass, handleWeightChange, handleQualityChange, getIndicatorDesc,
       runCalculation, resetConfig, filteredResults, toggleAll, gradeClass, gradeNum, statusText,
       viewDetail, openAdjust, submitAdjust, batchPublish, doSearch, openPortraitDetail,
-      exportExcel
+      exportExcel,
+      showDetail, goBackFromPortrait,
+      gasPeriod, gasSeries, gasYTicks, gasGroupW, gasBarW, gasBarX, gasY, gasTooltip, showGasTooltip, hideGasTooltip,
+      profitInfo, statusInfo, growthInfo, riskInfo, energyInfo, resolveInfo,
+      pricePeriod, spreadPeriod, priceSeries, priceStep, spreadSeries, spreadStep, spreadMaxVal, spreadY, priceTooltip, showPriceTooltip, hidePriceTooltip,
+      wordCloudData, getCloudTagStyle, openWordCloud, showWordCloudModal, wordCloudDrawer,
+      lifecycleItems, showLifecycleDrawer, lifecycleDrawerItem, lifecycleDrawerData, openLifecycleDrawer, closeLifecycleDrawer
     };
   }
 }).mount('#app');
