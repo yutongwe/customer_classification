@@ -3,1399 +3,793 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>客户画像 - 大客户关系管理系统</title>
+  <title>客户分级管理</title>
   <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
   <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; color: #333; }
 .app-container { max-width: 1400px; margin: 0 auto; }
-.card { background: #fff; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
-.card-title { font-size: 15px; font-weight: 600; color: #262626; margin-bottom: 16px; }
+.card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
 .btn { padding: 8px 20px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; transition: all 0.3s; }
 .btn-primary { background: #1890ff; color: #fff; }
 .btn-primary:hover { background: #40a9ff; }
+.btn-success { background: #52c41a; color: #fff; }
+.btn-success:hover { background: #73d13d; }
+.btn-warning { background: #faad14; color: #fff; }
 .btn-secondary { background: #f0f0f0; color: #666; }
 .btn-secondary:hover { background: #d9d9d9; }
 .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
 .badge-grade1 { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
 .badge-grade2 { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
 .badge-grade3 { background: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+.table th { background: #fafafa; font-weight: 600; color: #666; font-size: 13px; }
+.table tr:hover { background: #f6f8fa; }
+.form-item { margin-bottom: 16px; }
+.form-item label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; }
+.form-item input, .form-item select, .form-item textarea { width: 100%; padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 6px; font-size: 14px; outline: none; }
+.form-item input:focus, .form-item select:focus, .form-item textarea:focus { border-color: #1890ff; }
+.nav-bar { background: #001529; color: #fff; padding: 0 24px; display: flex; align-items: center; height: 64px; }
+.nav-bar-title { font-size: 18px; font-weight: 600; margin-right: 40px; }
+.nav-bar a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 12px 20px; font-size: 14px; cursor: pointer; }
+.nav-bar a:hover, .nav-bar a.active { color: #fff; background: #1890ff; border-radius: 4px; }
+.sub-nav-bar { background: #fff; border-bottom: 1px solid #f0f0f0; padding: 0 24px; display: flex; align-items: center; height: 48px; gap: 4px; }
+.sub-nav-bar a { color: #595959; text-decoration: none; padding: 8px 16px; font-size: 13px; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+.sub-nav-bar a:hover { color: #1890ff; background: #e6f7ff; }
+.sub-nav-bar a.active { color: #1890ff; background: #e6f7ff; font-weight: 600; }
 .page-title { font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #1a1a2e; }
-.back-btn { background: none; border: 1px solid #d9d9d9; color: #666; padding: 6px 16px; border-radius: 4px; cursor: pointer; margin-bottom: 16px; font-size: 14px; }
-.back-btn:hover { background: #f5f5f5; }
+.filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-bar input, .filter-bar select { padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 6px; }
 .score-high { color: #52c41a; font-weight: 600; }
 .score-mid { color: #faad14; font-weight: 600; }
 .score-low { color: #ff4d4f; font-weight: 600; }
-.loading { text-align: center; padding: 40px; color: #8c8c8c; }
-
-/* 统计卡片 */
-.kpi-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.kpi-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; }
-.kpi-left { flex: 1; }
-.kpi-label { font-size: 13px; color: #8c8c8c; margin-bottom: 8px; }
-.kpi-value { font-size: 28px; font-weight: 700; color: #262626; line-height: 1; }
-.kpi-sub { font-size: 12px; color: #52c41a; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
-.kpi-sub.red { color: #ff4d4f; }
-.kpi-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.kpi-icon.blue { background: #e6f4ff; }
-.kpi-icon.orange { background: #fff7e6; }
-.kpi-icon.red { background: #fff1f0; }
-
-/* 图表区域 */
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.chart-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
-.chart-title { font-size: 15px; font-weight: 600; color: #262626; margin-bottom: 16px; }
-.donut-chart { display: flex; align-items: center; justify-content: center; gap: 32px; }
-.donut-svg { width: 180px; height: 180px; }
-.donut-labels { display: flex; flex-direction: column; gap: 10px; }
-.donut-label { font-size: 13px; color: #595959; display: flex; align-items: center; gap: 8px; }
-.donut-label strong { color: #262626; font-weight: 600; }
-
-/* 客户列表 */
-.customer-list-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
-.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.list-title { font-size: 15px; font-weight: 600; color: #262626; }
-.list-filters { display: flex; gap: 8px; }
-.list-filters select { padding: 6px 10px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 13px; color: #595959; background: #fff; }
-.customer-list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; }
-.customer-list-item:hover { background: #fafafa; }
-.customer-list-item:last-child { border-bottom: none; }
-.customer-info { display: flex; flex-direction: column; gap: 4px; }
-.customer-name { font-size: 14px; font-weight: 500; color: #1677ff; }
-.customer-meta { font-size: 12px; color: #8c8c8c; }
-.customer-right { text-align: right; }
-.customer-visit { font-size: 12px; color: #8c8c8c; }
-
-/* 详情页横幅 */
-.portrait-banner { background: linear-gradient(135deg, #1677ff 0%, #0958d9 100%); border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; color: #fff; position: relative; overflow: hidden; }
-.portrait-banner-row1 { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.portrait-banner-left { display: flex; align-items: flex-start; gap: 24px; }
-.portrait-banner-company { display: flex; flex-direction: column; gap: 4px; }
-.portrait-banner-name { font-size: 22px; font-weight: 700; color: #fff; }
-.portrait-banner-credit { font-size: 12px; color: rgba(255,255,255,0.75); }
-.portrait-banner-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.portrait-banner-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.15); font-size: 12px; color: #fff; }
-.portrait-banner-right { background: rgba(0,0,0,0.25); border-radius: 8px; padding: 12px 16px; min-width: 180px; }
-.portrait-banner-priority { font-size: 12px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 6px; }
-.p-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff4d4f; }
-
-/* 分值卡片 */
-.score-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
-.score-card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-.score-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.score-card-icon { font-size: 18px; margin-bottom: 8px; }
-.score-card-label { font-size: 13px; color: #8c8c8c; margin-bottom: 8px; }
-.score-card-value { font-size: 28px; font-weight: 700; color: #262626; line-height: 1; margin-bottom: 8px; }
-.score-card-value .unit { font-size: 14px; font-weight: 400; margin-left: 4px; }
-.score-card-status { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-.score-card-status .dot { width: 6px; height: 6px; border-radius: 50%; }
-
-/* 主体布局 */
-.portrait-body { display: grid; grid-template-columns: 76% 24%; gap: 16px; align-items: start; }
-.portrait-left { display: grid; gap: 16px; }
-.portrait-row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
-.portrait-row3 > .card { height: 100%; }
-.portrait-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: stretch; }
-.portrait-row2 > .card { height: 100%; }
-.portrait-side { display: flex; flex-direction: column; height: 100%; }
-
-/* 洞察卡片 */
-.insight-list { display: flex; flex-direction: column; gap: 10px; }
-.insight-bar { border-radius: 8px; padding: 12px 14px; border-left: 4px solid; }
-.insight-bar.green { background: #f6ffed; border-color: #52c41a; }
-.insight-bar.blue { background: #e6f4ff; border-color: #1677ff; }
-.insight-bar.orange { background: #fff7e6; border-color: #faad14; }
-.insight-bar.red { background: #fff1f0; border-color: #ff4d4f; }
-.insight-bar-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 4px; }
-.insight-bar-text { font-size: 12px; color: #595959; line-height: 1.6; }
-
-/* ===== 问答式详情区块 ===== */
-.qa-section { margin-bottom: 16px; }
-.qa-card { background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02); }
-.qa-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
-.qa-num { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #1677ff, #0958d9); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.qa-question { font-size: 16px; font-weight: 700; color: #1a1a2e; }
-.qa-verdict { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; }
-.qa-verdict.good { background: #f6ffed; color: #52c41a; }
-.qa-verdict.mid { background: #fff7e6; color: #fa8c16; }
-.qa-verdict.bad { background: #fff1f0; color: #ff4d4f; }
-.qa-verdict.info { background: #e6f4ff; color: #1677ff; }
-.qa-summary { font-size: 13px; color: #595959; line-height: 1.8; padding: 12px 14px; background: #fafbfc; border-radius: 6px; border-left: 3px solid #1677ff; margin-bottom: 16px; }
-.qa-summary b { color: #262626; }
-.qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-.qa-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
-.qa-metric { background: #fafbfc; border-radius: 8px; padding: 14px 16px; border: 1px solid #f0f0f0; }
-.qa-metric-label { font-size: 12px; color: #8c8c8c; margin-bottom: 6px; }
-.qa-metric-value { font-size: 20px; font-weight: 700; color: #262626; line-height: 1.2; }
-.qa-metric-value .unit { font-size: 12px; font-weight: 400; color: #8c8c8c; margin-left: 2px; }
-.qa-metric-sub { font-size: 11px; margin-top: 4px; }
-.qa-metric-sub.up { color: #52c41a; }
-.qa-metric-sub.down { color: #ff4d4f; }
-.qa-metric-sub.flat { color: #8c8c8c; }
-.qa-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #f0f0f0; font-size: 13px; }
-.qa-row:last-child { border-bottom: none; }
-.qa-row .label { color: #8c8c8c; }
-.qa-row .value { color: #262626; font-weight: 500; }
-.qa-actions { margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f0; }
-.qa-actions-title { font-size: 12px; font-weight: 600; color: #8c8c8c; margin-bottom: 8px; }
-.qa-action-item { display: flex; gap: 8px; font-size: 13px; color: #262626; line-height: 1.7; margin-bottom: 6px; }
-.qa-action-item .icon { flex-shrink: 0; }
-.qa-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.qa-sub-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 10px; }
-.qa-energy-bar { display: flex; height: 32px; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
-.qa-energy-seg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 600; min-width: 0; }
-.qa-energy-legend { display: flex; flex-wrap: wrap; gap: 14px; }
-.qa-energy-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #595959; }
-.qa-energy-item .swatch { width: 10px; height: 10px; border-radius: 2px; }
-.qa-energy-item b { color: #262626; }
-.qa-risk-banner { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 13px; }
-.qa-risk-banner.low { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
-.qa-risk-banner.mid { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
-.qa-risk-banner.high { background: #fff1f0; color: #ff4d4f; border: 1px solid #ffa39e; }
-.qa-factor { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; border-bottom: 1px dashed #f0f0f0; }
-.qa-factor:last-child { border-bottom: none; }
-.qa-factor-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.qa-factor-text { color: #262626; flex: 1; }
-.qa-factor-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
-
-/* 时间维度切换 */
-.period-tabs { display: inline-flex; gap: 4px; background: #f0f2f5; border-radius: 6px; padding: 3px; margin-bottom: 14px; }
-.period-tab { padding: 5px 16px; font-size: 12px; color: #595959; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
-.period-tab:hover { color: #1677ff; }
-.period-tab.active { background: #fff; color: #1677ff; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-
-/* 业务人员解决情况 */
-.resolve-summary { display: flex; align-items: center; gap: 18px; margin-bottom: 12px; }
-.resolve-counts { display: flex; flex-direction: column; gap: 6px; }
-.resolve-count-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #595959; }
-.resolve-count-row b { color: #262626; font-size: 15px; }
-.rc-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.resolve-list { display: flex; flex-direction: column; gap: 8px; max-height: 210px; overflow-y: auto; }
-.resolve-item { display: flex; gap: 10px; padding: 10px 12px; background: #fafbfc; border: 1px solid #f0f0f0; border-radius: 8px; align-items: flex-start; }
-.resolve-tag { flex-shrink: 0; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-top: 1px; }
-.resolve-body { flex: 1; min-width: 0; }
-.resolve-title { font-size: 13px; font-weight: 600; color: #262626; display: flex; justify-content: space-between; gap: 8px; }
-.resolve-date { font-size: 11px; font-weight: 400; color: #8c8c8c; flex-shrink: 0; }
-.resolve-desc { font-size: 12px; color: #595959; line-height: 1.6; margin-top: 2px; }
-
-/* Q3/Q4/Q5 三合一紧凑行 */
-.qa-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
-.qa-card.qa-compact { padding: 16px 18px; display: flex; flex-direction: column; }
-.qa-card.qa-compact .qa-header { margin-bottom: 10px; }
-.qa-card.qa-compact .qa-question { font-size: 14px; }
-.qa-card.qa-compact .qa-num { width: 24px; height: 24px; font-size: 13px; border-radius: 6px; }
-.qa-card.qa-compact .qa-verdict { display: inline-flex; align-self: flex-start; }
-.qc-metric { background: #fafbfc; border-radius: 8px; padding: 10px 14px; border: 1px solid #f0f0f0; margin-bottom: 10px; }
-.qc-label { font-size: 11px; color: #8c8c8c; margin-bottom: 3px; }
-.qc-value { font-size: 17px; font-weight: 700; color: #262626; line-height: 1.2; }
-.qc-value .unit { font-size: 11px; font-weight: 400; color: #8c8c8c; margin-left: 2px; }
-.qc-sub { font-size: 11px; margin-top: 2px; }
-.qc-sub.up { color: #52c41a; }
-.qa-risk-banner.compact { padding: 9px 12px; margin-bottom: 10px; }
-.qa-row.compact { padding: 6px 0; font-size: 12px; }
-.qc-energy-text { font-size: 12px; color: #595959; line-height: 1.7; padding: 9px 12px; background: #fafbfc; border-radius: 6px; border-left: 3px solid #1677ff; }
-.qc-energy-text b { color: #262626; }
-
-/* 拜访详情 */
-.visit-block { padding: 12px; border-radius: 8px; margin-bottom: 12px; }
-.visit-block.last { background: #e6f4ff; border-left: 3px solid #1677ff; }
-.visit-block.next { background: #f6ffed; border-left: 3px solid #52c41a; }
-.visit-block-label { font-size: 12px; color: #8c8c8c; margin-bottom: 6px; }
-.visit-block-date { font-size: 16px; font-weight: 700; color: #262626; margin-bottom: 4px; }
-.visit-block-desc { font-size: 12px; color: #595959; line-height: 1.5; }
-
-/* 词云 */
-.word-cloud { position: relative; height: 220px; width: 100%; }
-.word-cloud-item { position: absolute; white-space: nowrap; padding: 4px 10px; border-radius: 12px; color: #fff; font-weight: 500; transform: translate(-50%, -50%); transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.12); cursor: default; }
-.word-cloud-item:hover { transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.18); z-index: 100; }
-
-/* 排名指标 */
-.ranking-item { margin-bottom: 16px; }
-.ranking-item:last-child { margin-bottom: 0; }
-.ranking-header { display: flex; justify-content: space-between; font-size: 13px; color: #595959; margin-bottom: 6px; }
-.ranking-bar { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
-.ranking-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
-.ranking-note { font-size: 11px; color: #8c8c8c; margin-top: 4px; }
-
-/* 时间线 */
-.timeline-side { position: relative; padding-left: 24px; }
-.timeline-side::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: #e6f4ff; }
-.timeline-side-item { position: relative; padding: 12px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: background 0.2s; }
-.timeline-side-item:hover { background: #f6f8fa; }
-.timeline-side-item.active { background: #e6f4ff; }
-.timeline-side-item.inactive { opacity: 0.6; }
-.timeline-side-dot { position: absolute; left: -20px; top: 16px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; }
-.timeline-side-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 4px; }
-.timeline-side-meta { font-size: 12px; color: #8c8c8c; margin-bottom: 4px; }
-.timeline-side-link { font-size: 12px; color: #1677ff; text-decoration: underline; }
-
-/* 弹窗 */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; }
-.modal-content { background: #fff; border-radius: 12px; width: 480px; max-width: 90vw; max-height: 80vh; z-index: 1001; box-shadow: 0 8px 32px rgba(0,0,0,0.2); display: flex; flex-direction: column; overflow: hidden; }
-.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
-.modal-title { font-size: 16px; font-weight: 600; color: #262626; display: flex; align-items: center; gap: 8px; }
-.modal-close { background: none; border: none; font-size: 22px; color: #8c8c8c; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.modal-close:hover { background: #f0f0f0; color: #262626; }
-.modal-body { flex: 1; overflow-y: auto; padding: 20px; }
-.modal-tip { font-size: 12px; color: #8c8c8c; background: #f5f5f5; padding: 12px; border-radius: 6px; margin-bottom: 16px; }
-.modal-questions { display: flex; flex-direction: column; gap: 12px; }
-.modal-question { display: flex; gap: 12px; padding: 12px; background: #f9f9f9; border-radius: 8px; }
-.modal-qnum { width: 24px; height: 24px; background: #1890ff; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
-.modal-qtext { font-size: 13px; color: #262626; line-height: 1.6; }
-.modal-footer { font-size: 12px; color: #8c8c8c; padding: 12px; background: #fff7e6; border-radius: 6px; margin-top: 16px; }
-
-/* 维度指标详情 */
-.dim-indicator-list { display: flex; flex-direction: column; gap: 12px; }
-.dim-indicator-item { border: 1px solid #f0f0f0; border-radius: 8px; padding: 12px 14px; }
-.dim-indicator-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
-.dim-indicator-name { font-size: 13px; font-weight: 600; color: #262626; display: flex; align-items: center; gap: 6px; }
-.dim-indicator-mode { font-size: 11px; color: #8c8c8c; background: #f5f5f5; border-radius: 4px; padding: 1px 6px; }
-.dim-indicator-mode.auto { color: #1677ff; background: #e6f4ff; }
-.dim-indicator-value { font-size: 12px; font-weight: 600; color: #fff; border-radius: 10px; padding: 3px 10px; white-space: nowrap; }
-.dim-indicator-num { font-size: 12px; color: #595959; margin-top: 4px; }
-.dim-indicator-num b { color: #262626; }
-.dim-indicator-desc { font-size: 12px; color: #8c8c8c; line-height: 1.6; margin-top: 4px; }
-.category-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; color: #fff; }
-
-/* 搜索栏 */
-.search-bar { margin-bottom: 20px; }
-.search-bar input { padding: 8px 12px; border: 1px solid #d9d9d9; border-radius: 6px; width: 300px; font-size: 14px; }
-.search-bar button { margin-left: 8px; }
-
-/* 趋势图 */
-.portrait-trend-chart-label { font-size: 12px; color: #1677ff; font-weight: 600; margin-bottom: 8px; }
-.portrait-trend-tooltip { position: fixed; background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; min-width: 160px; }
-.tooltip-title { font-size: 13px; font-weight: 600; color: #262626; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #f0f0f0; }
-.tooltip-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
-.tooltip-label { color: #8c8c8c; }
-.tooltip-value { color: #262626; font-weight: 500; }
-
-/* 销售价格图例 */
-.chart-legend { display: flex; justify-content: center; gap: 24px; margin-top: 8px; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #595959; }
-.legend-dot { width: 12px; height: 3px; border-radius: 2px; }
-
-/* 生命周期详情抽屉 */
-.drawer-overlay { position: fixed; inset: 0; background: rgba(240, 244, 248, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); z-index: 1000; }
-.drawer { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 560px; max-width: calc(100vw - 48px); max-height: calc(100vh - 96px); background: #fff; border-radius: 12px; box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06); display: flex; flex-direction: column; z-index: 1001; overflow: hidden; animation: drawer-pop 0.22s cubic-bezier(0.34, 1.4, 0.64, 1); }
-@keyframes drawer-pop { from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-.drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #f0f0f0; background: #fafbfc; }
-.drawer-title { font-size: 15px; font-weight: 600; color: #262626; }
-.drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
-.drawer-section { margin-bottom: 18px; }
-.drawer-section-title { font-size: 13px; font-weight: 600; color: #1677ff; margin-bottom: 10px; padding-left: 8px; border-left: 3px solid #1677ff; }
-.drawer-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed #f0f0f0; font-size: 13px; }
-.drawer-row:last-child { border-bottom: none; }
-.drawer-row .label { color: #8c8c8c; flex-shrink: 0; margin-right: 16px; }
-.drawer-row .value { color: #262626; font-weight: 500; text-align: right; word-break: break-all; }
-.drawer-close { background: none; border: none; font-size: 24px; color: #8c8c8c; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-.drawer-close:hover { background: #f0f0f0; color: #262626; }
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: #fff; border-radius: 12px; padding: 24px; max-width: 560px; width: 90%; }
+.modal-content h3 { margin-bottom: 16px; font-size: 18px; }
+a { color: #1890ff; text-decoration: none; cursor: pointer; }
+a:hover { text-decoration: underline; }
+.dimension-section { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #f0f0f0; }
+.dimension-section:last-of-type { border-bottom: none; }
+.dimension-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.dimension-title { font-size: 16px; font-weight: 600; color: #1a1a2e; width: 100px; }
+.dimension-weight { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.dim-value { background: #e6f7ff; color: #1890ff; }
+.dim-quality { background: #f6ffed; color: #52c41a; }
+.dim-potential { background: #fff7e6; color: #fa8c16; }
+.config-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.config-table thead tr { background: #fafafa; }
+.config-table th { padding: 10px 12px; text-align: left; font-weight: 500; color: #666; border-bottom: 1px solid #f0f0f0; }
+.config-table td { padding: 14px 12px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
+.ind-name { font-weight: 500; font-size: 14px; }
+.ind-desc { color: #999; font-size: 13px; }
+.slider-with-input { display: flex; align-items: center; gap: 10px; }
+.config-slider { flex: 1; height: 6px; border-radius: 3px; background: #f0f0f0; -webkit-appearance: none; cursor: pointer; }
+.config-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #1890ff; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.weight-input { width: 56px; padding: 4px 6px; border: 1px solid #d9d9d9; border-radius: 4px; text-align: center; font-size: 14px; font-weight: 600; }
+.weight-input:focus { border-color: #1890ff; outline: none; }
+.weight-unit { font-size: 13px; color: #666; }
+.weight-pct { font-weight: 600; font-size: 15px; color: #1890ff; }
+.weight-pct.over-limit { color: #ff4d4f; }
+.range-hint { font-size: 11px; color: #999; margin-top: 4px; }
+.total-row { background: #fafafa; }
+.total-row td { padding: 12px; }
+.total-bar { display: inline-block; width: 200px; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 12px; }
+.total-progress { height: 100%; border-radius: 4px; transition: all 0.3s; }
+.total-ok { color: #52c41a; font-weight: 600; }
+.total-error { color: #ff4d4f; font-weight: 600; }
+.global-actions { margin-top: 24px; padding-top: 24px; border-top: 2px solid #f0f0f0; }
+.global-status { margin-bottom: 16px; }
+.status-ok { color: #52c41a; font-size: 14px; }
+.status-error { color: #ff4d4f; font-size: 14px; }
+.action-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.loading { padding: 40px; text-align: center; color: #999; }
+[v-cloak] { display: none !important; }
 </style>
+
 </head>
 <body>
-<div id="app">
-  <div class="app-container" style="padding: 20px;">
-    
-    <!-- ========== 主页 ========== -->
-    <div v-if="!showDetail">
-      <div class="page-title">📊 客户画像</div>
-      
-      <!-- 搜索栏 -->
-      <div class="search-bar">
-        <input v-model="searchKeyword" placeholder="搜索客户名称..." @keyup.enter="doSearch" />
-        <button class="btn btn-primary" @click="doSearch">搜索</button>
-        <button class="btn btn-secondary" @click="searchKeyword=''; searchResults=[]; searched=false;">重置</button>
-      </div>
-      
-      <!-- 统计卡片 -->
-      <div class="kpi-cards">
-        <div class="kpi-card">
-          <div class="kpi-left">
-            <div class="kpi-label">大客户总数</div>
-            <div class="kpi-value">{{ portraitStats.totalCustomers || 0 }}</div>
-            <div class="kpi-sub"><span>↑</span> 8.2% 较上年</div>
-          </div>
-          <div class="kpi-icon blue">👥</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-left">
-            <div class="kpi-label">涉及行业</div>
-            <div class="kpi-value">{{ portraitStats.industryCount || 0 }}</div>
-            <div class="kpi-sub">无变化</div>
-          </div>
-          <div class="kpi-icon orange">🏭</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-left">
-            <div class="kpi-label">平均用气量</div>
-            <div class="kpi-value">{{ portraitStats.avgGasUsage || 0 }}<span style="font-size:16px;font-weight:400;color:#8c8c8c;"> 万方</span></div>
-            <div class="kpi-sub"><span>↑</span> 12.3% 较去年</div>
-          </div>
-          <div class="kpi-icon red">🔥</div>
-        </div>
-      </div>
-
-      <!-- 图表区域 -->
-      <div class="charts-row">
-        <div class="chart-card">
-          <div class="chart-title">各行业大客户分布</div>
-          <div class="donut-chart">
-            <svg class="donut-svg" viewBox="0 0 180 180">
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#f0f0f0" stroke-width="24"/>
-              <g v-if="industryDistribution.length > 0">
-                <circle v-for="(item, idx) in industryDistribution" :key="idx" cx="90" cy="90" r="70" fill="none" :stroke="item.color" :stroke-width="24" :stroke-dasharray="item.dashArray" :stroke-dashoffset="item.dashOffset" transform="rotate(-90 90 90)" />
-              </g>
-              <text x="90" y="85" text-anchor="middle" font-size="24" font-weight="700" fill="#262626">{{ portraitStats.totalCustomers || 0 }}</text>
-              <text x="90" y="105" text-anchor="middle" font-size="12" fill="#8c8c8c">户</text>
-            </svg>
-            <div class="donut-labels">
-              <div v-for="(item, idx) in industryDistribution" :key="idx" class="donut-label">
-                <span :style="{display:'inline-block',width:'10px',height:'10px',borderRadius:'2px',background:item.color}"></span>
-                <span>{{ item.name }}: <strong>{{ item.count }}个</strong> ({{ item.percent }}%)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">客户级别分布</div>
-          <div class="donut-chart">
-            <svg class="donut-svg" viewBox="0 0 180 180">
-              <circle cx="90" cy="90" r="70" fill="none" stroke="#f0f0f0" stroke-width="24"/>
-              <g v-if="gradeDistribution.length > 0">
-                <circle v-for="(item, idx) in gradeDistribution" :key="idx" cx="90" cy="90" r="70" fill="none" :stroke="item.color" :stroke-width="24" :stroke-dasharray="item.dashArray" :stroke-dashoffset="item.dashOffset" transform="rotate(-90 90 90)" />
-              </g>
-              <text x="90" y="85" text-anchor="middle" font-size="24" font-weight="700" fill="#262626">{{ portraitStats.totalCustomers || 0 }}</text>
-              <text x="90" y="105" text-anchor="middle" font-size="12" fill="#8c8c8c">户</text>
-            </svg>
-            <div class="donut-labels">
-              <div v-for="(item, idx) in gradeDistribution" :key="idx" class="donut-label">
-                <span :style="{display:'inline-block',width:'10px',height:'10px',borderRadius:'2px',background:item.color}"></span>
-                <span>{{ item.name }}: <strong>{{ item.count }}个</strong> ({{ item.percent }}%)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 搜索结果 -->
-      <div v-if="searched" class="customer-list-card" style="margin-bottom: 20px;">
-        <div class="list-header">
-          <div class="list-title">搜索结果：{{ searchResults.length }} 条</div>
-        </div>
-        <div v-if="searchResults.length === 0" class="loading">未找到匹配的客户</div>
-        <div v-else>
-          <div v-for="row in searchResults" :key="row.customer_id" class="customer-list-item" @click="openDetail(row)">
-            <div class="customer-info">
-              <div class="customer-name">{{ row.customer_name }}</div>
-              <div class="customer-meta">{{ row.main_industry }} | 级别：<span :class="gradeClass(row.final_grade)">{{ row.final_grade || '未分级' }}</span> | 年消费额：{{ ((row.annual_gas_usage || 0) * (row.price_spread || 0)).toFixed(0) }}万</div>
-            </div>
-            <div class="customer-right">
-              <span :class="'badge badge-grade' + gradeNum(row.final_grade)" style="margin-top:4px;">{{ row.final_grade || '未分级' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 客户列表 -->
-      <div class="customer-list-card">
-        <div class="list-header">
-          <div class="list-title">济南项目公司大客户名单</div>
-          <div class="list-filters">
-            <select v-model="filters.industry" @change="filterList"><option value="all">全部行业</option><option v-for="ind in allIndustries" :key="ind" :value="ind">{{ ind }}</option></select>
-            <select v-model="filters.grade" @change="filterList"><option value="all">全部级别</option><option value="一级">一级客户</option><option value="二级">二级客户</option><option value="三级">三级客户</option></select>
-            <button class="btn btn-secondary" @click="resetFilters">重置</button>
-          </div>
-        </div>
-        <div v-if="loading" class="loading">加载中...</div>
-        <div v-else>
-          <div v-for="row in filteredCustomers" :key="row.customer_id" class="customer-list-item" @click="openDetail(row)">
-            <div class="customer-info">
-              <div class="customer-name">{{ row.customer_name }}</div>
-              <div class="customer-meta">{{ row.main_industry }} | 级别：<span :class="gradeClass(row.final_grade)">{{ row.final_grade || '未分级' }}</span> | 年消费额：{{ ((row.annual_gas_usage || 0) * (row.price_spread || 0)).toFixed(0) }}万</div>
-            </div>
-            <div class="customer-right">
-              <div class="customer-visit">最近访问：2025-07-12</div>
-              <span :class="'badge badge-grade' + gradeNum(row.final_grade)" style="margin-top:4px;">{{ row.final_grade || '未分级' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+<div id="app" v-cloak>
+  <div class="app-container">
+    <div class="nav-bar">
+      <div class="nav-bar-title">🎯 客户分级管理</div>
+      <a :class="{active: topNav==='grading'}" @click="topNav='grading';subNav='config'">客户分级管理</a>
     </div>
 
-    <!-- ========== 详情页 ========== -->
-    <div v-else>
-      <button class="back-btn" @click="goBack">← 返回客户列表</button>
-
-      <!-- 顶部客户信息横幅 -->
-      <div class="portrait-banner">
-        <div class="portrait-banner-row1">
-          <div class="portrait-banner-left">
-            <div class="portrait-banner-company">
-              <div class="portrait-banner-name">{{ detailCustomer.customer_name }}</div>
-              <div class="portrait-banner-credit">统一社会信用代码：{{ detailCustomer.credit_code || '91330100MA27L0XXXX' }}</div>
-            </div>
-            <div class="portrait-banner-badges">
-              <span class="portrait-banner-badge"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;"></span>{{ detailCustomer.final_grade || '未分级' }}客户</span>
-              <span class="portrait-banner-badge">{{ detailCustomer.main_industry }} | {{ detailCustomer.enterprise_scale || '大型企业' }}</span>
-              <span class="portrait-banner-badge">联系人：{{ detailCustomer.contact || '张经理' }}</span>
-              <span class="portrait-banner-badge">联系电话：{{ detailCustomer.phone || '138xxxx1234' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 主体区：左区 + 右侧生命周期 -->
-      <div class="portrait-body">
-        <div class="portrait-left">
-
-          <!-- Q1 这个客户能不能挣钱？ -->
-          <div class="qa-section">
-            <div class="qa-card">
-              <div class="qa-header">
-                <span class="qa-num">1</span>
-                <span class="qa-question">这个客户能不能挣钱？</span>
-                <span class="qa-verdict" :class="profitInfo.cls">{{ profitInfo.verdict }}</span>
-              </div>
-              <div class="qa-grid">
-                <div class="qa-metric">
-                  <div class="qa-metric-label">年毛利贡献</div>
-                  <div class="qa-metric-value">{{ profitInfo.annualProfit }}<span class="unit">万元</span></div>
-                  <div class="qa-metric-sub up">↑ {{ profitInfo.profitYoy }} 同比</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">单方价差</div>
-                  <div class="qa-metric-value">{{ (detailCustomer.price_spread || 0).toFixed(2) }}<span class="unit">元/m³</span></div>
-                  <div class="qa-metric-sub" :class="profitInfo.spreadSubCls">{{ profitInfo.spreadSub }}</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">收入贡献率</div>
-                  <div class="qa-metric-value">{{ profitInfo.revenueRate }}<span class="unit">%</span></div>
-                  <div class="qa-metric-sub flat">占公司总收入比重</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">利润排名</div>
-                  <div class="qa-metric-value">前{{ profitInfo.profitRank }}<span class="unit">%</span></div>
-                  <div class="qa-metric-sub flat">同类客户中</div>
-                </div>
-              </div>
-              <div class="qa-summary" v-html="profitInfo.summary"></div>
-              <div class="qa-split">
-                <!-- 左：价差贡献趋势（独立月/年切换） -->
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <div class="qa-sub-title" style="margin-bottom:0;">📈 毛利贡献（万元）</div>
-                    <div class="period-tabs" style="margin-bottom:0;">
-                      <span class="period-tab" :class="{active: spreadPeriod === 'month'}" @click="spreadPeriod = 'month'">月</span>
-                      <span class="period-tab" :class="{active: spreadPeriod === 'year'}" @click="spreadPeriod = 'year'">年</span>
-                    </div>
-                  </div>
-                  <svg width="100%" height="150" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
-                    <defs><linearGradient id="spreadArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fa8c16" stop-opacity="0.25"/><stop offset="100%" stop-color="#fa8c16" stop-opacity="0.03"/></linearGradient></defs>
-                    <line x1="40" y1="95" x2="380" y2="95" stroke="#f0f0f0" stroke-width="1"/>
-                    <line x1="40" y1="55" x2="380" y2="55" stroke="#f0f0f0" stroke-width="1"/>
-                    <line x1="40" y1="15" x2="380" y2="15" stroke="#f0f0f0" stroke-width="1"/>
-                    <text x="35" y="99" text-anchor="end" fill="#999" font-size="9">0</text>
-                    <text x="35" y="59" text-anchor="end" fill="#999" font-size="9">{{ Math.round(spreadMaxVal / 2) }}</text>
-                    <text x="35" y="19" text-anchor="end" fill="#999" font-size="9">{{ Math.round(spreadMaxVal) }}</text>
-                    <polygon :points="'60,95 ' + spreadSeries.map((d,i)=>(60+i*spreadStep)+','+spreadY(d.value)).join(' ') + ' ' + (60+(spreadSeries.length-1)*spreadStep) + ',95'" fill="url(#spreadArea)"/>
-                    <polyline :points="spreadSeries.map((d,i)=>(60+i*spreadStep)+','+spreadY(d.value)).join(' ')" fill="none" stroke="#fa8c16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle v-for="(d, i) in spreadSeries" :key="'spread-'+i" :cx="60 + i * spreadStep" :cy="spreadY(d.value)" r="4" fill="#fa8c16" stroke="#fff" stroke-width="2" style="cursor:pointer;" @mouseenter="showPriceTooltip($event, 'spread', i)" @mouseleave="hidePriceTooltip"/>
-                    <text v-for="(d, i) in spreadSeries" :key="'spread-t'+i" :x="60 + i * spreadStep" y="112" text-anchor="middle" fill="#8c8c8c" font-size="9">{{ d.label }}</text>
-                  </svg>
-                </div>
-                <!-- 右：销售均价 vs 购气成本（独立月/年切换） -->
-                <div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <div class="qa-sub-title" style="margin-bottom:0;">💰 销售均价 vs 购气成本（元/m³）</div>
-                    <div class="period-tabs" style="margin-bottom:0;">
-                      <span class="period-tab" :class="{active: pricePeriod === 'month'}" @click="pricePeriod = 'month'">月</span>
-                      <span class="period-tab" :class="{active: pricePeriod === 'year'}" @click="pricePeriod = 'year'">年</span>
-                    </div>
-                  </div>
-                  <svg width="100%" height="150" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
-                    <line x1="40" y1="95" x2="380" y2="95" stroke="#f0f0f0" stroke-width="1"/>
-                    <line x1="40" y1="65" x2="380" y2="65" stroke="#f0f0f0" stroke-width="1"/>
-                    <line x1="40" y1="35" x2="380" y2="35" stroke="#f0f0f0" stroke-width="1"/>
-                    <text x="35" y="99" text-anchor="end" fill="#999" font-size="9">0</text>
-                    <text x="35" y="69" text-anchor="end" fill="#999" font-size="9">2</text>
-                    <text x="35" y="39" text-anchor="end" fill="#999" font-size="9">4</text>
-                    <polyline :points="priceSeries.map((d,i)=>(60+i*priceStep)+','+(95-d.sale*15)).join(' ')" fill="none" stroke="#1677ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline :points="priceSeries.map((d,i)=>(60+i*priceStep)+','+(95-d.cost*15)).join(' ')" fill="none" stroke="#52c41a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5,3"/>
-                    <circle v-for="(d, i) in priceSeries" :key="'sale-'+i" :cx="60 + i * priceStep" :cy="95 - d.sale * 15" r="3.5" fill="#1677ff" stroke="#fff" stroke-width="1.5"/>
-                    <circle v-for="(d, i) in priceSeries" :key="'cost-'+i" :cx="60 + i * priceStep" :cy="95 - d.cost * 15" r="3" fill="#52c41a" stroke="#fff" stroke-width="1.5"/>
-                    <!-- 悬浮热区 -->
-                    <circle v-for="(d, i) in priceSeries" :key="'hot-'+i" :cx="60 + i * priceStep" cy="60" r="16" fill="transparent" style="cursor:pointer;" @mouseenter="showPriceTooltip($event, 'price', i)" @mouseleave="hidePriceTooltip"/>
-                    <text v-for="(d, i) in priceSeries" :key="'price-t'+i" :x="60 + i * priceStep" y="112" text-anchor="middle" fill="#8c8c8c" font-size="9">{{ d.label }}</text>
-                  </svg>
-                  <div class="chart-legend">
-                    <span class="legend-item"><span class="legend-dot" style="background:#1677ff;"></span>销售均价</span>
-                    <span class="legend-item"><span class="legend-dot" style="background:#52c41a;"></span>购气成本</span>
-                  </div>
-                </div>
-              </div>
-              <!-- 悬浮 tooltip：当期值 / 同比 / 环比 -->
-              <div v-if="priceTooltip.show" class="portrait-trend-tooltip" :style="{left: priceTooltip.x + 'px', top: priceTooltip.y + 'px'}">
-                <div class="tooltip-title">{{ priceTooltip.title }}</div>
-                <div v-for="(row, i) in priceTooltip.rows" :key="i" class="tooltip-row">
-                  <span class="tooltip-label">{{ row.label }}</span>
-                  <span class="tooltip-value" :style="row.color ? {color: row.color} : {}">{{ row.value }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Q2 客户状态如何？ -->
-          <div class="qa-section">
-            <div class="qa-card">
-              <div class="qa-header">
-                <span class="qa-num">2</span>
-                <span class="qa-question">客户状态如何？</span>
-                <span class="qa-verdict" :class="statusInfo.cls">{{ statusInfo.verdict }}</span>
-              </div>
-              <div class="qa-grid">
-                <div class="qa-metric">
-                  <div class="qa-metric-label">合作年限</div>
-                  <div class="qa-metric-value">{{ detailCustomer.cooperation_years || 0 }}<span class="unit">年</span></div>
-                  <div class="qa-metric-sub flat">当前阶段：{{ statusInfo.stage }}</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">月均用气量</div>
-                  <div class="qa-metric-value">{{ ((detailCustomer.annual_gas_usage || 0) / 12).toFixed(0) }}<span class="unit">万m³</span></div>
-                  <div class="qa-metric-sub" :class="statusInfo.usageSubCls">{{ statusInfo.usageSub }}</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">用气波动系数 CV</div>
-                  <div class="qa-metric-value">{{ statusInfo.cv }}</div>
-                  <div class="qa-metric-sub flat">{{ statusInfo.cvLabel }}</div>
-                </div>
-                <div class="qa-metric">
-                  <div class="qa-metric-label">距上次拜访</div>
-                  <div class="qa-metric-value">{{ statusInfo.lastVisitDays }}<span class="unit">天</span></div>
-                  <div class="qa-metric-sub" :class="statusInfo.visitSubCls">{{ statusInfo.visitSub }}</div>
-                </div>
-              </div>
-              <div class="qa-summary" v-html="statusInfo.summary"></div>
-              <!-- 用气量趋势：上年柱 + 本期柱 + 趋势线，月/年切换 -->
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                <div class="qa-sub-title" style="margin-bottom:0;">📈 用气量趋势（万m³）</div>
-                <div class="period-tabs" style="margin-bottom:0;">
-                  <span class="period-tab" :class="{active: gasPeriod === 'month'}" @click="gasPeriod = 'month'">月</span>
-                  <span class="period-tab" :class="{active: gasPeriod === 'year'}" @click="gasPeriod = 'year'">年</span>
-                </div>
-              </div>
-              <div style="position:relative;">
-                <svg width="100%" height="230" viewBox="0 0 760 200" preserveAspectRatio="xMidYMid meet">
-                  <!-- 网格线与Y轴刻度 -->
-                  <line v-for="(t, i) in gasYTicks" :key="'gy'+i" x1="55" :y1="t.y" x2="735" :y2="t.y" stroke="#f0f0f0" stroke-width="1"/>
-                  <text v-for="(t, i) in gasYTicks" :key="'gyt'+i" x="48" :y="t.y + 3" text-anchor="end" fill="#999" font-size="10">{{ t.label }}</text>
-                  <!-- 柱 + 点 + 月份标签 -->
-                  <g v-for="(d, i) in gasSeries" :key="'g'+i">
-                    <rect :x="gasBarX(i) - gasBarW - 2" :y="gasY(d.prev)" :width="gasBarW" :height="170 - gasY(d.prev)" rx="3" fill="#e8e8e8"/>
-                    <rect :x="gasBarX(i) + 2" :y="gasY(d.value)" :width="gasBarW" :height="170 - gasY(d.value)" rx="3" fill="#1890ff"/>
-                    <text :x="gasBarX(i)" y="192" text-anchor="middle" fill="#8c8c8c" font-size="11">{{ d.label }}</text>
-                    <!-- 悬浮热区 -->
-                    <rect :x="gasBarX(i) - gasGroupW / 2" y="20" :width="gasGroupW" height="172" fill="transparent" style="cursor:pointer;" @mouseenter="showGasTooltip($event, i)" @mouseleave="hideGasTooltip"/>
-                  </g>
-                  <!-- 趋势线 -->
-                  <polyline :points="gasSeries.map((d,i)=>gasBarX(i)+','+(gasY(d.value)-6)).join(' ')" fill="none" stroke="#f5222d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle v-for="(d, i) in gasSeries" :key="'gc'+i" :cx="gasBarX(i)" :cy="gasY(d.value) - 6" r="5" fill="#fff" stroke="#f5222d" stroke-width="2.5"/>
-                </svg>
-                <div class="chart-legend" style="margin-top:4px;">
-                  <span class="legend-item"><span class="legend-dot" style="background:#e8e8e8;width:10px;height:10px;border-radius:2px;"></span>上年用气量</span>
-                  <span class="legend-item"><span class="legend-dot" style="background:#1890ff;width:10px;height:10px;border-radius:2px;"></span>本期用气量</span>
-                  <span class="legend-item"><span class="legend-dot" style="background:#f5222d;"></span>趋势线</span>
-                </div>
-                <!-- 悬浮 tooltip -->
-                <div v-if="gasTooltip.show" class="portrait-trend-tooltip" :style="{left: gasTooltip.x + 'px', top: gasTooltip.y + 'px'}">
-                  <div class="tooltip-title">{{ gasTooltip.title }}</div>
-                  <div v-for="(row, i) in gasTooltip.rows" :key="i" class="tooltip-row">
-                    <span class="tooltip-label">{{ row.label }}</span>
-                    <span class="tooltip-value" :style="row.color ? {color: row.color} : {}">{{ row.value }}</span>
-                  </div>
-                </div>
-              </div>
-              <div style="margin-top:16px;">
-                <div class="qa-split">
-                  <div>
-                    <div class="qa-sub-title">🗣️ 客户最近在关心什么（点击词条查看原话）</div>
-                    <div class="word-cloud">
-                      <span v-for="(word, idx) in wordCloudData" :key="idx" class="word-cloud-item" :style="getCloudTagStyle(idx)" :title="'点击查看客户提出的「' + word.text + '」类问题'" style="cursor:pointer;" @click="openWordCloud(word)">{{ word.text }}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="qa-sub-title">✅ 业务人员解决情况</div>
-                    <div class="resolve-summary">
-                      <div class="resolve-rate-ring">
-                        <svg viewBox="0 0 100 100" width="86" height="86">
-                          <circle cx="50" cy="50" r="40" fill="none" stroke="#f0f0f0" stroke-width="10"/>
-                          <circle cx="50" cy="50" r="40" fill="none" :stroke="resolveInfo.rate >= 70 ? '#52c41a' : resolveInfo.rate >= 40 ? '#faad14' : '#ff4d4f'" stroke-width="10" stroke-linecap="round" :stroke-dasharray="resolveInfo.rate * 2.513 + ' 251.3'" transform="rotate(-90 50 50)"/>
-                          <text x="50" y="47" text-anchor="middle" font-size="20" font-weight="700" fill="#262626">{{ resolveInfo.rate }}%</text>
-                          <text x="50" y="64" text-anchor="middle" font-size="10" fill="#8c8c8c">解决率</text>
-                        </svg>
-                      </div>
-                      <div class="resolve-counts">
-                        <div class="resolve-count-row"><span class="rc-dot" style="background:#52c41a;"></span>已解决 <b>{{ resolveInfo.resolved }}</b> 项</div>
-                        <div class="resolve-count-row"><span class="rc-dot" style="background:#faad14;"></span>跟进中 <b>{{ resolveInfo.inProgress }}</b> 项</div>
-                        <div class="resolve-count-row"><span class="rc-dot" style="background:#ff4d4f;"></span>未响应 <b>{{ resolveInfo.pending }}</b> 项</div>
-                      </div>
-                    </div>
-                    <div class="resolve-list">
-                      <div v-for="(r, i) in resolveInfo.items" :key="i" class="resolve-item">
-                        <span class="resolve-tag" :style="{background: r.tagBg, color: r.tagColor}">{{ r.status }}</span>
-                        <div class="resolve-body">
-                          <div class="resolve-title">{{ r.category }}<span class="resolve-date">{{ r.date }}</span></div>
-                          <div class="resolve-desc">{{ r.desc }}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Q3/Q4/Q5 三合一紧凑行 -->
-          <div class="qa-trio">
-            <!-- Q3 有没有增长空间？ -->
-            <div class="qa-card qa-compact">
-              <div class="qa-header">
-                <span class="qa-num">3</span>
-                <span class="qa-question">有没有增长空间？</span>
-              </div>
-              <span class="qa-verdict" :class="growthInfo.cls" style="margin-bottom:14px;">{{ growthInfo.verdict }}</span>
-              <div class="qc-metric">
-                <div class="qc-label">预计年增气量</div>
-                <div class="qc-value">+{{ growthInfo.potentialGas }}<span class="unit">万m³</span></div>
-                <div class="qc-sub up">主要来自扩产计划</div>
-              </div>
-              <div class="qc-metric">
-                <div class="qc-label">预计年增毛利</div>
-                <div class="qc-value">+{{ growthInfo.potentialProfit }}<span class="unit">万元</span></div>
-                <div class="qc-sub up">按当前价差测算</div>
-              </div>
-              <div class="qc-metric" style="margin-bottom:0;">
-                <div class="qc-label">用气量同比</div>
-                <div class="qc-value">{{ growthInfo.usageYoy }}</div>
-                <div class="qc-sub up">近一年趋势</div>
-              </div>
-            </div>
-
-            <!-- Q4 会不会被替代？ -->
-            <div class="qa-card qa-compact">
-              <div class="qa-header">
-                <span class="qa-num">4</span>
-                <span class="qa-question">会不会被替代？</span>
-              </div>
-              <span class="qa-verdict" :class="riskInfo.cls" style="margin-bottom:14px;">{{ riskInfo.verdict }}</span>
-              <div class="qa-risk-banner compact" :class="riskInfo.level">
-                <span style="font-size:15px;">{{ riskInfo.icon }}</span>
-                <div>
-                  <div style="font-weight:600;font-size:12px;" v-html="riskInfo.bannerTitle"></div>
-                  <div style="opacity:0.85;font-size:11px;margin-top:2px;" v-html="riskInfo.bannerText"></div>
-                </div>
-              </div>
-              <div class="qa-row compact"><span class="label">替代能源类型</span><span class="value">{{ riskInfo.altEnergy }}</span></div>
-              <div class="qa-row compact"><span class="label">替代设备</span><span class="value" :style="{color: riskInfo.hasDevice ? '#ff4d4f' : '#52c41a'}">{{ riskInfo.deviceText }}</span></div>
-              <div class="qa-row compact"><span class="label">燃气成本占比</span><span class="value">{{ riskInfo.gasCostRatio }}</span></div>
-              <div class="qa-row compact"><span class="label">价格承受能力</span><span class="value" style="max-width:58%;">{{ riskInfo.priceTolerance }}</span></div>
-            </div>
-
-            <!-- Q5 客户用其他能源的比例是多少？ -->
-            <div class="qa-card qa-compact">
-              <div class="qa-header">
-                <span class="qa-num">5</span>
-                <span class="qa-question">客户用其他能源的比例是多少？</span>
-              </div>
-              <span class="qa-verdict info" style="margin-bottom:14px;">燃气占 {{ energyInfo.gasPct }}%</span>
-              <div class="qc-energy-text" v-html="energyInfo.summary"></div>
-              <div class="qa-sub-title" style="margin-top:14px;">⚡ 能源结构占比</div>
-              <div class="qa-energy-bar" style="height:26px;">
-                <div v-for="(seg, i) in energyInfo.segments" :key="i" class="qa-energy-seg" :style="{width: seg.pct + '%', background: seg.color}">{{ seg.pct >= 8 ? seg.pct + '%' : '' }}</div>
-              </div>
-              <div class="qa-energy-legend" style="margin-top:10px;">
-                <div v-for="(seg, i) in energyInfo.segments" :key="i" class="qa-energy-item">
-                  <span class="swatch" :style="{background: seg.color}"></span>
-                  <span>{{ seg.name }} <b>{{ seg.pct }}%</b></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- 右侧生命周期时间轴 -->
-        <div class="portrait-side">
-          <div class="card" style="height:100%;">
-            <div class="card-title">🔄 客户生命周期时间轴</div>
-            <div class="timeline-side">
-              <div v-for="(item, idx) in lifecycleItems" :key="idx" class="timeline-side-item" :class="{active: item.status==='active', inactive: item.status==='pending'}" @click="openLifecycleDrawer(item)">
-                <div class="timeline-side-dot" :style="{background: item.color, boxShadow: '0 0 0 2px ' + item.color}"></div>
-                <div class="timeline-side-title">{{ item.title }}</div>
-                <div class="timeline-side-meta">{{ item.date }}</div>
-                <div class="timeline-side-link">点击查看详情</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div v-if="topNav==='grading'" class="sub-nav-bar">
+      <a :class="{active: subNav==='config'}" @click="subNav='config'">⚙️ 分级指标权重配置</a>
+      <a :class="{active: subNav==='results'}" @click="subNav='results'">📋 分级结果管理</a>
+      <a :class="{active: subNav==='search'}" @click="subNav='search'">🔍 客户等级查询</a>
     </div>
 
-    <!-- 生命周期详情抽屉 -->
-    <div v-if="showLifecycleDrawer" class="drawer-overlay" @click.self="closeLifecycleDrawer"></div>
-    <div v-if="showLifecycleDrawer" class="drawer">
-      <div class="drawer-header">
-        <div class="drawer-title">{{ lifecycleDrawerItem.title }} · {{ lifecycleDrawerItem.status === 'done' ? '已完成' : lifecycleDrawerItem.status === 'active' ? '进行中' : '未完成' }}</div>
-        <button class="drawer-close" @click="closeLifecycleDrawer">&times;</button>
-      </div>
-      <div class="drawer-body">
-        <div class="drawer-section">
-          <div class="drawer-row"><span class="label">节点时间</span><span class="value">{{ lifecycleDrawerData.date || '—' }}</span></div>
-          <div class="drawer-row"><span class="label">负责人</span><span class="value">{{ lifecycleDrawerData.person || '—' }}</span></div>
-        </div>
-        <div v-if="lifecycleDrawerItem.status === 'pending'" class="drawer-section" style="text-align:center;padding:20px;color:#8c8c8c;">该节点尚未完成</div>
-        <div v-else>
-          <div v-if="lifecycleDrawerItem.title === '客户开发'" class="drawer-section">
-            <div class="drawer-section-title">开发信息</div>
-            <div class="drawer-row"><span class="label">首次接洽日期</span><span class="value">{{ lifecycleDrawerData.firstContact || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">客户经理</span><span class="value">{{ lifecycleDrawerData.manager || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">开发周期</span><span class="value">{{ lifecycleDrawerData.period || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">备注</span><span class="value">{{ lifecycleDrawerData.remark || '—' }}</span></div>
-          </div>
-          <div v-if="lifecycleDrawerItem.title === '签订合同'" class="drawer-section">
-            <div class="drawer-section-title">合同信息</div>
-            <div class="drawer-row"><span class="label">合同编号</span><span class="value">{{ lifecycleDrawerData.contractNo || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">合同名称</span><span class="value">{{ lifecycleDrawerData.contractName || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">签订日期</span><span class="value">{{ lifecycleDrawerData.signDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">合同期限</span><span class="value">{{ lifecycleDrawerData.period || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">合同气量</span><span class="value">{{ lifecycleDrawerData.gasVolume || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">合同价格</span><span class="value">{{ lifecycleDrawerData.price || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">价格机制</span><span class="value">{{ lifecycleDrawerData.priceMode || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">结算方式</span><span class="value">{{ lifecycleDrawerData.settleMode || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">付款周期</span><span class="value">{{ lifecycleDrawerData.payCycle || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">经办人</span><span class="value">{{ lifecycleDrawerData.operator || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">合同状态</span><span class="value">{{ lifecycleDrawerData.status || '—' }}</span></div>
-          </div>
-          <div v-if="lifecycleDrawerItem.title === '工程报装'" class="drawer-section">
-            <div class="drawer-section-title">报装信息</div>
-            <div class="drawer-row"><span class="label">报装编号</span><span class="value">{{ lifecycleDrawerData.applyNo || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">报装日期</span><span class="value">{{ lifecycleDrawerData.applyDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">开工日期</span><span class="value">{{ lifecycleDrawerData.startDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">完工日期</span><span class="value">{{ lifecycleDrawerData.endDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">验收日期</span><span class="value">{{ lifecycleDrawerData.checkDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">验收结论</span><span class="value">{{ lifecycleDrawerData.checkResult || '—' }}</span></div>
-            <div class="drawer-section-title">计量表信息</div>
-            <div class="drawer-row"><span class="label">表具编号</span><span class="value">{{ lifecycleDrawerData.meterNo || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">表具型号</span><span class="value">{{ lifecycleDrawerData.meterModel || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">量程规格</span><span class="value">{{ lifecycleDrawerData.meterRange || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">生产厂家</span><span class="value">{{ lifecycleDrawerData.meterFactory || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">安装位置</span><span class="value">{{ lifecycleDrawerData.meterPosition || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">安装日期</span><span class="value">{{ lifecycleDrawerData.meterInstallDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">检定日期</span><span class="value">{{ lifecycleDrawerData.meterCheckDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">检定有效期</span><span class="value">{{ lifecycleDrawerData.meterValidDate || '—' }}</span></div>
-          </div>
-          <div v-if="lifecycleDrawerItem.title === '正式通气'" class="drawer-section">
-            <div class="drawer-section-title">通气信息</div>
-            <div class="drawer-row"><span class="label">通气日期</span><span class="value">{{ lifecycleDrawerData.gasDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">通气验收人</span><span class="value">{{ lifecycleDrawerData.checker || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">点火/置换记录编号</span><span class="value">{{ lifecycleDrawerData.recordNo || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">初始表底数</span><span class="value">{{ lifecycleDrawerData.initialReading || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">通气结论</span><span class="value">{{ lifecycleDrawerData.result || '—' }}</span></div>
-          </div>
-          <div v-if="lifecycleDrawerItem.title === '运营提升'" class="drawer-section">
-            <div class="drawer-section-title">运营信息</div>
-            <div class="drawer-row"><span class="label">运营起算日期</span><span class="value">{{ lifecycleDrawerData.startDate || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">已运营月数</span><span class="value">{{ lifecycleDrawerData.months || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">累计用气量</span><span class="value">{{ lifecycleDrawerData.totalGas || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">阶段开始日期</span><span class="value">{{ lifecycleDrawerData.stageStart || '—' }}</span></div>
-            <div class="drawer-row"><span class="label">阶段负责人</span><span class="value">{{ lifecycleDrawerData.stageOwner || '—' }}</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div style="padding:24px;">
 
-    <!-- 词云弹窗 -->
-    <div v-if="showWordCloudModal" class="modal-overlay" @click.self="showWordCloudModal = false">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">
-            <span>{{ wordCloudDrawer.icon }}</span>
-            <span>{{ wordCloudDrawer.title }}</span>
-            <span class="category-badge" :style="{background: wordCloudDrawer.color}">客户提出的问题</span>
+      <!-- 分级指标权重配置 -->
+      <div v-if="subNav==='config' && topNav==='grading'">
+        <div class="page-title">⚙️ 分级指标权重配置</div>
+        <div class="card">
+          <div style="margin-bottom:24px;color:#666;font-size:14px;line-height:1.8;">
+            💡 <strong>使用说明：</strong><br/>
+            1. 每个维度内的子指标权重<strong>之和必须等于100%</strong>。<br/>
+            2. <strong>价值贡献</strong>和<strong>发展潜力</strong>：拖动或输入仅修改当前指标，需手动调整使合计为100%。<br/>
+            3. <strong>合作质量</strong>：两个指标自动此消彼长，拖动任一指标另一指标自动联动，始终保持合计100%。<br/>
+            4. 所有维度合计为100%后，方可保存并执行分级计算。
           </div>
-          <button class="modal-close" @click="showWordCloudModal = false">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="modal-tip">以下为客户在历次拜访与日常沟通中提出的「{{ wordCloudDrawer.title }}」类问题，共 {{ wordCloudDrawer.questions.length }} 条，请逐条跟进落实：</div>
-          <div class="modal-questions">
-            <div v-for="(q, idx) in wordCloudDrawer.questions" :key="idx" class="modal-question">
-              <div class="modal-qnum">{{ idx + 1 }}</div>
-              <div class="modal-qtext">{{ q }}</div>
+
+          <div class="dimension-section">
+            <div class="dimension-header">
+              <div class="dimension-title">价值贡献</div>
+              <div class="dimension-weight dim-value">维度权重 60%</div>
+            </div>
+            <table class="config-table">
+              <thead><tr><th style="width:160px;">指标名称</th><th style="width:380px;">子权重</th><th style="width:70px;">占比</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr v-for="ind in getIndicatorsByDim('价值贡献')" :key="ind.indicator">
+                  <td class="ind-name">{{ ind.indicator }}</td>
+                  <td>
+                    <div class="slider-with-input">
+                      <input type="range" class="config-slider" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" step="1" :value="Math.round(ind.sub_weight*100)" @input="handleWeightChange($event, ind)" />
+                      <input type="number" class="weight-input" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" :value="Math.round(ind.sub_weight*100)" @input="handleWeightChange($event, ind)" />
+                      <span class="weight-unit">%</span>
+                    </div>
+                    <div class="range-hint">可调范围：{{ Math.round((ind.min_sub_weight||0)*100) }}% ~ {{ Math.round((ind.max_sub_weight||1)*100) }}%</div>
+                  </td>
+                  <td class="weight-pct" :class="{'over-limit': ind.sub_weight > (ind.max_sub_weight||1) || ind.sub_weight < (ind.min_sub_weight||0)}">{{ Math.round(ind.sub_weight*100) }}%</td>
+                  <td class="ind-desc">{{ getIndicatorDesc(ind.indicator) }}</td>
+                </tr>
+                <tr class="total-row">
+                  <td class="ind-name" style="font-weight:600;">合计</td>
+                  <td colspan="3">
+                    <div class="total-bar"><div class="total-progress" :style="{width: Math.min(getDimSubWeightTotal('价值贡献')*100, 100)+'%', background: getDimTotalColor('价值贡献')}"></div></div>
+                    <span :class="dimTotalClass('价值贡献')">{{ Math.round(getDimSubWeightTotal('价值贡献')*100) }}% <span v-if="dimIsValid('价值贡献')"> ✅</span><span v-else>（需=100%）</span></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dimension-section">
+            <div class="dimension-header">
+              <div class="dimension-title">合作质量</div>
+              <div class="dimension-weight dim-quality">维度权重 20%</div>
+            </div>
+            <table class="config-table">
+              <thead><tr><th style="width:160px;">指标名称</th><th style="width:380px;">子权重</th><th style="width:70px;">占比</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr v-for="ind in getIndicatorsByDim('合作质量')" :key="ind.indicator">
+                  <td class="ind-name">{{ ind.indicator }}</td>
+                  <td>
+                    <div class="slider-with-input">
+                      <input type="range" class="config-slider" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" step="1" :value="Math.round(ind.sub_weight*100)" @input="handleQualityChange($event, ind)" />
+                      <input type="number" class="weight-input" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" :value="Math.round(ind.sub_weight*100)" @input="handleQualityChange($event, ind)" />
+                      <span class="weight-unit">%</span>
+                    </div>
+                    <div class="range-hint">可调范围：{{ Math.round((ind.min_sub_weight||0)*100) }}% ~ {{ Math.round((ind.max_sub_weight||1)*100) }}%</div>
+                  </td>
+                  <td class="weight-pct">{{ Math.round(ind.sub_weight*100) }}%</td>
+                  <td class="ind-desc">{{ getIndicatorDesc(ind.indicator) }}</td>
+                </tr>
+                <tr class="total-row">
+                  <td class="ind-name" style="font-weight:600;">合计</td>
+                  <td colspan="3">
+                    <div class="total-bar"><div class="total-progress" :style="{width: Math.min(getDimSubWeightTotal('合作质量')*100, 100)+'%', background: getDimTotalColor('合作质量')}"></div></div>
+                    <span :class="dimTotalClass('合作质量')">{{ Math.round(getDimSubWeightTotal('合作质量')*100) }}% <span v-if="dimIsValid('合作质量')"> ✅ 已锁定</span></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dimension-section">
+            <div class="dimension-header">
+              <div class="dimension-title">发展潜力</div>
+              <div class="dimension-weight dim-potential">维度权重 20%</div>
+            </div>
+            <table class="config-table">
+              <thead><tr><th style="width:160px;">指标名称</th><th style="width:380px;">子权重</th><th style="width:70px;">占比</th><th>说明</th></tr></thead>
+              <tbody>
+                <tr v-for="ind in getIndicatorsByDim('发展潜力')" :key="ind.indicator">
+                  <td class="ind-name">{{ ind.indicator }}</td>
+                  <td>
+                    <div class="slider-with-input">
+                      <input type="range" class="config-slider" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" step="1" :value="Math.round(ind.sub_weight*100)" @input="handleWeightChange($event, ind)" />
+                      <input type="number" class="weight-input" :min="Math.round((ind.min_sub_weight||0)*100)" :max="Math.round((ind.max_sub_weight||1)*100)" :value="Math.round(ind.sub_weight*100)" @input="handleWeightChange($event, ind)" />
+                      <span class="weight-unit">%</span>
+                    </div>
+                    <div class="range-hint">可调范围：{{ Math.round((ind.min_sub_weight||0)*100) }}% ~ {{ Math.round((ind.max_sub_weight||1)*100) }}%</div>
+                  </td>
+                  <td class="weight-pct" :class="{'over-limit': ind.sub_weight > (ind.max_sub_weight||1) || ind.sub_weight < (ind.min_sub_weight||0)}">{{ Math.round(ind.sub_weight*100) }}%</td>
+                  <td class="ind-desc">{{ getIndicatorDesc(ind.indicator) }}</td>
+                </tr>
+                <tr class="total-row">
+                  <td class="ind-name" style="font-weight:600;">合计</td>
+                  <td colspan="3">
+                    <div class="total-bar"><div class="total-progress" :style="{width: Math.min(getDimSubWeightTotal('发展潜力')*100, 100)+'%', background: getDimTotalColor('发展潜力')}"></div></div>
+                    <span :class="dimTotalClass('发展潜力')">{{ Math.round(getDimSubWeightTotal('发展潜力')*100) }}% <span v-if="dimIsValid('发展潜力')"> ✅</span><span v-else>（需=100%）</span></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="global-actions">
+            <div class="global-status">
+              <span v-if="!allDimsValid" class="status-error">⚠️ 当前 {{ invalidDimNames.join('、') }} 的权重合计不等于100%，请手动调整</span>
+              <span v-else class="status-ok">✅ 所有维度权重配置正确，可以保存并执行分级计算</span>
+            </div>
+            <div class="action-btns">
+              <button class="btn btn-success" @click="runCalculation">🚀 保存并执行分级计算</button>
+              <button class="btn btn-secondary" @click="resetConfig">↩️ 恢复默认</button>
             </div>
           </div>
-          <div class="modal-footer">💡 提示：以上问题来自客户拜访与诉求记录，请结合客户等级和服务优先级逐条跟进，并在下次拜访时向客户反馈处理进展。</div>
         </div>
       </div>
-    </div>
 
+      <!-- 分级结果管理 -->
+      <div v-if="subNav==='results' && topNav==='grading'">
+        <div class="page-title">📋 分级结果管理</div>
+        <div class="card" style="margin-bottom:16px;padding:16px 20px;background:#f6ffed;border:1px solid #b7eb8f;border-radius:8px;">
+          <div style="font-size:14px;line-height:1.8;color:#52c41a;">
+            <strong>📌 说明：</strong><br/>
+            • <strong>管理者修正因子 G（范围0.9~1.1）</strong>：用于对客户的初步分级进行微调认定，或在特殊情况下进行纠偏。<br/>
+            • <strong>多气源/能源客户</strong>：业务人员可直接调整此类客户的等级，无需通过修正因子G进行调整。
+          </div>
+        </div>
+        <div class="card">
+          <div class="filter-bar">
+            <input v-model="filters.keyword" placeholder="客户名称/ID" />
+            <select v-model="filters.grade"><option value="all">全部等级</option><option value="一级">一级价值客户</option><option value="二级">二级成长客户</option><option value="三级">三级基础客户</option></select>
+            <select v-model="filters.status"><option value="all">全部状态</option><option value="draft">草稿</option><option value="published">已发布</option><option value="adjusted">已调整</option></select>
+            <button class="btn btn-primary" @click="loadResults">🔍 查询</button>
+            <button class="btn btn-success" @click="batchPublish">✅ 批量确认</button>
+            <button class="btn btn-primary" @click="exportExcel">📊 导出Excel</button>
+          </div>
+
+          <div v-if="loading" class="loading">加载中...</div>
+          <table v-else class="table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" @change="toggleAll" v-model="selectAll" /></th>
+                <th>客户名称</th><th>主营产业</th><th>年用气量</th><th>综合得分</th>
+                <th>初等级</th><th>修正G</th><th>最终等级</th><th>多气源</th><th>状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in filteredResults" :key="row.customer_id">
+                <td><input type="checkbox" v-model="selectedIds" :value="row.customer_id" /></td>
+                <td><a @click="openPortraitDetail(row, 'grading')" style="color:#1890ff;cursor:pointer;">{{ row.customer_name }}</a></td>
+                <td>{{ row.main_industry }}</td>
+                <td>{{ row.annual_gas_usage }}万方</td>
+                <td :class="gradeClass(row.final_grade)">{{ row.final_score?.toFixed(1) }}</td>
+                <td>{{ row.initial_grade || '-' }}</td>
+                <td>{{ row.g_value }}</td>
+                <td><span :class="'badge badge-grade' + gradeNum(row.final_grade)">{{ row.final_grade || '-' }}</span></td>
+                <td><span v-if="row.has_alternative_energy" style="color:#ff4d4f;font-weight:600;">是</span><span v-else style="color:#999;">否</span></td>
+                <td>{{ statusText(row.grade_status) }}</td>
+                <td>
+                  <a @click="viewDetail(row)" style="margin-right:8px;">查看</a>
+                  <a @click="openAdjust(row)" style="margin-right:8px;color:#faad14;">调整</a>
+                  <a @click="openPortraitDetail(row, 'grading')" style="color:#52c41a;">画像</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 调整弹窗 -->
+        <div v-if="showAdjustModal" class="modal-overlay" @click.self="showAdjustModal=false">
+          <div class="modal-content">
+            <h3>调整客户等级 - {{ adjustForm.customerName }}</h3>
+            <div class="form-item">
+              <label>管理者修正因子 G（0.9 ~ 1.1）</label>
+              <input type="number" step="0.01" min="0.9" max="1.1" v-model.number="adjustForm.gValue" />
+              <div style="font-size:12px;color:#999;margin-top:4px;">G=1为默认值，无需填写原因；G≠1时必须填写修正原因</div>
+            </div>
+            <div class="form-item">
+              <label>修正原因 {{ adjustForm.gValue !== 1.0 ? '（必填）' : '（可选）' }}</label>
+              <textarea v-model="adjustForm.gReason" rows="3" placeholder="如：承担政府重点工程..."></textarea>
+            </div>
+            <div v-if="adjustForm.hasAlternativeEnergy" class="form-item">
+              <label>强制调整等级（可选）</label>
+              <select v-model="adjustForm.forceGrade">
+                <option value="">不强制（按得分重新计算）</option>
+                <option value="一级">一级</option>
+                <option value="二级">二级</option>
+                <option value="三级">三级</option>
+              </select>
+              <div style="font-size:12px;color:#999;margin-top:4px;">该客户为多气源/能源客户，可直接调整等级</div>
+            </div>
+            <div v-if="adjustForm.forceGrade" class="form-item">
+              <label>调整原因说明（必填）</label>
+              <textarea v-model="adjustForm.reason" rows="2" placeholder="请说明强制调整等级的原因..."></textarea>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:16px;">
+              <button class="btn btn-secondary" @click="showAdjustModal=false">取消</button>
+              <button class="btn btn-primary" @click="submitAdjust">确认调整</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 查看详情弹窗 -->
+        <div v-if="showDetailModal" class="modal-overlay" @click.self="showDetailModal=false">
+          <div class="modal-content" style="max-width:900px;max-height:90vh;overflow-y:auto;">
+            <h3 style="font-size:18px;font-weight:600;margin-bottom:20px;">客户分级详情 - {{ detailCustomer.customer_name }}</h3>
+
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+              <span :class="'badge badge-grade' + gradeNum(detailCustomer.final_grade)" style="font-size:16px;padding:8px 24px;">{{ detailCustomer.final_grade || '未分级' }}</span>
+              <span style="font-size:28px;font-weight:700;color:#ff4d4f;">{{ detailCustomer.final_score?.toFixed(2) }}分</span>
+            </div>
+
+            <div style="margin-bottom:24px;">
+              <div style="font-size:15px;font-weight:600;color:#262626;margin-bottom:16px;">维度得分</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div v-for="dim in detailDimensions" :key="dim.name" style="background:#fafafa;border-radius:8px;padding:16px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span style="font-size:14px;font-weight:600;color:#262626;">{{ dim.name }}</span>
+                    <span style="font-size:16px;font-weight:700;color:#ff4d4f;">{{ dim.score }}</span>
+                  </div>
+                  <div style="width:100%;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden;">
+                    <div :style="{width: Math.min(dim.score, 100) + '%', height: '100%', background: dim.color, borderRadius: '4px'}"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:24px;">
+              <div style="font-size:15px;font-weight:600;color:#262626;margin-bottom:16px;">指标得分明细</div>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#fafafa;">
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">指标</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">维度</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">原始值</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">标准化得分</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">子权重</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">维度权重</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">综合权重</th>
+                    <th style="padding:10px 8px;text-align:left;font-weight:500;color:#666;border-bottom:1px solid #f0f0f0;">加权得分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="ind in detailIndicators" :key="ind.name" style="border-bottom:1px solid #f5f5f5;">
+                    <td style="padding:12px 8px;font-weight:500;color:#262626;">{{ ind.name }}</td>
+                    <td style="padding:12px 8px;"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;background:#f5f5f5;color:#666;">{{ ind.dimension }}</span></td>
+                    <td style="padding:12px 8px;color:#595959;">{{ ind.rawValue }}</td>
+                    <td style="padding:12px 8px;color:#595959;">{{ ind.normScore }}</td>
+                    <td style="padding:12px 8px;color:#595959;">{{ ind.subWeight }}</td>
+                    <td style="padding:12px 8px;color:#595959;">{{ ind.dimWeight }}</td>
+                    <td style="padding:12px 8px;color:#595959;">{{ ind.compositeWeight }}</td>
+                    <td style="padding:12px 8px;color:#1890ff;font-weight:600;">{{ ind.weightedScore }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="background:#e6f7ff;border-radius:0 0 8px 8px;padding:14px 16px;display:flex;justify-content:flex-end;align-items:center;gap:24px;margin-top:-1px;">
+                <span style="font-size:14px;font-weight:600;color:#262626;">综合得分：</span>
+                <span style="font-size:20px;font-weight:700;color:#1890ff;">{{ detailTotalScore }}</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:24px;">
+              <div style="font-size:15px;font-weight:600;color:#262626;margin-bottom:16px;">等级判定过程</div>
+              <div style="border-left:3px solid #1890ff;padding-left:16px;">
+                <div style="margin-bottom:20px;">
+                  <div style="font-size:14px;font-weight:600;color:#262626;margin-bottom:4px;">Step 1：加权综合得分</div>
+                  <div style="font-size:13px;color:#666;">原始得分 = {{ detailRawScore }}分</div>
+                </div>
+                <div style="margin-bottom:20px;">
+                  <div style="font-size:14px;font-weight:600;color:#262626;margin-bottom:4px;">Step 2：管理者修正</div>
+                  <div style="font-size:13px;color:#666;">G = {{ detailGValue }}，修正后得分 = {{ detailRawScore }} × {{ detailGValue }} = {{ detailAdjustedScore }}分</div>
+                </div>
+                <div style="margin-bottom:20px;">
+                  <div style="font-size:14px;font-weight:600;color:#262626;margin-bottom:4px;">Step 3：等级判定</div>
+                  <div style="font-size:13px;color:#666;">初判等级 = {{ detailInitialGrade }}</div>
+                </div>
+                <div style="margin-bottom:8px;">
+                  <div style="font-size:14px;font-weight:600;color:#262626;margin-bottom:4px;">Step 4：特殊规则</div>
+                  <div style="font-size:13px;color:#666;">多气/能源：{{ detailHasAlternative ? '是' : '否' }} {{ detailHasAlternative ? '（' + detailAlternativeTypes + '）' : '' }}</div>
+                  <div style="font-size:13px;color:#666;margin-top:4px;">最终等级 = {{ detailCustomer.final_grade }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;">
+              <button class="btn btn-secondary" @click="showDetailModal=false">关闭</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 客户等级查询 -->
+      <div v-if="subNav==='search' && topNav==='grading'">
+        <div class="page-title">🔍 客户等级查询</div>
+        <div class="card" style="max-width:800px;margin:0 auto;">
+          <div style="display:flex;gap:12px;margin-bottom:24px;">
+            <input v-model="searchKeyword" placeholder="输入客户名称 / 客户ID..." style="flex:1;padding:12px 16px;border:1px solid #d9d9d9;border-radius:8px;font-size:14px;" @keyup.enter="doSearch" />
+            <button class="btn btn-primary" style="padding:12px 32px;" @click="doSearch">查询</button>
+            <button class="btn btn-secondary" style="padding:12px 24px;" @click="searchKeyword='';searchResults=[];searched=false">重置</button>
+          </div>
+          <div v-if="searchResults.length > 0">
+            <div v-for="row in searchResults" :key="row.customer_id" style="padding:20px;margin-bottom:12px;background:#fafafa;border-radius:12px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-size:16px;font-weight:600;">{{ row.customer_name }}</div>
+                <div style="font-size:13px;color:#666;margin-top:4px;">{{ row.main_industry }} | 得分 {{ row.final_score?.toFixed(2) || '-' }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <span :class="'badge badge-grade' + gradeNum(row.final_grade)" style="font-size:14px;padding:6px 16px;">{{ row.final_grade || '未分级' }}</span>
+                <a @click="openPortraitDetail(row, 'search')" style="font-size:13px;">查看画像 →</a>
+              </div>
+            </div>
+          </div>
+          <div v-else-if="searched" style="text-align:center;padding:40px;color:#999;">未找到匹配的客户</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
-const { createApp, ref, computed, onMounted } = Vue;
+const { createApp, ref, computed, onMounted, watch } = Vue;
 
-// ========== Mock 数据 ==========
+// 客户画像系统页面地址（点"画像"时跳转到这里，并带上 ?id=客户ID）
+const PORTRAIT_PAGE_URL = 'C:/Users/wyt0627/昆仑小智/2026-08-05-13-47-30/index.html';
+
+// ========== 初始数据 ==========
 const MOCK_CUSTOMERS = [
-  { customer_id: 'C001', customer_name: '山东钢铁集团', main_industry: '钢铁', enterprise_scale: '大型企业', annual_gas_usage: 7500, price_spread: 0.92, cooperation_years: 8, final_grade: '一级', contact: '张经理', phone: '0531-88888888', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比较高（15%-25%）', equipment: '加热炉 ×2', process: '热处理', heat_sensitivity: '稳定热值敏感型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C002', customer_name: '济南鲁西化工', main_industry: '化工', enterprise_scale: '大型企业', annual_gas_usage: 4200, price_spread: 0.78, cooperation_years: 6, final_grade: '一级', contact: '李经理', phone: '0531-87777777', has_alternative_energy: true, alternative_energy_types: '电加热', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '转化炉、加热炉', process: '合成氨：蒸汽转化、CO变换', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C003', customer_name: '济南啤酒股份', main_industry: '食品及饮料制造', enterprise_scale: '大型企业', annual_gas_usage: 1800, price_spread: 0.92, cooperation_years: 10, final_grade: '一级', contact: '王经理', phone: '0531-86666666', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '无', debt_status: '无', gas_cost_ratio: '燃气成本占比较低（5%-10%）', equipment: '蒸汽锅炉', process: '糖化、煮沸、杀菌', heat_sensitivity: '稳定热值敏感型', price_mode: '固定价+阶梯优惠', settle_mode: '月结30天' },
-  { customer_id: 'C004', customer_name: '济南玻璃集团', main_industry: '建材', enterprise_scale: '中型企业', annual_gas_usage: 3200, price_spread: 0.72, cooperation_years: 5, final_grade: '二级', contact: '赵经理', phone: '0531-85555555', has_alternative_energy: true, alternative_energy_types: '重油', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比高（25%以上）', equipment: '马蹄焰窑炉、退火炉', process: '熔化、成型、退火', heat_sensitivity: '稳定热值敏感型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C005', customer_name: '济南陶瓷科技', main_industry: '建材', enterprise_scale: '中型企业', annual_gas_usage: 1200, price_spread: 0.68, cooperation_years: 3, final_grade: '三级', contact: '刘经理', phone: '0531-84444444', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '无', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '隧道窑', process: '烧成（素烧、釉烧）', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C006', customer_name: '济南万华化学', main_industry: '化工', enterprise_scale: '大型企业', annual_gas_usage: 6800, price_spread: 0.95, cooperation_years: 12, final_grade: '一级', contact: '陈经理', phone: '0531-83333333', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比较高（15%-25%）', equipment: '转化炉、反应炉', process: '甲醇：脱硫、造气、合成', heat_sensitivity: '稳定热值敏感型', price_mode: '长协锁价', settle_mode: '月结30天' },
-  { customer_id: 'C007', customer_name: '济南纺织印染', main_industry: '纺织服装', enterprise_scale: '中型企业', annual_gas_usage: 900, price_spread: 0.55, cooperation_years: 4, final_grade: '三级', contact: '周经理', phone: '0531-82222222', has_alternative_energy: true, alternative_energy_types: '蒸汽', expansion_plan: '无', debt_status: '有', gas_cost_ratio: '燃气成本占比高（25%以上）', equipment: '燃气锅炉、定型机', process: '染色、高温定型', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结45天' },
-  { customer_id: 'C008', customer_name: '济南造纸集团', main_industry: '造纸', enterprise_scale: '大型企业', annual_gas_usage: 2800, price_spread: 0.70, cooperation_years: 7, final_grade: '二级', contact: '吴经理', phone: '0531-81111111', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '燃烧器、高速热风罩', process: '脱水后烘干', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C009', customer_name: '济南石化公司', main_industry: '石化', enterprise_scale: '大型企业', annual_gas_usage: 4800, price_spread: 0.82, cooperation_years: 9, final_grade: '一级', contact: '郑经理', phone: '0531-80000000', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '无', debt_status: '无', gas_cost_ratio: '燃气成本占比较低（5%-10%）', equipment: '转化炉、预热锅炉', process: '天然气蒸汽转化制氢', heat_sensitivity: '稳定热值敏感型', price_mode: '长协锁价', settle_mode: '月结30天' },
-  { customer_id: 'C010', customer_name: '济南医药制造', main_industry: '医药制造', enterprise_scale: '中型企业', annual_gas_usage: 1500, price_spread: 0.88, cooperation_years: 6, final_grade: '二级', contact: '孙经理', phone: '0531-89999999', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比低（5%以下）', equipment: '蒸汽锅炉', process: '灭菌消毒、蒸馏水制备', heat_sensitivity: '稳定热值敏感型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C011', customer_name: '济南塑料橡胶', main_industry: '塑料橡胶', enterprise_scale: '小型企业', annual_gas_usage: 600, price_spread: 0.45, cooperation_years: 2, final_grade: '三级', contact: '钱经理', phone: '0531-88888889', has_alternative_energy: true, alternative_energy_types: '煤炭', expansion_plan: '无', debt_status: '有', gas_cost_ratio: '燃气成本占比高（25%以上）', equipment: '燃气锅炉', process: '加热成型', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结60天' },
-  { customer_id: 'C012', customer_name: '济南食品加工', main_industry: '食品及饮料制造', enterprise_scale: '小型企业', annual_gas_usage: 450, price_spread: 0.52, cooperation_years: 3, final_grade: '三级', contact: '冯经理', phone: '0531-88888890', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '无', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '蒸汽锅炉、炒锅', process: '蒸、煮、杀菌', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C013', customer_name: '济南玻纤股份', main_industry: '玻纤', enterprise_scale: '中型企业', annual_gas_usage: 2100, price_spread: 0.76, cooperation_years: 5, final_grade: '二级', contact: '褚经理', phone: '0531-88888891', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比较高（15%-25%）', equipment: '玻璃窑炉', process: '熔制、拉丝', heat_sensitivity: '稳定热值敏感型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C014', customer_name: '济南炭素集团', main_industry: '炭素及碳材料', enterprise_scale: '中型企业', annual_gas_usage: 3500, price_spread: 0.80, cooperation_years: 8, final_grade: '二级', contact: '卫经理', phone: '0531-88888892', has_alternative_energy: true, alternative_energy_types: '电力', expansion_plan: '无', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '回转窑、焙烧炉', process: '煅烧石油焦、焙烧', heat_sensitivity: '常规适配型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
-  { customer_id: 'C015', customer_name: '济南有色金属', main_industry: '有色金属', enterprise_scale: '中型企业', annual_gas_usage: 2600, price_spread: 0.74, cooperation_years: 4, final_grade: '二级', contact: '蒋经理', phone: '0531-88888893', has_alternative_energy: false, alternative_energy_types: '', expansion_plan: '有', debt_status: '无', gas_cost_ratio: '燃气成本占比中等（10%-15%）', equipment: '熔炼炉、保温炉', process: '熔炼、精炼、压延', heat_sensitivity: '稳定热值敏感型', price_mode: '挂钩门站价浮动', settle_mode: '月结30天' },
+  { customer_id: 'C001', customer_name: '山东钢铁集团', project_company: '济南项目公司', main_industry: '钢铁', enterprise_scale: '大型企业', annual_gas_usage: 7500, price_spread: 0.92, cooperation_years: 8, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C002', customer_name: '济南鲁西化工', project_company: '济南项目公司', main_industry: '化工', enterprise_scale: '大型企业', annual_gas_usage: 4200, price_spread: 0.78, cooperation_years: 6, has_alternative_energy: true, alternative_energy_types: '电加热', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C003', customer_name: '济南啤酒股份', project_company: '济南项目公司', main_industry: '食品及饮料制造', enterprise_scale: '大型企业', annual_gas_usage: 1800, price_spread: 0.92, cooperation_years: 10, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C004', customer_name: '济南玻璃集团', project_company: '济南项目公司', main_industry: '建材', enterprise_scale: '中型企业', annual_gas_usage: 3200, price_spread: 0.72, cooperation_years: 5, has_alternative_energy: true, alternative_energy_types: '重油', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C005', customer_name: '济南陶瓷科技', project_company: '济南项目公司', main_industry: '建材', enterprise_scale: '中型企业', annual_gas_usage: 1200, price_spread: 0.68, cooperation_years: 3, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'draft' },
+  { customer_id: 'C006', customer_name: '济南万华化学', project_company: '济南项目公司', main_industry: '化工', enterprise_scale: '大型企业', annual_gas_usage: 6800, price_spread: 0.95, cooperation_years: 12, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C007', customer_name: '济南纺织印染', project_company: '济南项目公司', main_industry: '纺织服装', enterprise_scale: '中型企业', annual_gas_usage: 900, price_spread: 0.55, cooperation_years: 4, has_alternative_energy: true, alternative_energy_types: '蒸汽', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C008', customer_name: '济南造纸集团', project_company: '济南项目公司', main_industry: '造纸', enterprise_scale: '大型企业', annual_gas_usage: 2800, price_spread: 0.70, cooperation_years: 7, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C009', customer_name: '济南石化公司', project_company: '济南项目公司', main_industry: '石化', enterprise_scale: '大型企业', annual_gas_usage: 4800, price_spread: 0.82, cooperation_years: 9, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C010', customer_name: '济南医药制造', project_company: '济南项目公司', main_industry: '医药制造', enterprise_scale: '中型企业', annual_gas_usage: 1500, price_spread: 0.88, cooperation_years: 6, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C011', customer_name: '济南塑料橡胶', project_company: '济南项目公司', main_industry: '塑料橡胶', enterprise_scale: '小型企业', annual_gas_usage: 600, price_spread: 0.45, cooperation_years: 2, has_alternative_energy: true, alternative_energy_types: '煤炭', g_value: 1.0, g_reason: '', grade_status: 'draft' },
+  { customer_id: 'C012', customer_name: '济南食品加工', project_company: '济南项目公司', main_industry: '食品及饮料制造', enterprise_scale: '小型企业', annual_gas_usage: 450, price_spread: 0.52, cooperation_years: 3, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C013', customer_name: '济南玻纤股份', project_company: '济南项目公司', main_industry: '玻纤', enterprise_scale: '中型企业', annual_gas_usage: 2100, price_spread: 0.76, cooperation_years: 5, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C014', customer_name: '济南炭素集团', project_company: '济南项目公司', main_industry: '炭素及碳材料', enterprise_scale: '中型企业', annual_gas_usage: 3500, price_spread: 0.80, cooperation_years: 8, has_alternative_energy: true, alternative_energy_types: '电力', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C015', customer_name: '济南有色金属', project_company: '济南项目公司', main_industry: '有色金属', enterprise_scale: '中型企业', annual_gas_usage: 2600, price_spread: 0.74, cooperation_years: 4, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C016', customer_name: '济南机械装备', project_company: '济南项目公司', main_industry: '机械及装备制造', enterprise_scale: '大型企业', annual_gas_usage: 1900, price_spread: 0.65, cooperation_years: 7, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C017', customer_name: '济南金属加工', project_company: '济南项目公司', main_industry: '金属加工及锻造', enterprise_scale: '中型企业', annual_gas_usage: 1400, price_spread: 0.60, cooperation_years: 3, has_alternative_energy: true, alternative_energy_types: '液化气', g_value: 1.0, g_reason: '', grade_status: 'draft' },
+  { customer_id: 'C018', customer_name: '济南玻璃制品', project_company: '济南项目公司', main_industry: '建材', enterprise_scale: '小型企业', annual_gas_usage: 800, price_spread: 0.50, cooperation_years: 2, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C019', customer_name: '济南医药中间体', project_company: '济南项目公司', main_industry: '医药制造', enterprise_scale: '中型企业', annual_gas_usage: 1100, price_spread: 0.85, cooperation_years: 5, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C020', customer_name: '济南纺织服装', project_company: '济南项目公司', main_industry: '纺织服装', enterprise_scale: '中型企业', annual_gas_usage: 950, price_spread: 0.58, cooperation_years: 4, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C021', customer_name: '济南食品集团', project_company: '济南项目公司', main_industry: '食品及饮料制造', enterprise_scale: '大型企业', annual_gas_usage: 2200, price_spread: 0.90, cooperation_years: 11, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C022', customer_name: '济南化工新材料', project_company: '济南项目公司', main_industry: '化工', enterprise_scale: '中型企业', annual_gas_usage: 3100, price_spread: 0.79, cooperation_years: 6, has_alternative_energy: true, alternative_energy_types: '电加热', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C023', customer_name: '济南钢铁加工', project_company: '济南项目公司', main_industry: '钢铁', enterprise_scale: '中型企业', annual_gas_usage: 1800, price_spread: 0.71, cooperation_years: 5, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C024', customer_name: '济南造纸包装', project_company: '济南项目公司', main_industry: '造纸', enterprise_scale: '小型企业', annual_gas_usage: 700, price_spread: 0.48, cooperation_years: 3, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'draft' },
+  { customer_id: 'C025', customer_name: '济南石化储运', project_company: '济南项目公司', main_industry: '石化', enterprise_scale: '大型企业', annual_gas_usage: 3900, price_spread: 0.83, cooperation_years: 8, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C026', customer_name: '济南建材集团', project_company: '济南项目公司', main_industry: '建材', enterprise_scale: '大型企业', annual_gas_usage: 2400, price_spread: 0.67, cooperation_years: 7, has_alternative_energy: true, alternative_energy_types: '重油', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C027', customer_name: '济南塑料科技', project_company: '济南项目公司', main_industry: '塑料橡胶', enterprise_scale: '小型企业', annual_gas_usage: 550, price_spread: 0.42, cooperation_years: 2, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C028', customer_name: '济南玻纤制品', project_company: '济南项目公司', main_industry: '玻纤', enterprise_scale: '小型企业', annual_gas_usage: 850, price_spread: 0.53, cooperation_years: 3, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C029', customer_name: '济南有色金属', project_company: '济南项目公司', main_industry: '有色金属', enterprise_scale: '中型企业', annual_gas_usage: 1700, price_spread: 0.73, cooperation_years: 4, has_alternative_energy: false, alternative_energy_types: '', g_value: 1.0, g_reason: '', grade_status: 'published' },
+  { customer_id: 'C030', customer_name: '济南机械铸造', project_company: '济南项目公司', main_industry: '机械及装备制造', enterprise_scale: '中型企业', annual_gas_usage: 1300, price_spread: 0.64, cooperation_years: 5, has_alternative_energy: true, alternative_energy_types: '电力', g_value: 1.0, g_reason: '', grade_status: 'published' },
 ];
 
-const WORD_CLOUD_DATA = [
-  { id: 'price', text: '价格诉求', color: '#f5222d', weight: 5 },
-  { id: 'supply', text: '供气保障', color: '#1890ff', weight: 4.5 },
-  { id: 'quality', text: '气质改善', color: '#13c2c2', weight: 4 },
-  { id: 'optimize', text: '用能优化', color: '#52c41a', weight: 3.5 },
-  { id: 'process', text: '流程便利', color: '#722ed1', weight: 3.2 },
-  { id: 'safety', text: '安全支持', color: '#fa8c16', weight: 3 },
-  { id: 'expand', text: '扩产协同', color: '#faad14', weight: 2.6 },
-  { id: 'other', text: '其他诉求', color: '#8c8c8c', weight: 2 }
+const DEFAULT_CONFIGS = [
+  { dimension: '价值贡献', indicator: '用气量规模', weight: 0.60, sub_weight: 0.45, min_sub_weight: 0.40, max_sub_weight: 0.50, scoring_type: 'positive', min_value: 0, max_value: 6600 },
+  { dimension: '价值贡献', indicator: '收入贡献率', weight: 0.60, sub_weight: 0.35, min_sub_weight: 0.30, max_sub_weight: 0.40, scoring_type: 'positive', min_value: 0, max_value: 100 },
+  { dimension: '价值贡献', indicator: '价差贡献', weight: 0.60, sub_weight: 0.15, min_sub_weight: 0.10, max_sub_weight: 0.20, scoring_type: 'positive', min_value: 0, max_value: 1 },
+  { dimension: '价值贡献', indicator: '拖欠款项', weight: 0.60, sub_weight: 0.05, min_sub_weight: 0.05, max_sub_weight: 0.10, scoring_type: 'binary', min_value: 0, max_value: 1 },
+  { dimension: '合作质量', indicator: '用气稳定性', weight: 0.20, sub_weight: 0.50, min_sub_weight: 0.40, max_sub_weight: 0.60, scoring_type: 'negative', min_value: 0, max_value: 1 },
+  { dimension: '合作质量', indicator: '历史合作时长', weight: 0.20, sub_weight: 0.50, min_sub_weight: 0.40, max_sub_weight: 0.60, scoring_type: 'positive', min_value: 0, max_value: 20 },
+  { dimension: '发展潜力', indicator: '行业前景', weight: 0.20, sub_weight: 0.35, min_sub_weight: 0.30, max_sub_weight: 0.40, scoring_type: 'qualitative', min_value: 0, max_value: 1 },
+  { dimension: '发展潜力', indicator: '企业成长性', weight: 0.20, sub_weight: 0.35, min_sub_weight: 0.30, max_sub_weight: 0.40, scoring_type: 'qualitative', min_value: 0, max_value: 1 },
+  { dimension: '发展潜力', indicator: '企业声誉', weight: 0.20, sub_weight: 0.30, min_sub_weight: 0.20, max_sub_weight: 0.30, scoring_type: 'qualitative', min_value: 0, max_value: 1 },
 ];
 
-const VISIT_QUESTIONS = {
-  price: { title: '价格诉求', icon: '💰', color: '#f5222d', questions: ['现在气价还能不能再降一点？', '如果我们签三年长协，价格能锁在什么水平？', '量增价减的阶梯具体怎么算？'] },
-  supply: { title: '供气保障诉求', icon: '⛽', color: '#1890ff', questions: ['去年冬天限气那次，以后再遇气源紧张能不能提前通知？', '生产线一停损失就是几十万，断供预警时间能不能写进合同？'] },
-  quality: { title: '气质改善诉求', icon: '💨', color: '#13c2c2', questions: ['最近炉子温度不太好烧，是不是气的热值有波动？', '热值能不能稳定住？低了我们的成品率直接受影响。'] },
-  optimize: { title: '用能优化诉求', icon: '⚡', color: '#52c41a', questions: ['每月气费占比不低，你们能不能帮忙做个用能诊断？', '窑炉余热有没有回收方案？'] },
-  process: { title: '流程便利化诉求', icon: '📋', color: '#722ed1', questions: ['每次缴费都要跑营业厅，能不能开通线上缴费？', '发票能不能月结后三天内开出来？'] },
-  safety: { title: '安全/技术支持诉求', icon: '🔧', color: '#fa8c16', questions: ['烧嘴用了六年了，能不能安排一次免费的安全检查？', '管道阀门有点锈，更换是你们负责还是我们负责？'] },
-  expand: { title: '扩产/新项目协同诉求', icon: '🏭', color: '#faad14', questions: ['我们Q3要上新产线，每月多用80万方，气源能不能保障？', '新厂房的管道能不能请你们提前来勘测设计？'] },
-  other: { title: '其他诉求', icon: '📌', color: '#8c8c8c', questions: ['煤改气的补贴政策现在还有没有？', '能不能定期给我们发一下气价走势和政策解读？'] }
+// ========== mock 数据仓库 ==========
+const mockStore = {
+  configs: JSON.parse(JSON.stringify(DEFAULT_CONFIGS)),
+  customers: JSON.parse(JSON.stringify(MOCK_CUSTOMERS)),
+  infoFill: {}
 };
 
-const LIFECYCLE_ITEMS = [
-  { date: '2022-03', title: '客户开发', status: 'done', color: '#1677ff' },
-  { date: '2022-05', title: '签订合同', status: 'done', color: '#1677ff' },
-  { date: '2022-06', title: '工程报装', status: 'done', color: '#1677ff' },
-  { date: '2022-07', title: '正式通气', status: 'done', color: '#1677ff' },
-  { date: '2024-07', title: '运营提升', status: 'active', color: '#52c41a' }
-];
+// 读取某客户已保存入库的填写标签（独立版无信息填写模块，恒返回 null，走默认评分分支）
+function ifFillOf(c) {
+  const rec = (mockStore.infoFill || {})[c.customer_id];
+  return (rec && rec.status === 'saved') ? rec.form : null;
+}
 
-const LIFECYCLE_DETAILS = {
-  '客户开发': { date: '2022-03-15', person: '张经理', channel: '政府片区招标', firstContact: '2022-03-01', manager: '张经理', projectDate: '2022-03-10', period: '15天', remark: '通过政府片区招标获得客户' },
-  '签订合同': { date: '2022-05-20', person: '王经理', contractNo: 'HT-2022-00478', contractName: '2022年天然气供气合同', signDate: '2022-05-20', period: '2022.05-2027.04', gasVolume: '5500万m³/年', price: '3.25元/m³', priceMode: '挂钩', settleMode: '月度结算', payCycle: '月结30天', operator: '王经理', status: '生效中' },
-  '工程报装': { date: '2022-06-15', person: '李主管', applyNo: 'BZ-2022-00478', applyDate: '2022-06-01', capacity: '5000Nm³/h', designer: '济南燃气设计院', builder: '山东燃气工程公司', startDate: '2022-06-05', endDate: '2022-06-25', checkDate: '2022-06-28', checkResult: '合格', meterNo: 'GAS-2022-0478', meterModel: 'JKL-G16', meterRange: 'DN100', meterFactory: '浙江金卡智能', meterPosition: '厂区调压柜', meterInstallDate: '2022-06-15', meterCheckDate: '2022-06-20', meterValidDate: '2024-06-19' },
-  '正式通气': { date: '2022-07-01', person: '王经理', gasDate: '2022-07-01', checker: '李主管', recordNo: 'TQ-2022-00478', initialReading: '0.00', result: '通气合格' },
-  '运营提升': { date: '2024-07', person: '张经理', startDate: '2022-07-01', months: '24个月', totalGas: '456万m³', stageName: '稳量提质', stageStart: '2024-01-01', stageGoal: '维持用气规模，提升价差贡献', stageOwner: '张经理' }
+// ========== 评分计算引擎 ==========
+function recalcMockGrade(c) {
+  const valueInds = mockStore.configs.filter(x => x.dimension === '价值贡献');
+  const qualityInds = mockStore.configs.filter(x => x.dimension === '合作质量');
+  const potentialInds = mockStore.configs.filter(x => x.dimension === '发展潜力');
+  const gasNorm = Math.min(c.annual_gas_usage / 6600, 1) * 100;
+  const revenueNorm = Math.min(c.annual_gas_usage * c.price_spread / 5000, 1) * 100;
+  const spreadNorm = c.price_spread * 100;
+  const __ifF = ifFillOf(c);
+  const debtNorm = __ifF ? (__ifF.debtStatus === '有' ? 0 : 100) : 100;
+  const gasW = valueInds.find(i => i.indicator === '用气量规模')?.sub_weight || 0.45;
+  const revW = valueInds.find(i => i.indicator === '收入贡献率')?.sub_weight || 0.35;
+  const spreadW = valueInds.find(i => i.indicator === '价差贡献')?.sub_weight || 0.15;
+  const debtW = valueInds.find(i => i.indicator === '拖欠款项')?.sub_weight || 0.05;
+  const valueScore = gasNorm * gasW + revenueNorm * revW + spreadNorm * spreadW + debtNorm * debtW;
+  const stabilityNorm = 70 + Math.random() * 30;
+  const coopNorm = Math.min(c.cooperation_years / 20, 1) * 100;
+  const stabW = qualityInds.find(i => i.indicator === '用气稳定性')?.sub_weight || 0.5;
+  const coopW = qualityInds.find(i => i.indicator === '历史合作时长')?.sub_weight || 0.5;
+  const qualityScore = stabilityNorm * stabW + coopNorm * coopW;
+  const industryMap = { '钢铁': 85, '化工': 90, '石化': 88, '医药制造': 80, '建材': 70, '食品及饮料制造': 75, '纺织服装': 65, '造纸': 68, '塑料橡胶': 60, '玻纤': 72, '炭素及碳材料': 78, '有色金属': 76, '金属加工及锻造': 70, '机械及装备制造': 82 };
+  const industryNorm = __ifF ? ({'优':90,'良':78,'中':62,'前景不明':40}[__ifF.industryProspect] ?? 70) : (industryMap[c.main_industry] || 70);
+  const growthNorm = __ifF ? (__ifF.expansionPlan === '有' ? 85 : 50) : (c.annual_gas_usage > 2000 ? 85 : (c.annual_gas_usage > 1000 ? 70 : 55));
+  const reputationNorm = __ifF ? ({'优':90,'良':78,'中':65,'一般':50}[__ifF.reputation] ?? 70) : (c.cooperation_years > 5 ? 85 : 70);
+  const indW = potentialInds.find(i => i.indicator === '行业前景')?.sub_weight || 0.35;
+  const growW = potentialInds.find(i => i.indicator === '企业成长性')?.sub_weight || 0.35;
+  const repW = potentialInds.find(i => i.indicator === '企业声誉')?.sub_weight || 0.30;
+  const potentialScore = industryNorm * indW + growthNorm * growW + reputationNorm * repW;
+  const totalScore = valueScore * 0.60 + qualityScore * 0.20 + potentialScore * 0.20;
+  const g = c.g_value || 1.0;
+  const adjustedScore = totalScore * g;
+  if (c.force_grade) c.final_grade = c.force_grade;
+  else if (adjustedScore >= 80) c.final_grade = '一级';
+  else if (adjustedScore >= 60) c.final_grade = '二级';
+  else c.final_grade = '三级';
+  c.initial_grade = c.final_grade;
+  c.final_score = adjustedScore;
+}
+
+function recalcCustomerGrade(c) {
+  const valueInds = mockStore.configs.filter(x => x.dimension === '价值贡献');
+  const qualityInds = mockStore.configs.filter(x => x.dimension === '合作质量');
+  const potentialInds = mockStore.configs.filter(x => x.dimension === '发展潜力');
+  const gasNorm = Math.min(c.annual_gas_usage / 6600, 1) * 100;
+  const revenueNorm = Math.min(c.annual_gas_usage * c.price_spread / 5000, 1) * 100;
+  const spreadNorm = c.price_spread / 1 * 100;
+  const __ifF = ifFillOf(c);
+  const debtNorm = __ifF ? (__ifF.debtStatus === '有' ? 0 : 100) : 100;
+  const gasW = valueInds.find(i => i.indicator === '用气量规模')?.sub_weight || 0.45;
+  const revW = valueInds.find(i => i.indicator === '收入贡献率')?.sub_weight || 0.35;
+  const spreadW = valueInds.find(i => i.indicator === '价差贡献')?.sub_weight || 0.15;
+  const debtW = valueInds.find(i => i.indicator === '拖欠款项')?.sub_weight || 0.05;
+  const valueScore = gasNorm * gasW + revenueNorm * revW + spreadNorm * spreadW + debtNorm * debtW;
+  const stabilityNorm = 70 + Math.random() * 30;
+  const coopNorm = Math.min(c.cooperation_years / 20, 1) * 100;
+  const stabW = qualityInds.find(i => i.indicator === '用气稳定性')?.sub_weight || 0.5;
+  const coopW = qualityInds.find(i => i.indicator === '历史合作时长')?.sub_weight || 0.5;
+  const qualityScore = stabilityNorm * stabW + coopNorm * coopW;
+  const industryMap = { '钢铁': 85, '化工': 90, '石化': 88, '医药制造': 80, '建材': 70, '食品及饮料制造': 75, '纺织服装': 65, '造纸': 68, '塑料橡胶': 60, '玻纤': 72, '炭素及碳材料': 78, '有色金属': 76, '金属加工及锻造': 70, '机械及装备制造': 82 };
+  const industryNorm = __ifF ? ({'优':90,'良':78,'中':62,'前景不明':40}[__ifF.industryProspect] ?? 70) : (industryMap[c.main_industry] || 70);
+  const growthNorm = __ifF ? (__ifF.expansionPlan === '有' ? 85 : 50) : (c.annual_gas_usage > 2000 ? 85 : (c.annual_gas_usage > 1000 ? 70 : 55));
+  const reputationNorm = __ifF ? ({'优':90,'良':78,'中':65,'一般':50}[__ifF.reputation] ?? 70) : (c.cooperation_years > 5 ? 85 : 70);
+  const indW = potentialInds.find(i => i.indicator === '行业前景')?.sub_weight || 0.35;
+  const growW = potentialInds.find(i => i.indicator === '企业成长性')?.sub_weight || 0.35;
+  const repW = potentialInds.find(i => i.indicator === '企业声誉')?.sub_weight || 0.30;
+  const potentialScore = industryNorm * indW + growthNorm * growW + reputationNorm * repW;
+  const totalScore = valueScore * 0.60 + qualityScore * 0.20 + potentialScore * 0.20;
+  const g = c.g_value || 1.0;
+  const adjustedScore = totalScore * g;
+  if (c.force_grade) { c.final_grade = c.force_grade; }
+  else if (adjustedScore >= 80) { c.final_grade = '一级'; }
+  else if (adjustedScore >= 60) { c.final_grade = '二级'; }
+  else { c.final_grade = '三级'; }
+  c.initial_grade = c.final_grade;
+  c.final_score = adjustedScore;
+  c._detail = {
+    dimensionScores: { '价值贡献': valueScore.toFixed(1), '合作质量': qualityScore.toFixed(1), '发展潜力': potentialScore.toFixed(1) },
+    indicators: [
+      { name: '用气量规模', dimension: '价值贡献', rawValue: c.annual_gas_usage + '万方', normScore: gasNorm.toFixed(1), subWeight: Math.round(gasW*100) + '%', dimWeight: '60%', compositeWeight: Math.round(gasW*60) + '%', weightedScore: (gasNorm * gasW * 0.60).toFixed(2) },
+      { name: '收入贡献率', dimension: '价值贡献', rawValue: ((c.annual_gas_usage * c.price_spread) / 50000 * 100).toFixed(2) + '%', normScore: revenueNorm.toFixed(1), subWeight: Math.round(revW*100) + '%', dimWeight: '60%', compositeWeight: Math.round(revW*60) + '%', weightedScore: (revenueNorm * revW * 0.60).toFixed(2) },
+      { name: '价差贡献', dimension: '价值贡献', rawValue: c.price_spread.toFixed(2) + '元/方', normScore: spreadNorm.toFixed(1), subWeight: Math.round(spreadW*100) + '%', dimWeight: '60%', compositeWeight: Math.round(spreadW*60) + '%', weightedScore: (spreadNorm * spreadW * 0.60).toFixed(2) },
+      { name: '拖欠款项', dimension: '价值贡献', rawValue: __ifF ? __ifF.debtStatus : '无', normScore: debtNorm.toFixed(1), subWeight: Math.round(debtW*100) + '%', dimWeight: '60%', compositeWeight: Math.round(debtW*60) + '%', weightedScore: (debtNorm * debtW * 0.60).toFixed(2) },
+      { name: '用气稳定性', dimension: '合作质量', rawValue: 'CV=' + (0.15 + Math.random()*0.3).toFixed(2), normScore: stabilityNorm.toFixed(1), subWeight: Math.round(stabW*100) + '%', dimWeight: '20%', compositeWeight: Math.round(stabW*20) + '%', weightedScore: (stabilityNorm * stabW * 0.20).toFixed(2) },
+      { name: '历史合作时长', dimension: '合作质量', rawValue: c.cooperation_years + '年', normScore: coopNorm.toFixed(1), subWeight: Math.round(coopW*100) + '%', dimWeight: '20%', compositeWeight: Math.round(coopW*20) + '%', weightedScore: (coopNorm * coopW * 0.20).toFixed(2) },
+      { name: '行业前景', dimension: '发展潜力', rawValue: __ifF ? __ifF.industryProspect : (industryNorm >= 80 ? '优' : (industryNorm >= 70 ? '良' : '中')), normScore: industryNorm.toFixed(1), subWeight: Math.round(indW*100) + '%', dimWeight: '20%', compositeWeight: Math.round(indW*20) + '%', weightedScore: (industryNorm * indW * 0.20).toFixed(2) },
+      { name: '企业成长性', dimension: '发展潜力', rawValue: __ifF ? (__ifF.expansionPlan === '有' ? '有扩产计划' : '无扩产计划') : (growthNorm >= 80 ? '高' : (growthNorm >= 60 ? '中' : '低')), normScore: growthNorm.toFixed(1), subWeight: Math.round(growW*100) + '%', dimWeight: '20%', compositeWeight: Math.round(growW*20) + '%', weightedScore: (growthNorm * growW * 0.20).toFixed(2) },
+      { name: '企业声誉', dimension: '发展潜力', rawValue: __ifF ? __ifF.reputation : (reputationNorm >= 80 ? '优' : (reputationNorm >= 70 ? '良' : '中')), normScore: reputationNorm.toFixed(1), subWeight: Math.round(repW*100) + '%', dimWeight: '20%', compositeWeight: Math.round(repW*20) + '%', weightedScore: (reputationNorm * repW * 0.20).toFixed(2) },
+    ],
+    totalScore: totalScore.toFixed(2),
+    rawScore: totalScore.toFixed(2),
+    gValue: g,
+    adjustedScore: adjustedScore.toFixed(2),
+    initialGrade: c.initial_grade,
+    hasAlternative: c.has_alternative_energy,
+    alternativeTypes: c.alternative_energy_types
+  };
+  return c;
+}
+
+// 初始化：为每个客户计算等级与 _detail
+mockStore.customers.forEach(c => recalcCustomerGrade(c));
+
+// ========== mockApi（纯本地，不请求后端） ==========
+const mockApi = {
+  async get(path) {
+    await new Promise(r => setTimeout(r, 20));
+    if (path === '/grading/config') return { success: true, data: JSON.parse(JSON.stringify(mockStore.configs)) };
+    if (path === '/grading/results') return { success: true, data: JSON.parse(JSON.stringify(mockStore.customers)) };
+    if (path.startsWith('/customers?keyword=')) {
+      const kw = decodeURIComponent(path.split('keyword=')[1]).toLowerCase();
+      return { success: true, data: mockStore.customers.filter(c => (c.customer_name || '').toLowerCase().includes(kw) || (c.customer_id || '').toLowerCase().includes(kw)) };
+    }
+    return { success: false };
+  },
+  async put(path, data) {
+    await new Promise(r => setTimeout(r, 20));
+    if (path === '/grading/config') { mockStore.configs = JSON.parse(JSON.stringify(data)); return { success: true }; }
+    if (path.startsWith('/grading/results/')) {
+      const id = path.split('/').pop();
+      const idx = mockStore.customers.findIndex(c => c.customer_id === id);
+      if (idx >= 0) {
+        mockStore.customers[idx] = { ...mockStore.customers[idx], ...data };
+        recalcCustomerGrade(mockStore.customers[idx]);
+      }
+      return { success: true };
+    }
+    return { success: false };
+  },
+  async post(path, data) {
+    await new Promise(r => setTimeout(r, 20));
+    if (path === '/grading/calculate') {
+      mockStore.customers.forEach(c => { recalcCustomerGrade(c); c.grade_status = 'draft'; });
+      return { success: true, stats: { grade1: mockStore.customers.filter(c => c.final_grade === '一级').length, grade2: mockStore.customers.filter(c => c.final_grade === '二级').length, grade3: mockStore.customers.filter(c => c.final_grade === '三级').length } };
+    }
+    if (path === '/grading/publish') {
+      data.customer_ids.forEach(id => { const c = mockStore.customers.find(x => x.customer_id === id); if (c) c.grade_status = 'published'; });
+      return { success: true };
+    }
+    return { success: false };
+  }
 };
 
+// ========== Vue 应用 ==========
 createApp({
   setup() {
-    // 主页状态
-    const showDetail = ref(false);
+    const topNav = ref('grading');
+    const subNav = ref('config');
+    const currentPage = ref('portrait');
     const loading = ref(false);
+
+    const configs = ref(JSON.parse(JSON.stringify(DEFAULT_CONFIGS)));
+    const customers = ref(JSON.parse(JSON.stringify(mockStore.customers)));
+    const filters = ref({ keyword: '', project_company: 'all', grade: 'all', status: 'all' });
+    const selectedIds = ref([]);
+    const selectAll = ref(false);
+
+    const showAdjustModal = ref(false);
+    const showDetailModal = ref(false);
+    const adjustForm = ref({ customerId: '', customerName: '', gValue: 1.0, gReason: '', forceGrade: '', reason: '', hasAlternativeEnergy: false });
+    const detailCustomer = ref({});
+    const detailDimensions = ref([]);
+    const detailIndicators = ref([]);
+    const detailTotalScore = ref('0');
+    const detailRawScore = ref('0');
+    const detailGValue = ref(1.0);
+    const detailAdjustedScore = ref('0');
+    const detailInitialGrade = ref('');
+    const detailHasAlternative = ref(false);
+    const detailAlternativeTypes = ref('');
+
     const searchKeyword = ref('');
     const searchResults = ref([]);
     const searched = ref(false);
-    const filters = ref({ industry: 'all', grade: 'all' });
-    const allIndustries = ref([]);
-    
-    // 统计数据
-    const portraitStats = ref({});
-    const industryDistribution = ref([]);
-    const gradeDistribution = ref([]);
-    
-    // 详情页状态
-    const detailCustomer = ref({});
-    const gasPeriod = ref('month'); // 用气量趋势：'month' 月 | 'year' 年
-    const gasMonthly = ref([]);
-    const gasYearly = ref([]);
-    const gasTooltip = ref({ show: false, x: 0, y: 0, title: '', rows: [] });
-    const pricePeriod = ref('month');  // 价格对比图：'month' 近12个月 | 'year' 近3年
-    const spreadPeriod = ref('month'); // 价差贡献图：独立切换
-    const priceMonthly = ref([]);
-    const priceYearly = ref([]);
-    const priceTooltip = ref({ show: false, x: 0, y: 0, title: '', rows: [] });
-    const wordCloudData = ref(WORD_CLOUD_DATA);
-    const lifecycleItems = ref(LIFECYCLE_ITEMS);
-    const profitInfo = ref({});
-    const statusInfo = ref({});
-    const growthInfo = ref({});
-    const riskInfo = ref({});
-    const energyInfo = ref({});
-    const resolveInfo = ref({ rate: 0, resolved: 0, inProgress: 0, pending: 0, items: [] });
-    
-    // 弹窗状态
-    const showWordCloudModal = ref(false);
-    const wordCloudDrawer = ref({});
-    const showLifecycleDrawer = ref(false);
-    const lifecycleDrawerItem = ref({});
-    const lifecycleDrawerData = ref({});
-    
-    const chartColors = ['#1890ff', '#52c41a', '#faad14', '#f5222d', '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16'];
-    const gradeColors = { '一级': '#fa8c16', '二级': '#52c41a', '三级': '#1890ff', '未分级': '#d9d9d9' };
-    
-    // 计算统计数据
-    const computeStats = (data) => {
-      const industries = {};
-      const grades = {};
-      let totalGas = 0;
-      
-      data.forEach(c => {
-        if (c.main_industry) industries[c.main_industry] = (industries[c.main_industry] || 0) + 1;
-        const grade = c.final_grade || '未分级';
-        grades[grade] = (grades[grade] || 0) + 1;
-        totalGas += c.annual_gas_usage || 0;
-      });
-      
-      const total = data.length;
-      portraitStats.value = {
-        totalCustomers: total,
-        industryCount: Object.keys(industries).length,
-        avgGasUsage: Math.round(totalGas / total)
-      };
-      
-      // 计算行业分布
-      let offset = 0;
-      const circumference = 2 * Math.PI * 70;
-      industryDistribution.value = Object.entries(industries).map(([name, count], idx) => {
-        const length = (count / total) * circumference;
-        const dashArray = `${length} ${circumference - length}`;
-        const dashOffset = -offset;
-        offset += length;
-        return { name, count, percent: Math.round((count / total) * 100), color: chartColors[idx % chartColors.length], dashArray, dashOffset };
-      });
-      
-      // 计算级别分布
-      offset = 0;
-      gradeDistribution.value = Object.entries(grades).map(([name, count], idx) => {
-        const length = (count / total) * circumference;
-        const dashArray = `${length} ${circumference - length}`;
-        const dashOffset = -offset;
-        offset += length;
-        return { name: name + '客户', count, percent: Math.round((count / total) * 100), color: gradeColors[name] || chartColors[idx % chartColors.length], dashArray, dashOffset };
-      });
-      
-      allIndustries.value = [...new Set(data.map(c => c.main_industry).filter(Boolean))];
+
+    // 画像
+    // ===== 分级配置 =====
+    const loadConfigs = async () => { const res = await mockApi.get('/grading/config'); if (res.success) configs.value = res.data; };
+    const loadResults = async () => { loading.value = true; const res = await mockApi.get('/grading/results'); if (res.success) customers.value = res.data; loading.value = false; };
+
+    const getIndicatorsByDim = (dimension) => configs.value.filter(c => c.dimension === dimension);
+    const getDimSubWeightTotal = (dimension) => getIndicatorsByDim(dimension).reduce((sum, ind) => sum + (ind.sub_weight || 0), 0);
+    const dimIsValid = (dimension) => Math.abs(getDimSubWeightTotal(dimension) - 1) < 0.001;
+    const invalidDimNames = computed(() => ['价值贡献', '合作质量', '发展潜力'].filter(d => !dimIsValid(d)));
+    const allDimsValid = computed(() => invalidDimNames.value.length === 0);
+    const getDimTotalColor = (dimension) => { const total = getDimSubWeightTotal(dimension); if (Math.abs(total - 1) < 0.001) return '#52c41a'; if (total > 1) return '#ff4d4f'; return '#faad14'; };
+    const dimTotalClass = (dimension) => dimIsValid(dimension) ? 'total-ok' : 'total-error';
+    const handleWeightChange = (event, ind) => { const value = parseInt(event.target.value) / 100; if (value >= (ind.min_sub_weight || 0) && value <= (ind.max_sub_weight || 1)) ind.sub_weight = value; };
+    const handleQualityChange = (event, ind) => { const value = parseInt(event.target.value) / 100; if (value >= (ind.min_sub_weight || 0) && value <= (ind.max_sub_weight || 1)) { const dimInds = getIndicatorsByDim('合作质量'); if (dimInds.length === 2) { const other = dimInds.find(i => i.indicator !== ind.indicator); if (other) other.sub_weight = 1 - value; } ind.sub_weight = value; } };
+    const getIndicatorDesc = (indicator) => { const descs = { '用气量规模': '年用气量规模（万方）', '收入贡献率': '占项目公司总收入比例（%）', '价差贡献': '价差利润贡献（元/方）', '拖欠款项': '是否存在历史欠款（二值）', '用气稳定性': '用气波动系数CV（越低越稳定）', '历史合作时长': '与公司合作年限（年）', '行业前景': '所属行业市场前景评估', '企业成长性': '企业近年增长态势', '企业声誉': '企业市场口碑评级' }; return descs[indicator] || ''; };
+
+    const runCalculation = async () => {
+      if (!allDimsValid.value) { alert('请先调整权重配置，使每个维度合计为100%'); return; }
+      await mockApi.put('/grading/config', configs.value);
+      const res = await mockApi.post('/grading/calculate');
+      if (res.success) {
+        alert(`分级计算完成！\n一级：${res.stats.grade1}户\n二级：${res.stats.grade2}户\n三级：${res.stats.grade3}户`);
+        subNav.value = 'results';
+        await loadResults();
+      }
     };
-    
-    // 过滤客户列表
-    const filteredCustomers = computed(() => {
-      let result = [...MOCK_CUSTOMERS];
-      if (filters.value.industry !== 'all') result = result.filter(c => c.main_industry === filters.value.industry);
+    const resetConfig = () => { loadConfigs(); };
+
+    const filteredResults = computed(() => {
+      let result = customers.value;
+      if (filters.value.keyword) { const kw = filters.value.keyword.toLowerCase(); result = result.filter(c => (c.customer_name || '').toLowerCase().includes(kw) || (c.customer_id || '').toLowerCase().includes(kw)); }
+      if (filters.value.project_company !== 'all') result = result.filter(c => c.project_company === filters.value.project_company);
       if (filters.value.grade !== 'all') result = result.filter(c => c.final_grade === filters.value.grade);
+      if (filters.value.status !== 'all') result = result.filter(c => c.grade_status === filters.value.status);
       return result;
     });
-    
-    const filterList = () => {};
-    const resetFilters = () => { filters.value = { industry: 'all', grade: 'all' }; };
-    
-    // 搜索
-    const doSearch = () => {
+
+    const toggleAll = () => { if (selectAll.value) { selectedIds.value = filteredResults.value.map(c => c.customer_id); } else { selectedIds.value = []; } };
+    const gradeClass = (grade) => { if (grade === '一级') return 'score-high'; if (grade === '二级') return 'score-mid'; return 'score-low'; };
+    const gradeNum = (grade) => { if (grade === '一级') return '1'; if (grade === '二级') return '2'; return '3'; };
+    const statusText = (status) => { const map = { draft: '草稿', published: '已发布', adjusted: '已调整' }; return map[status] || status; };
+
+    const viewDetail = (row) => {
+      // 确保有最新 _detail
+      const fresh = mockStore.customers.find(c => c.customer_id === row.customer_id) || row;
+      if (!fresh._detail) recalcCustomerGrade(fresh);
+      detailCustomer.value = fresh;
+      const d = fresh._detail;
+      if (d) {
+        detailDimensions.value = [
+          { name: '价值贡献', score: d.dimensionScores['价值贡献'], color: '#1890ff' },
+          { name: '合作质量', score: d.dimensionScores['合作质量'], color: '#52c41a' },
+          { name: '发展潜力', score: d.dimensionScores['发展潜力'], color: '#faad14' }
+        ];
+        detailIndicators.value = d.indicators;
+        detailTotalScore.value = d.totalScore;
+        detailRawScore.value = d.rawScore;
+        detailGValue.value = d.gValue;
+        detailAdjustedScore.value = d.adjustedScore;
+        detailInitialGrade.value = d.initialGrade;
+        detailHasAlternative.value = d.hasAlternative;
+        detailAlternativeTypes.value = d.alternativeTypes;
+      }
+      showDetailModal.value = true;
+    };
+
+    const openAdjust = (row) => { adjustForm.value = { customerId: row.customer_id, customerName: row.customer_name, gValue: row.g_value || 1.0, gReason: row.g_reason || '', forceGrade: '', reason: '', hasAlternativeEnergy: row.has_alternative_energy }; showAdjustModal.value = true; };
+    const submitAdjust = async () => {
+      if (adjustForm.value.gValue !== 1.0 && !adjustForm.value.gReason) { alert('修正因子G≠1时，必须填写修正原因'); return; }
+      if (adjustForm.value.forceGrade && !adjustForm.value.reason) { alert('强制调整等级时，必须填写调整原因'); return; }
+      await mockApi.put(`/grading/results/${adjustForm.value.customerId}`, { g_value: adjustForm.value.gValue, g_reason: adjustForm.value.gReason, force_grade: adjustForm.value.forceGrade, reason: adjustForm.value.reason, grade_status: 'adjusted' });
+      alert('调整成功');
+      showAdjustModal.value = false;
+      await loadResults();
+    };
+    const batchPublish = async () => {
+      if (selectedIds.value.length === 0) { alert('请选择要确认的客户'); return; }
+      await mockApi.post('/grading/publish', { customer_ids: selectedIds.value });
+      alert('确认成功');
+      selectedIds.value = []; selectAll.value = false;
+      await loadResults();
+    };
+    const exportExcel = () => {
+      const data = filteredResults.value;
+      if (data.length === 0) { alert('没有可导出的数据'); return; }
+      const headers = ['客户名称', '主营产业', '年用气量', '综合得分', '初等级', '最终等级'];
+      const rows = data.map(row => [row.customer_name, row.main_industry, row.annual_gas_usage + '万方', row.final_score?.toFixed(1) || '', row.initial_grade || '', row.final_grade || '']);
+      const BOM = '﻿';
+      const csvContent = BOM + headers.join(',') + '\n' + rows.map(row => row.map(cell => { const str = String(cell); if (str.includes(',') || str.includes('"')) { return '"' + str.replace(/"/g, '""') + '"'; } return str; }).join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = '客户分级结果_' + new Date().toISOString().slice(0,10) + '.csv';
+      document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
+    };
+
+    const doSearch = async () => {
       if (!searchKeyword.value.trim()) return;
-      const kw = searchKeyword.value.toLowerCase();
-      searchResults.value = MOCK_CUSTOMERS.filter(c => (c.customer_name || '').toLowerCase().includes(kw));
+      const res = await mockApi.get(`/customers?keyword=${encodeURIComponent(searchKeyword.value)}`);
+      if (res.success) searchResults.value = res.data;
       searched.value = true;
     };
-    
-    // 打开详情 —— 按市场人员的 5 个核心问题组织信息
-    const openDetail = (row) => {
-      detailCustomer.value = row;
 
-      const seed = row.customer_id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-      const rand = (offset) => ((Math.sin(seed * 12.9898 + offset * 78.233) + 1) / 2);
-      const annual = row.annual_gas_usage || 0;
-      const spread = row.price_spread || 0;
-      const monthly = annual / 12;
-      const annualProfit = Math.round(annual * spread); // 万元
-      const revenueRate = (annual * spread / 50000 * 100);
-      const yoyPct = Math.round(5 + rand(1) * 15); // 用气同比
-      const usageYoy = '+' + yoyPct + '%';
-      const industryOutlookMap = { '钢铁': '平稳', '化工': '上行', '石化': '平稳', '医药制造': '上行', '建材': '承压', '食品及饮料制造': '平稳', '纺织服装': '承压', '造纸': '平稳', '塑料橡胶': '承压', '玻纤': '平稳', '炭素及碳材料': '平稳', '有色金属': '上行' };
-      const outlook = industryOutlookMap[row.main_industry] || '平稳';
-
-      // ========== Q1 能不能挣钱 ==========
-      const profitLevel = annualProfit >= 3000 ? 'high' : annualProfit >= 1200 ? 'mid' : 'low';
-      const hasDebt = row.debt_status === '有';
-      profitInfo.value = {
-        verdict: profitLevel === 'high' ? '优质利润客户' : profitLevel === 'mid' ? '稳定贡献客户' : '薄利客户，需控本增效',
-        cls: profitLevel === 'high' ? 'good' : profitLevel === 'mid' ? 'info' : 'mid',
-        annualProfit: annualProfit.toLocaleString(),
-        profitYoy: '+' + Math.round(rand(2) * 10 + 3) + '%',
-        spreadSub: spread >= 0.85 ? '高于平均价差 0.78 元' : spread >= 0.65 ? '接近平均价差 0.78 元' : '低于平均价差 0.78 元',
-        spreadSubCls: spread >= 0.65 ? 'up' : 'down',
-        revenueRate: revenueRate.toFixed(1),
-        profitRank: profitLevel === 'high' ? Math.round(rand(3) * 8 + 3) : profitLevel === 'mid' ? Math.round(rand(3) * 20 + 15) : Math.round(rand(3) * 25 + 55),
-        summary: profitLevel === 'high'
-          ? `该客户年毛利贡献 <b>${annualProfit.toLocaleString()} 万元</b>，单方价差 <b>${spread.toFixed(2)} 元/m³</b>${spread >= 0.85 ? '，高于公司平均水平' : ''}，是<b>核心利润来源</b>。合同为「${row.price_mode || '挂钩门站价浮动'}」，${hasDebt ? '<b style="color:#ff4d4f">存在历史欠款，需优先管控回款风险</b>' : '回款正常'}。`
-          : profitLevel === 'mid'
-          ? `该客户年毛利贡献 <b>${annualProfit.toLocaleString()} 万元</b>，处于公司中游水平，属于<b>稳定现金流型客户</b>。${hasDebt ? '<b style="color:#ff4d4f">注意：存在历史欠款记录</b>，建议压缩账期。' : '回款正常，风险可控。'}`
-          : `该客户年毛利贡献仅 <b>${annualProfit.toLocaleString()} 万元</b>，单方价差 <b>${spread.toFixed(2)} 元/m³</b> 偏低，属于<b>薄利型客户</b>。${hasDebt ? '<b style="color:#ff4d4f">且存在历史欠款</b>，投入产出比需要重点评估。' : ''}应控制服务成本，优先通过价格机制改善利润。`
-      };
-
-      // ========== Q2 客户状态 ==========
-      const cv = (0.08 + rand(4) * 0.25).toFixed(2);
-      const cvNum = parseFloat(cv);
-      const lastVisitDays = Math.round(rand(5) * 25 + 5);
-      const stageName = (row.cooperation_years || 0) >= 6 ? '成熟运营期' : (row.cooperation_years || 0) >= 3 ? '稳定合作期' : '合作爬坡期';
-      const isDeclining = yoyPct < 8;
-      statusInfo.value = {
-        verdict: isDeclining ? '用气趋平，需关注' : '状态健康，用气稳中有升',
-        cls: isDeclining ? 'mid' : 'good',
-        stage: stageName,
-        cv: cv,
-        cvLabel: cvNum < 0.12 ? '波动小，生产排程稳定' : cvNum < 0.22 ? '波动正常，季节性特征' : '波动大，需了解原因',
-        usageSub: '同比 ' + usageYoy,
-        usageSubCls: isDeclining ? 'flat' : 'up',
-        lastVisitDays: lastVisitDays,
-        visitSub: lastVisitDays <= 15 ? '跟进节奏正常' : '建议尽快安排上门',
-        visitSubCls: lastVisitDays <= 15 ? 'up' : 'down',
-        summary: isDeclining
-          ? `该客户合作 <b>${row.cooperation_years} 年</b>（${stageName}），用气量同比 <b>${usageYoy}</b> 增速放缓，CV=${cv}。当前<b>关系稳定但缺乏增量话题</b>，建议借扩产/节能改造等议题激活合作，避免客户进入"沉默期"。`
-          : `该客户合作 <b>${row.cooperation_years} 年</b>（${stageName}），用气量同比 <b>${usageYoy}</b>，生产负荷饱满。用气波动系数 CV=${cv}，${cvNum < 0.22 ? '用气节奏稳定，属于可预期的优质负荷' : '波动偏大，建议了解其生产排程'}。距上次拜访 <b>${lastVisitDays} 天</b>，${lastVisitDays <= 15 ? '跟进节奏正常' : '<b style="color:#fa8c16">已超过常规跟进周期，建议尽快上门</b>'}。`
-      };
-      // 用气量趋势数据（月：近12个月；年：近3年；含上年同期、同比、环比）
-      const base = monthly;
-      const gasMonthLabels = ['2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08'];
-      const gMonth = [];
-      for (let i = 0; i < 12; i++) {
-        const season = 1 + Math.sin((i + 3) / 12 * Math.PI * 2) * 0.12; // 季节波动
-        const growth = 1 + (yoyPct / 100) * (i / 12); // 年内渐进增长
-        const cur = Math.round(base * season * growth);
-        const prev = Math.round(cur / (1 + (yoyPct / 100) * (0.85 + rand(60 + i) * 0.3))); // 上年同期
-        gMonth.push({ label: gasMonthLabels[i], value: cur, prev: prev });
-      }
-      const gasYearLabels = ['2023年', '2024年', '2025年'];
-      const gYear = [];
-      for (let i = 0; i < 3; i++) {
-        const yearGas = Math.round(annual * (1 + (yoyPct / 100) * (i - 2)));
-        const prevYearGas = i === 0 ? Math.round(yearGas / (1 + yoyPct / 100 * 0.9)) : gYear[i - 1].value;
-        gYear.push({ label: gasYearLabels[i], value: yearGas, prev: prevYearGas });
-      }
-      const withGasRates = (arr) => arr.map((d, i) => {
-        const prevItem = i > 0 ? arr[i - 1] : null;
-        return {
-          ...d,
-          yoy: d.prev ? (d.value - d.prev) / d.prev * 100 : null,
-          qoq: prevItem ? (d.value - prevItem.value) / prevItem.value * 100 : null
-        };
-      });
-      gasMonthly.value = withGasRates(gMonth);
-      gasYearly.value = withGasRates(gYear);
-
-      // 业务人员解决情况（客户关注问题的处理进展）
-      const gradeBoost = row.final_grade === '一级' ? 0.25 : row.final_grade === '二级' ? 0.05 : -0.1;
-      const resolveRate = Math.round(Math.min(95, Math.max(15, 55 + gradeBoost * 100 + rand(70) * 25)));
-      const resolved = Math.max(1, Math.round(8 * resolveRate / 100));
-      const inProgress = Math.round((8 - resolved) * 0.6);
-      const pending = 8 - resolved - inProgress;
-      const resolvePool = [
-        { category: '价格诉求', status: '已解决', desc: '已为客户申请阶梯气价优惠，月均气费下降约 3%。', date: '2025-06-20', tagBg: '#f6ffed', tagColor: '#52c41a' },
-        { category: '供气保障', status: '已解决', desc: '已将客户纳入优先保供名单，断供预警提前至 72 小时。', date: '2025-06-28', tagBg: '#f6ffed', tagColor: '#52c41a' },
-        { category: '气质改善', status: '跟进中', desc: '已协调上游加强脱水处理，待客户反馈烧嘴堵塞是否改善。', date: '2025-07-08', tagBg: '#fff7e6', tagColor: '#fa8c16' },
-        { category: '用能优化', status: '跟进中', desc: '用能诊断报告已出具，余热回收方案正在测算投资回收期。', date: '2025-07-10', tagBg: '#fff7e6', tagColor: '#fa8c16' },
-        { category: '流程便利', status: '已解决', desc: '线上缴费与电子发票已开通，月结后 3 个工作日内开票。', date: '2025-06-15', tagBg: '#f6ffed', tagColor: '#52c41a' },
-        { category: '安全支持', status: '已解决', desc: '已完成烧嘴安全检查与报警器校准，出具安检报告。', date: '2025-07-02', tagBg: '#f6ffed', tagColor: '#52c41a' },
-        { category: '扩产协同', status: '未响应', desc: '客户提出扩产用气扩容需求，尚未提交管网扩容方案。', date: '2025-07-12', tagBg: '#fff1f0', tagColor: '#ff4d4f' },
-        { category: '其他诉求', status: pending > 1 ? '未响应' : '已解决', desc: pending > 1 ? '综合能源合作模式尚未回复客户。' : '已配置固定客户经理，日常问题一对一响应。', date: '2025-07-14', tagBg: pending > 1 ? '#fff1f0' : '#f6ffed', tagColor: pending > 1 ? '#ff4d4f' : '#52c41a' }
-      ];
-      resolveInfo.value = { rate: resolveRate, resolved: resolved, inProgress: inProgress, pending: pending, items: resolvePool };
-
-      // ========== Q3 增长空间 ==========
-      const hasExpansion = row.expansion_plan === '有';
-      const potentialGas = hasExpansion ? Math.round(annual * (0.08 + rand(6) * 0.15)) : Math.round(annual * 0.02);
-      const potentialProfit = Math.round(potentialGas * spread);
-      const growthLevel = hasExpansion && yoyPct >= 10 ? 'high' : hasExpansion || yoyPct >= 10 ? 'mid' : 'low';
-      growthInfo.value = {
-        verdict: growthLevel === 'high' ? '高增长潜力，重点投入' : growthLevel === 'mid' ? '有增量机会，可争取' : '增长空间有限，以存量维护为主',
-        cls: growthLevel === 'high' ? 'good' : growthLevel === 'mid' ? 'info' : 'mid',
-        potentialGas: potentialGas.toLocaleString(),
-        potentialProfit: potentialProfit.toLocaleString(),
-        usageYoy: usageYoy
-      };
-
-      // ========== Q4 替代风险 ==========
-      const hasAlt = row.has_alternative_energy;
-      const altType = row.alternative_energy_types || '';
-      const gasCostHigh = (row.gas_cost_ratio || '').includes('高');
-      let riskLevel = 'low';
-      if (hasAlt && gasCostHigh) riskLevel = 'high';
-      else if (hasAlt || gasCostHigh) riskLevel = 'mid';
-      const riskMap = {
-        low: { icon: '🟢', title: '替代风险：低', text: `该客户无替代能源、无替代设备，当前用气负荷由天然气全额承担。` },
-        mid: { icon: '🟡', title: '替代风险：中', text: hasAlt ? `该客户配有${altType}替代路线，当前未大规模切换。` : `该客户燃气成本占比较高，对气价波动敏感。` },
-        high: { icon: '🔴', title: '替代风险：高', text: `该客户配有${altType}替代设备且燃气成本占比高，存在负荷转移可能。` }
-      };
-      riskInfo.value = {
-        verdict: riskLevel === 'low' ? '低风险' : riskLevel === 'mid' ? '中风险' : '高风险',
-        cls: riskLevel === 'low' ? 'good' : riskLevel === 'mid' ? 'mid' : 'bad',
-        level: riskLevel,
-        icon: riskMap[riskLevel].icon,
-        bannerTitle: riskMap[riskLevel].title,
-        bannerText: riskMap[riskLevel].text,
-        altEnergy: hasAlt ? altType : '无明显替代能源',
-        hasDevice: hasAlt,
-        deviceText: hasAlt ? `已有${altType}设备` : '暂无替代设备',
-        gasCostRatio: row.gas_cost_ratio || '—',
-        priceTolerance: (row.gas_cost_ratio || '').includes('高')
-          ? '气价上涨 5% 以内可接受，涨幅更高将考虑切换替代能源'
-          : (row.gas_cost_ratio || '').includes('低')
-          ? '气价上涨 15% 以内均可接受，对气价不敏感'
-          : '气价上涨 10% 以内可接受，超出后需重新议价'
-      };
-
-      // ========== Q5 其他能源比例 ==========
-      let segments = [];
-      if (hasAlt) {
-        const altPct = Math.round(10 + rand(7) * 25);
-        segments = [
-          { name: '天然气', pct: 100 - altPct, color: '#1677ff' },
-          { name: altType || '其他能源', pct: altPct, color: '#fa8c16' }
-        ];
-      } else {
-        segments = [
-          { name: '天然气', pct: 92, color: '#1677ff' },
-          { name: '电力（辅助）', pct: 8, color: '#d9d9d9' }
-        ];
-      }
-      const gasPct = segments[0].pct;
-      const altSeg = segments[1];
-      const notes = [];
-      if (hasAlt) {
-        notes.push({ text: `天然气承担 ${gasPct}% 的能源负荷，${altSeg.name} 占 ${altSeg.pct}%（主要用于调峰/备用）`, color: '#fa8c16' });
-        notes.push({ text: `若气价相对${altSeg.name}到厂成本上升 10% 以上，存在负荷转移风险`, color: '#ff4d4f' });
-      } else {
-        notes.push({ text: `天然气占比 ${gasPct}%，是客户绝对主力能源，结构单一`, color: '#52c41a' });
-        notes.push({ text: '剩余为照明/办公等辅助用电，与生产用能不构成替代关系', color: '#8c8c8c' });
-      }
-      energyInfo.value = {
-        gasPct: gasPct,
-        segments: segments,
-        notes: notes,
-        summary: hasAlt
-          ? `该客户能源结构中：天然气占 <b>${gasPct}%</b>，${altSeg.name}占 <b>${altSeg.pct}%</b>（年用气量 <b>${annual.toLocaleString()}</b> 万m³）。`
-          : `该客户能源结构中：天然气占 <b>${gasPct}%</b>，电力（辅助）占 <b>${segments[1].pct}%</b>（年用气量 <b>${annual.toLocaleString()}</b> 万m³）。`
-      };
-
-      // 销售价格 / 价差数据（月：近12个月；年：近3年）
-      const curSale = 3.0 + rand(8) * 0.3;         // 当期销售均价
-      const curSpread = spread;                    // 当期价差（与客户一致）
-      const mkMonth = [];
-      const monthLabels = ['2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08'];
-      for (let i = 0; i < 12; i++) {
-        const wave = Math.sin(i * 0.9 + seed) * 0.12;
-        const sale = +(curSale - (11 - i) * 0.02 + wave).toFixed(2);
-        const sp = Math.max(0.3, +(curSpread - (11 - i) * 0.015 + wave * 0.8).toFixed(2));
-        const cost = +(sale - sp).toFixed(2);
-        mkMonth.push({ label: monthLabels[i], sale: sale, cost: cost, spread: sp });
-      }
-      const mkYear = [];
-      const yearLabels = ['2023年', '2024年', '2025年'];
-      for (let i = 0; i < 3; i++) {
-        const sale = +(curSale - (2 - i) * 0.18 + rand(20 + i) * 0.1).toFixed(2);
-        const sp = Math.max(0.3, +(curSpread - (2 - i) * 0.09 + rand(30 + i) * 0.08).toFixed(2));
-        const cost = +(sale - sp).toFixed(2);
-        mkYear.push({ label: yearLabels[i], sale: sale, cost: cost, spread: sp });
-      }
-      // 计算同比 / 环比
-      const withRates = (arr, yoyOffset) => arr.map((d, i) => {
-        const prev = i > 0 ? arr[i - 1] : null;
-        const yoyBase = yoyOffset === 12 ? (d.sale * (1 - 0.05 - rand(40 + i) * 0.06)) : (arr[0] ? arr[0].sale : d.sale);
-        const yoySpreadBase = yoyOffset === 12 ? (d.spread * (1 - 0.03 - rand(50 + i) * 0.05)) : (arr[0] ? arr[0].spread : d.spread);
-        return {
-          ...d,
-          saleQoq: prev ? ((d.sale - prev.sale) / prev.sale * 100) : null,
-          saleYoy: ((d.sale - yoyBase) / yoyBase * 100),
-          spreadQoq: prev ? ((d.spread - prev.spread) / prev.spread * 100) : null,
-          spreadYoy: ((d.spread - yoySpreadBase) / yoySpreadBase * 100)
-        };
-      });
-      priceMonthly.value = withRates(mkMonth, 12);
-      priceYearly.value = withRates(mkYear, 1);
-
-      showDetail.value = true;
+    // ===== 画像：跳转到独立的客户画像系统页面 =====
+    const openPortraitDetail = (row, from = 'portrait') => {
+      if (!row || !row.customer_id) return;
+      window.location.href = PORTRAIT_PAGE_URL + '?id=' + encodeURIComponent(row.customer_id);
     };
 
-    // 两张图各自独立的月/年切换
-    const priceSeries = computed(() => pricePeriod.value === 'month' ? priceMonthly.value : priceYearly.value);
-    const priceStep = computed(() => 280 / Math.max(priceSeries.value.length - 1, 1));
-    const spreadSourceSeries = computed(() => spreadPeriod.value === 'month' ? priceMonthly.value : priceYearly.value);
-    // 毛利贡献序列：月=价差×当月气量（万元）；年=价差×当年气量（万元）
-    const spreadSeries = computed(() => spreadSourceSeries.value.map((d, i) => {
-      const gasArr = spreadPeriod.value === 'month' ? gasMonthly.value : gasYearly.value;
-      const gasVal = gasArr[i] ? gasArr[i].value : 0;
-      const profit = Math.round(d.spread * gasVal); // 万元（价差元/m³ × 万m³）
-      const prevProfit = i > 0 ? Math.round(spreadSourceSeries.value[i - 1].spread * (gasArr[i - 1] ? gasArr[i - 1].value : 0)) : null;
-      const yoyProfit = d.spread > 0 && gasArr[i] && gasArr[i].prev ? Math.round(d.spread * gasArr[i].prev) : null;
-      return {
-        label: d.label,
-        value: profit,
-        qoq: prevProfit ? (profit - prevProfit) / prevProfit * 100 : null,
-        yoy: yoyProfit ? (profit - yoyProfit) / yoyProfit * 100 : null
-      };
-    }));
-    const spreadMaxVal = computed(() => {
-      let m = 0;
-      spreadSeries.value.forEach(d => { m = Math.max(m, d.value); });
-      return m > 0 ? m * 1.2 : 100;
-    });
-    const spreadY = (v) => 95 - (v / spreadMaxVal.value) * 80;
-    const spreadStep = computed(() => 280 / Math.max(spreadSeries.value.length - 1, 1));
 
-    const fmtRate = (v) => v === null || v === undefined ? '—' : (v >= 0 ? '+' : '') + v.toFixed(1) + '%';
-    const rateColor = (v) => v === null || v === undefined ? '#8c8c8c' : v >= 0 ? '#52c41a' : '#ff4d4f';
+    onMounted(() => { loadConfigs(); loadResults(); });
 
-    // ========== Q2 用气量趋势：序列 / 坐标 / tooltip ==========
-    const gasSeries = computed(() => gasPeriod.value === 'month' ? gasMonthly.value : gasYearly.value);
-    const gasMaxVal = computed(() => {
-      let m = 0;
-      gasSeries.value.forEach(d => { m = Math.max(m, d.value, d.prev || 0); });
-      return m > 0 ? m * 1.15 : 100;
-    });
-    const gasYTicks = computed(() => {
-      const max = gasMaxVal.value;
-      const ticks = [];
-      for (let i = 0; i <= 4; i++) {
-        const v = max * i / 4;
-        ticks.push({ y: 170 - (v / max) * 140, label: Math.round(v) });
-      }
-      return ticks;
-    });
-    const gasGroupW = computed(() => 640 / Math.max(gasSeries.value.length, 1));
-    const gasBarW = computed(() => Math.min(gasGroupW.value * 0.26, 26));
-    const gasBarX = (i) => 70 + gasGroupW.value * i + gasGroupW.value / 2;
-    const gasY = (v) => 170 - (v / gasMaxVal.value) * 140;
-
-    const showGasTooltip = (evt, i) => {
-      const d = gasSeries.value[i];
-      if (!d) return;
-      gasTooltip.value = {
-        show: true,
-        x: Math.min(evt.clientX + 12, window.innerWidth - 200),
-        y: evt.clientY - 10,
-        title: d.label + ' 用气量',
-        rows: [
-          { label: '当期用气量', value: d.value.toLocaleString() + ' 万m³', color: '#1890ff' },
-          { label: '同比', value: fmtRate(d.yoy), color: rateColor(d.yoy) },
-          { label: '环比', value: fmtRate(d.qoq), color: rateColor(d.qoq) }
-        ]
-      };
-    };
-    const hideGasTooltip = () => { gasTooltip.value.show = false; };
-
-    const showPriceTooltip = (evt, type, i) => {
-      const arr = type === 'spread' ? spreadSeries.value : priceSeries.value;
-      const d = arr[i];
-      if (!d) return;
-      let rows = [];
-      if (type === 'spread') {
-        const isYear = spreadPeriod.value === 'year';
-        rows = [
-          { label: '当期毛利', value: d.value.toLocaleString() + ' 万元', color: '#fa8c16' },
-          { label: isYear ? '同比' : '环比', value: fmtRate(isYear ? d.yoy : d.qoq), color: rateColor(isYear ? d.yoy : d.qoq) },
-          ...(isYear ? [] : [{ label: '同比', value: fmtRate(d.yoy), color: rateColor(d.yoy) }])
-        ];
-      } else {
-        const isYear = pricePeriod.value === 'year';
-        rows = [
-          { label: '销售均价', value: d.sale.toFixed(2) + ' 元/m³', color: '#1677ff' },
-          { label: '购气成本', value: d.cost.toFixed(2) + ' 元/m³', color: '#52c41a' },
-          { label: '价差', value: d.spread.toFixed(2) + ' 元/m³', color: '#fa8c16' },
-          { label: '均价同比', value: fmtRate(d.saleYoy), color: rateColor(d.saleYoy) },
-          ...(isYear ? [] : [{ label: '均价环比', value: fmtRate(d.saleQoq), color: rateColor(d.saleQoq) }])
-        ];
-      }
-      priceTooltip.value = {
-        show: true,
-        x: Math.min(evt.clientX + 12, window.innerWidth - 190),
-        y: evt.clientY - 10,
-        title: d.label + (type === 'spread' ? ' 毛利贡献' : ' 价格'),
-        rows: rows
-      };
-    };
-    const hidePriceTooltip = () => { priceTooltip.value.show = false; };
-
-    const goBack = () => { showDetail.value = false; };
-    
-    const gradeClass = (grade) => {
-      if (grade === '一级') return 'score-high';
-      if (grade === '二级') return 'score-mid';
-      return 'score-low';
-    };
-    
-    const gradeNum = (grade) => {
-      if (grade === '一级') return '1';
-      if (grade === '二级') return '2';
-      return '3';
-    };
-    
-    const getScoreColor = (score) => {
-      if (score >= 80) return '#52c41a';
-      if (score >= 60) return '#faad14';
-      return '#ff4d4f';
-    };
-    
-    const getCloudTagStyle = (idx) => {
-      const word = wordCloudData.value[idx];
-      if (!word) return {};
-      const sizes = [14, 16, 18, 20, 22];
-      const size = sizes[Math.min(Math.round(word.weight), sizes.length - 1)];
-      const positions = [
-        { left: '20%', top: '30%' }, { left: '60%', top: '20%' }, { left: '75%', top: '45%' },
-        { left: '35%', top: '55%' }, { left: '80%', top: '70%' }, { left: '25%', top: '75%' },
-        { left: '55%', top: '75%' }, { left: '50%', top: '45%' }
-      ];
-      const pos = positions[idx % positions.length];
-      return { ...pos, fontSize: size + 'px', background: word.color };
-    };
-    
-    const openWordCloud = (word) => {
-      wordCloudDrawer.value = VISIT_QUESTIONS[word.id] || VISIT_QUESTIONS['other'];
-      showWordCloudModal.value = true;
-    };
-
-    const openLifecycleDrawer = (item) => {
-      lifecycleDrawerItem.value = item;
-      lifecycleDrawerData.value = LIFECYCLE_DETAILS[item.title] || {};
-      showLifecycleDrawer.value = true;
-    };
-    const closeLifecycleDrawer = () => { showLifecycleDrawer.value = false; };
-    
-    onMounted(() => {
-      computeStats(MOCK_CUSTOMERS);
-      // 支持从外部系统（如客户分级管理）通过 URL 参数 ?id=Cxxx 直接打开对应客户画像
-      try {
-        const params = new URLSearchParams(location.search);
-        const id = params.get('id');
-        if (id) {
-          const target = MOCK_CUSTOMERS.find(c => c.customer_id === id);
-          if (target) openDetail(target);
-        }
-      } catch (e) { /* 忽略参数解析异常，正常进入主页 */ }
-    });
-    
     return {
-      showDetail, loading, searchKeyword, searchResults, searched, filters, allIndustries,
-      portraitStats, industryDistribution, gradeDistribution, filteredCustomers,
-      detailCustomer, wordCloudData, lifecycleItems,
-      gasPeriod, gasSeries, gasYTicks, gasGroupW, gasBarW, gasBarX, gasY, gasTooltip, showGasTooltip, hideGasTooltip,
-      profitInfo, statusInfo, growthInfo, riskInfo, energyInfo, resolveInfo,
-      pricePeriod, spreadPeriod, priceSeries, priceStep, spreadSeries, spreadStep, spreadMaxVal, spreadY, priceTooltip, showPriceTooltip, hidePriceTooltip,
-      showWordCloudModal, wordCloudDrawer,
-      showLifecycleDrawer, lifecycleDrawerItem, lifecycleDrawerData, openLifecycleDrawer, closeLifecycleDrawer,
-      computeStats, filterList, resetFilters, doSearch, openDetail, goBack,
-      gradeClass, gradeNum, getScoreColor, getCloudTagStyle, openWordCloud
+      topNav, subNav, currentPage, loading, configs, customers, filters, selectedIds, selectAll,
+      showAdjustModal, showDetailModal, adjustForm, detailCustomer,
+      detailDimensions, detailIndicators, detailTotalScore, detailRawScore, detailGValue, detailAdjustedScore, detailInitialGrade, detailHasAlternative, detailAlternativeTypes,
+      searchKeyword, searchResults, searched,
+      loadConfigs, loadResults,
+      getIndicatorsByDim, getDimSubWeightTotal, dimIsValid, invalidDimNames, allDimsValid,
+      getDimTotalColor, dimTotalClass, handleWeightChange, handleQualityChange, getIndicatorDesc,
+      runCalculation, resetConfig, filteredResults, toggleAll, gradeClass, gradeNum, statusText,
+      viewDetail, openAdjust, submitAdjust, batchPublish, doSearch, openPortraitDetail,
+      exportExcel
     };
   }
 }).mount('#app');
